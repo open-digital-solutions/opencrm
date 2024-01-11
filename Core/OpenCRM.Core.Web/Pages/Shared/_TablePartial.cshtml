@@ -1,0 +1,39 @@
+﻿@model OpenCRM.Core.Web.Pages.Shared._TablePartialModel
+
+<table id="datatablesSimple">
+    <thead>
+        <tr>
+            @foreach(var item in Model.Headers) 
+            {
+                <th>
+                    @Html.DisplayFor(modelItem => item)
+                </th>
+            }
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var line in Model.Lines)
+        {
+            <tr>
+                @foreach(var item in line)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item)
+                    </td>
+                }
+                <td>
+                    <a class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-pen"></i></a>
+                </td>
+                <td>
+                    <a class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Details"><i style="color:white" class="fas fa-info-circle" aria-hidden="true"></i></a>
+                </td>
+                <td>
+                    <a class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

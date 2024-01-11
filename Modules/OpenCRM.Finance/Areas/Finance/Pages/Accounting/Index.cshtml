@@ -1,0 +1,70 @@
+﻿@page
+@model OpenCRM.Finance.Areas.Finance.Pages.Accounting.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div>
+            <i class="fas fa-table me-1"></i>
+            Accountings
+        </div>
+        <div>
+            <a class="btn btn-success" asp-page="Create">Create new</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="datatablesSimple">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Accounting Type
+                    </th>
+                    <th>
+                        Ammount
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AccountingList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Data.AccountingType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Data.Ammount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Data.Description)
+                        </td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" asp-page="./Edit" asp-route-id="@item.ID"><i class="fas fa-pen"></i></a>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" asp-page="./Details" asp-route-id="@item.ID"><i style="color:white" class="fas fa-info-circle" aria-hidden="true"></i></a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.ID"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

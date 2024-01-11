@@ -1,0 +1,54 @@
+﻿<h3>Table</h3>
+
+
+<table id="datatablesSimple">
+    <thead>
+        <tr>
+            @foreach (var item in Columns)
+            {
+                <th>
+                    @item.Header
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var column in Columns)
+        {
+            <tr>
+                @foreach (var item in Columns)
+                {
+                    @if (item.IsButton)
+                    {
+                        <td>
+                            <a class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
+                                <i class="fas fa-pen"></i>
+                                @item.Label
+                            </a>
+                        </td>
+                    } else
+                    {
+                        <td>
+                            @item.Label
+                        </td>
+                    }
+                    
+                }
+               @*  <td>
+                    <a class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-pen"></i></a>
+                </td>
+                <td>
+                    <a class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Details"><i style="color:white" class="fas fa-info-circle" aria-hidden="true"></i></a>
+                </td>
+                <td>
+                    <a class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></a>
+                </td> *@
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public List<TableColumn> Columns { get; set; } = new List<TableColumn>();
+}

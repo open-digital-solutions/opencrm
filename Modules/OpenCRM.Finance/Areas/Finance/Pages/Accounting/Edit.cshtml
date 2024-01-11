@@ -1,0 +1,44 @@
+﻿@page
+@model OpenCRM.Finance.Areas.Finance.Pages.Accounting.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="card border-1 rounded-lg p-0">
+            <div class="card-header"><h3 class="text-center font-weight-light my-4">Edit</h3></div>
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating mb-3">
+                        <select asp-for="Model.AccountingType" class="form-select">
+                            <option selected>Select a card</option>
+                            <option value="CREDIT">CREDIT</option>
+                            <option value="DEBIT">DEBIT</option>
+                        </select>
+                        <span asp-validation-for="Model.AccountingType" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Model.Ammount" class="form-control" />
+                        <label asp-for="Model.Ammount" class="control-label"></label>
+                        <span asp-validation-for="Model.Ammount" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Model.Description" class="form-control" />
+                        <label asp-for="Model.Description" class="control-label"></label>
+                        <span asp-validation-for="Model.Description" class="text-danger"></span>
+                    </div>
+                    <div class="mt-4 mb-0">
+                        <div class="d-grid">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <a asp-page="./Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

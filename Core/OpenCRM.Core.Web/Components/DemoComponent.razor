@@ -1,0 +1,13 @@
+﻿<h3>@Label : @counter</h3>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = String.Empty;
+
+    static int counter = 0;
+
+    protected override void OnInitialized()
+    {
+        counter++;
+    }
+}
