@@ -7,13 +7,10 @@ using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Pages;
 using OpenCRM.Core.Web.Pages.Shared;
 using OpenCRM.SwissLPD.Services;
+using System.Reflection;
 
 namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
 {
-    //public class EventColumnData {
-    //    public DataBlockModel<EventModel>? EventData { get; set; }
-    //}
-
     public class IndexModel : PageModel
     {
         private readonly IEventService _eventService;
@@ -25,7 +22,10 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [BindProperty]
-        public List<TableColumn> TableColumns { get; set; } = new List<TableColumn>();
+        public List<string> TableHeaders { get; set; } = new List<string>();
+
+        [BindProperty]
+        public List<TableRow<TRowData>> TableRows { get; set; } = new List<TableRow<TRowData>>();
 
         [BindProperty]
         public _TablePartialModel TablePartialModel { get; set; } = new _TablePartialModel();
@@ -51,11 +51,52 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
                 Page = "Event",
                 Url = "/SwissLDP"
             });
+        }
 
-            TablePartialModel.Headers.Add("ID");
-            TablePartialModel.Headers.Add("Description");
-            TablePartialModel.Headers.Add("StartDate");
-            TablePartialModel.Headers.Add("EndDate");
+        private void BuildButton(TableRow<TRowData> row, string label, string url, string iconName)
+        {
+            row.Datas.Add(new TRowData()
+            {
+                Label = label,
+                Url = url,
+                IsButton = true,
+                IconName = iconName,
+            });
+        }
+
+        private void BuildTable()
+        {
+            var properties = typeof(EventModel).GetProperties();
+
+            foreach (var prop in properties)
+                TableHeaders.Add(prop.Name);
+
+            foreach (var item in EventList)
+            {
+                TableRow<TRowData> row = new TableRow<TRowData>();
+                row.ID = item.ID;
+
+                foreach (var prop in TableHeaders)
+                {
+                    var data = item.Data;
+                    var propValue = data.GetType().GetProperty(prop)?.GetValue(data)?.ToString();
+
+                    if (propValue != null)
+                    {
+                        TRowData rowData = new TRowData()
+                        {
+                            Label = propValue
+                        };
+                        row.Datas.Add(rowData);
+                    }
+                }
+
+                BuildButton(row, "Edit", "/Event/Edit", "fas fa-pen");
+                BuildButton(row, "Details", "/Event/Details", "fas fa-info-circle");
+                BuildButton(row, "Delete", "/Event/Delete", "fas fa-trash");
+
+                TableRows.Add(row);
+            }
         }
 
         public void OnGet()
@@ -64,23 +105,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             if (events != null)
             {
                 EventList = events;
-                //foreach(var item in events)
-                //{
-                //    TablePartialModel.Lines.Add(new List<string>()
-                //    {
-                //        item.ID.ToString(),
-                //        item.Data.Description,
-                //        item.Data.StartDate.ToString(),
-                //        item.Data.EndDate.ToString()
-                //    });
-                //}
-                var firstEvent = EventList[0];
-                var firstEventCol = new TableColumn() {
-                    Label = firstEvent.Name,
-                    Header = "Nombre evento",
-                    IsButton = false,
-                };
-                TableColumns.Add(firstEventCol);
+                BuildTable();
             }
         }
     }

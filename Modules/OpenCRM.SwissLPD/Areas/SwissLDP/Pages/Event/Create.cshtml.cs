@@ -16,24 +16,6 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
 		public CreateModel(IEventService eventService)
 		{
 			_eventService = eventService;
-
-			BreadCrumbPartialModel.Links[0].IsActive = false;
-
-			BreadCrumbPartialModel.Links.Add(new BreadCrumbLinkModel()
-			{
-                Area = "",
-                IsActive = false,
-                Name = "Event",
-                Page = "Event"
-            });
-
-            BreadCrumbPartialModel.Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Create",
-                Page = "Create"
-            });
         }
 
 		public IActionResult OnGet()
@@ -43,9 +25,6 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
 
 		[BindProperty]
 		public EventModel Model { get; set; } = default!;
-
-        [BindProperty]
-        public _BreadCrumbPartialModel BreadCrumbPartialModel { get; set; } = new _BreadCrumbPartialModel();
 
         public IActionResult OnPost()
 		{
