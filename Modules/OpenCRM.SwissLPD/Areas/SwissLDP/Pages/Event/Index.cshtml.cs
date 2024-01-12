@@ -74,7 +74,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             foreach (var item in EventList)
             {
                 TableRow<TRowData> row = new TableRow<TRowData>();
-                row.ID = item.ID;
+                row.ID = item.ID
 
                 foreach (var prop in TableHeaders)
                 {
@@ -91,9 +91,9 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
                     }
                 }
 
-                BuildButton(row, "Edit", "/Event/Edit", "fas fa-pen");
-                BuildButton(row, "Details", "/Event/Details", "fas fa-info-circle");
-                BuildButton(row, "Delete", "/Event/Delete", "fas fa-trash");
+                BuildButton(row, "Edit", "Event/Edit?id=" + item.ID, "fas fa-pen");
+                BuildButton(row, "Details", "Event/Details?id=" + item.ID, "fas fa-info-circle");
+                BuildButton(row, "Delete", "Event/Delete?id=" + item.ID, "fas fa-trash");
 
                 TableRows.Add(row);
             }
