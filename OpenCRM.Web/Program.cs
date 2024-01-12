@@ -40,7 +40,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-/// Using OpenCRM Modules
+/// Using OpenCRM Modules.
 app.UseOpenDHSServices<OpenCRMDataContext>();
 app.UseOpenCRMFinanceAsync<OpenCRMDataContext>();
 // app.UseOpenCRMManage<OpenDHSDataContext>();
