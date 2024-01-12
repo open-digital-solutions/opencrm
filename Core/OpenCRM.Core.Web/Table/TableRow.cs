@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCRM.Core.Web.Models
+namespace OpenCRM.Core.Web.Table
 {
     public class TRowData
     {
@@ -22,6 +22,6 @@ namespace OpenCRM.Core.Web.Models
     {
         public Guid ID { get; set; }
 
-        public List<TRowData> Datas { get; set;} = new List<TRowData>();
+        public List<TRowData> Datas { get; set; } = new List<TRowData>();
     }
 }

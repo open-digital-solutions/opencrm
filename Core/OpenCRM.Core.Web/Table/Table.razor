@@ -3,10 +3,10 @@
     <div class="card-header d-flex justify-content-between">
         <div>
             <i class="fas fa-table me-1"></i>
-            Events
+            @Title
         </div>
         <div>
-            <a class="btn btn-success" href="/SwissLDP/Event/Create" data-toggle="tooltip" data-placement="top" title="Create new event">Create new</a>
+            <ButtonLink Label="Create new" Url="@(Page + "/Create")" Style="btn btn-success" />
         </div>
     </div>
     <div class="card-body">
@@ -33,9 +33,7 @@
                             @if (item.IsButton)
                             {
                                 <td>
-                                    <a class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="@item.Label" href="@item.Url" >
-                                        <i class="@item.IconName"></i>
-                                    </a>
+                                    <ButtonLink Label="@item.Label" Url="@(Page + "/" + item.Label + "?id=" + row.ID)" Icon="@item.IconName" />
                                 </td>
                             }   
                             else
@@ -53,6 +51,11 @@
 </div>
 
 @code {
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Page { get; set; } = string.Empty;
 
     [Parameter]
     public List<string> Headers { get; set; } = new List<string>();
