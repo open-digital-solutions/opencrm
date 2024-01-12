@@ -13,7 +13,7 @@ builder.Services.AddDbContext<OpenCRMDataContext>(options => options.UseNpgsql(c
 
 builder.Services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<OpenCRMDataContext>();
 
-/// Registering OpenCRM Modules
+/// Registering OpenCRM Modules.
 builder.Services.AddOpenDHSServices<OpenCRMDataContext>();
 builder.Services.AddOpenCRMFinance<OpenCRMDataContext>();
 // builder.Services.AddOpenCRMManage<OpenDHSDataContext>();
