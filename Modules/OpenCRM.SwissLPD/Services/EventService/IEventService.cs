@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCRM.SwissLPD.Services
+namespace OpenCRM.SwissLPD.Services.EventService
 {
     public interface IEventService
     {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Pages;
-using OpenCRM.SwissLPD.Services;
+using OpenCRM.SwissLPD.Services.EventService;
 using OpenDHS.Shared.Data;
 
 namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event

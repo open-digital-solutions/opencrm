@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Pages;
 using OpenCRM.Core.Web.Pages.Shared;
 using OpenCRM.Core.Web.Table;
-using OpenCRM.SwissLPD.Services;
+using OpenCRM.SwissLPD.Services.EventService;
 using System.Reflection;
 
 namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
@@ -25,16 +26,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [BindProperty]
-        public string Title { get; set; } = "Events";
-
-        [BindProperty]
-        public string TablePage { get; set; } = "Event";
-
-        [BindProperty]
-        public List<string> TableHeaders { get; set; } = new List<string>();
-
-        [BindProperty]
-        public List<TableRow<TRowData>> TableRows { get; set; } = new List<TableRow<TRowData>>();
+        public TableModel Table { get; set; } = new TableModel("Events", "Event");
 
 
         public IndexModel(IEventService eventService)
@@ -66,7 +58,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             if (events != null)
             {
                 EventList = events;
-				_tableService.BuildTable(EventList, TableHeaders, TableRows);
+				_tableService.BuildTable(EventList, Table.TableHeaders, Table.TableRows);
 			}
         }
     }

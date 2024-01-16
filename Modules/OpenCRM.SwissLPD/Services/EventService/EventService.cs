@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCRM.SwissLPD.Services
+namespace OpenCRM.SwissLPD.Services.EventService
 {
-        public class EventService<TDBContext> : IEventService where TDBContext : DataContext
-        {
+    public class EventService<TDBContext> : IEventService where TDBContext : DataContext
+    {
         public readonly IDataBlockService _dataBlockService;
         public EventService(IDataBlockService dataBlockService)
         {

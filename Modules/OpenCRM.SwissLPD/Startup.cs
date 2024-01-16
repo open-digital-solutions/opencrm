@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using OpenCRM.SwissLPD.Services;
+using OpenCRM.SwissLPD.Services.EventService;
 using OpenDHS.Shared;
 
 namespace OpenCRM.SwissLPD
