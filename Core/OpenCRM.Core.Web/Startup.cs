@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
+using OpenCRM.Core.Web.Services;
 using OpenDHS.Shared;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ namespace OpenCRM.Core.Web
         public static IServiceCollection AddOpenCRMCoreWeb<TDBContext>(this IServiceCollection services) where TDBContext : DataContext
         {
             //TODO: Register all module services here
+            services.AddScoped<IEmailNotificationService, EmailNotificationService>();
             return services;
         }
         public static IApplicationBuilder UseOpenCRMCoreWeb<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext

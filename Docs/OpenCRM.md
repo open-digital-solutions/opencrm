@@ -4,3 +4,7 @@ OpenCRM.Web is a not needed head project
 - The CoreLayout most be  available rto be used on any Core Razor Page
 - For the core web pages and components use bootstrap components as default styles
 - 
+
+
+Important for page logic implementations
+ - Please use separation of concerns. Use services to implement pages business logic

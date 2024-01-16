@@ -4,6 +4,7 @@ using OpenCRM.SwissLPD;
 using OpenCRM.Web.Data;
 using OpenDHS.Shared;
 using OpenDHS.Shared.Data;
+using OpenCRM.Core.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +16,9 @@ builder.Services.AddDefaultIdentity<UserEntity>(options => options.SignIn.Requir
 
 /// Registering OpenCRM Modules.
 builder.Services.AddOpenDHSServices<OpenCRMDataContext>();
+builder.Services.AddOpenCRMCoreWeb<OpenCRMDataContext>();
 builder.Services.AddOpenCRMFinance<OpenCRMDataContext>();
-// builder.Services.AddOpenCRMManage<OpenDHSDataContext>();
 builder.Services.AddOpenCRMSwissLPD<OpenCRMDataContext>();
-
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -42,8 +42,8 @@ app.UseAuthorization();
 
 /// Using OpenCRM Modules.
 app.UseOpenDHSServices<OpenCRMDataContext>();
+app.UseOpenCRMCoreWeb<OpenCRMDataContext>();
 app.UseOpenCRMFinanceAsync<OpenCRMDataContext>();
-// app.UseOpenCRMManage<OpenDHSDataContext>();
 app.UseOpenCRMSwissLPDAsync<OpenCRMDataContext>();
 
 app.MapRazorPages();
