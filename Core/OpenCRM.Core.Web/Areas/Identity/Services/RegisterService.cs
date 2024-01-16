@@ -8,6 +8,9 @@ namespace OpenCRM.Core.Web.Areas.Identity.Services
 {
     public class RegisterService
     {
-
+        public RegisterService()
+        {
+            
+        }
     }
 }
