@@ -9,6 +9,8 @@ using OpenDHS.Shared.Data;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Text;
+using System.Net.Mail;
+using System.Net;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
 {
@@ -66,7 +68,7 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
 
             [Required]
             [Display(Name = "Last Name")]
-            public string LastName { get; set; }
+            public string Lastname { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -111,6 +113,16 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
             {
                 var user = CreateUser();
 
+                if(Input.Name != "")
+                {
+                    user.Name = Input.Name;
+                }
+
+                if (Input.Lastname != "")
+                {
+                    user.Lastname = Input.Lastname;
+                }
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -128,7 +140,7 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
@@ -149,6 +161,35 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink)
+        {
+            try
+            {
+                MailMessage message = new MailMessage();
+                SmtpClient smtpClient = new SmtpClient();
+                message.From = new MailAddress("EMAIL HERE");
+                message.To.Add(email);
+                message.Subject = subject;
+                message.IsBodyHtml = true;
+                message.Body = confirmLink;
+
+                smtpClient.Port = 587;
+                smtpClient.Host = "smtp.simply.com";
+
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = true;
+                smtpClient.Credentials = new NetworkCredential("USERNAME HERE", "PASSWORD HERE");
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtpClient.Send(message);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
         }
 
         private UserEntity CreateUser()
