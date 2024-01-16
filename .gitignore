@@ -7,3 +7,4 @@ bin
 *.db-shm
 *.db-wal
 *.csproj.user
+/OpenCRM.Web/appsettings.Stage.json
