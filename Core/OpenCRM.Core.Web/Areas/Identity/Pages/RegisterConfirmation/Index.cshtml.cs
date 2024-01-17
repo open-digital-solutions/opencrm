@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.RegisterConfirmation
 {
@@ -18,10 +19,12 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.RegisterConfirmation
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly IEmailSender _sender;
-        public IndexModel(UserManager<UserEntity> userManager, IEmailSender sender)
+        private readonly    IConfiguration _configuration;
+        public IndexModel(UserManager<UserEntity> userManager, IEmailSender sender, IConfiguration configuration)
         {
             _userManager = userManager;
             _sender = sender;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -56,11 +59,9 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.RegisterConfirmation
                 return NotFound($"Unable to load user with email '{email}'.");
             }
 
-            Console.WriteLine("ENTRANDO AQUI");
-
             Email = email;
             // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = true;  
+            DisplayConfirmAccountLink = !_configuration.GetValue<bool>("EmailSettings:EmailEnabled");  
             if (DisplayConfirmAccountLink)
             {
                 var userId = await _userManager.GetUserIdAsync(user);

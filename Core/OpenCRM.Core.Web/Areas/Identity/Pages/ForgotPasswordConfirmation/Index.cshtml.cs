@@ -10,15 +10,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using OpenCRM.Core.Web.Services;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.ForgotPasswordConfirmation
 {
     public class IndexModel : PageModel
     {
         private readonly UserManager<UserEntity> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailNotificationService _emailSender;
 
-        public IndexModel(UserManager<UserEntity> userManager, IEmailSender emailSender)
+        public IndexModel(UserManager<UserEntity> userManager, IEmailNotificationService emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
@@ -67,7 +68,7 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.ForgotPasswordConfirmation
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
+                _emailSender.SendEmail(
                     Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
