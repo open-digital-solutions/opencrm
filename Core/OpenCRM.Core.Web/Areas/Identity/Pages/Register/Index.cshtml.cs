@@ -11,6 +11,9 @@ using System.Text.Encodings.Web;
 using System.Text;
 using System.Net.Mail;
 using System.Net;
+using OpenCRM.Core.Web.Areas.Identity.Models;
+using OpenCRM.Core.Web.Services;
+using OpenCRM.Core.Web.Areas.Identity.Services;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
 {
@@ -21,13 +24,13 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
         private readonly IUserStore<UserEntity> _userStore;
         private readonly IUserEmailStore<UserEntity> _emailStore;
         private readonly ILogger<IndexModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailNotificationService _emailSender;
         public IndexModel(
             UserManager<UserEntity> userManager,
             IUserStore<UserEntity> userStore,
             SignInManager<UserEntity> signInManager,
             ILogger<IndexModel> logger,
-            IEmailSender emailSender)
+            IEmailNotificationService emailSender)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -37,12 +40,8 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
             _emailSender = emailSender;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputRegisterModel Input { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -56,49 +55,6 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
         /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        public class InputModel
-        {
-            [Required]
-            [Display(Name = "Name")]
-            public string Name { get; set; }
-
-            [Required]
-            [Display(Name = "Last Name")]
-            public string Lastname { get; set; }
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
-
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-        }
-
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
@@ -111,24 +67,11 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
-
-                if(Input.Name != "")
+                var registerService = new RegisterService();
+                var result = await registerService.RegisterUser(Input, _userManager, _userStore, _emailStore);
+                if (result.Item1.Succeeded)
                 {
-                    user.Name = Input.Name;
-                }
-
-                if (Input.Lastname != "")
-                {
-                    user.Lastname = Input.Lastname;
-                }
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
-                if (result.Succeeded)
-                {
+                    var user = result.Item2;
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -140,7 +83,7 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await SendEmailAsync(Input.Email, "Confirm your email",
+                    _emailSender.SendEmail(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
@@ -153,57 +96,18 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
                         return LocalRedirect(returnUrl);
                     }
                 }
-                foreach (var error in result.Errors)
+                foreach (var error in result.Item1.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            else
+            {
+                Console.WriteLine(ModelState.ErrorCount);
+            }
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink)
-        {
-            try
-            {
-                MailMessage message = new MailMessage();
-                SmtpClient smtpClient = new SmtpClient();
-                message.From = new MailAddress("EMAIL HERE");
-                message.To.Add(email);
-                message.Subject = subject;
-                message.IsBodyHtml = true;
-                message.Body = confirmLink;
-
-                smtpClient.Port = 587;
-                smtpClient.Host = "smtp.simply.com";
-
-                smtpClient.EnableSsl = true;
-                smtpClient.UseDefaultCredentials = true;
-                smtpClient.Credentials = new NetworkCredential("USERNAME HERE", "PASSWORD HERE");
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.Send(message);
-                return true;
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-        }
-
-        private UserEntity CreateUser()
-        {
-            try
-            {
-                return Activator.CreateInstance<UserEntity>();
-            }
-            catch
-            {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(UserEntity)}'. " +
-                    $"Ensure that '{nameof(UserEntity)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-            }
         }
 
         private IUserEmailStore<UserEntity> GetEmailStore()

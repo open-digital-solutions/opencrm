@@ -56,9 +56,11 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.RegisterConfirmation
                 return NotFound($"Unable to load user with email '{email}'.");
             }
 
+            Console.WriteLine("ENTRANDO AQUI");
+
             Email = email;
             // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = true;
+            DisplayConfirmAccountLink = true;  
             if (DisplayConfirmAccountLink)
             {
                 var userId = await _userManager.GetUserIdAsync(user);
