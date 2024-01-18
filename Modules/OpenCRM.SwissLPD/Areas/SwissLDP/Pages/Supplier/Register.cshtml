@@ -8,43 +8,52 @@
         <div class="card border-1 rounded-lg p-0">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Register Supplier</h3></div>
             <div class="card-body">
-                <form method="post">
+                <form method="post" class="d-flex flex-column align-items-center justify-content-center">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-floating mb-3">
+                    <div class="w-100 form-floating mb-3">
                         <input asp-for="InputRole.Name" class="form-control" placeholder="Name" />
                         <label asp-for="InputRole.Name" class="control-label"></label>
                         <span asp-validation-for="InputRole.Name" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class="w-100 form-floating mb-3">
                         <input asp-for="InputRole.Address" class="form-control" placeholder="Address"/>
                         <label asp-for="InputRole.Address" class="control-label"></label>
                         <span asp-validation-for="InputRole.Address" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class="w-100 form-floating mb-3">
                         <input asp-for="InputRole.Email" class="form-control" placeholder="Email"/>
                         <label asp-for="InputRole.Email" class="control-label"></label>
                         <span asp-validation-for="InputRole.Email" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class="w-100 form-floating mb-3">
                         <input asp-for="InputRole.Phone" class="form-control" placeholder="Phone"/>
                         <label asp-for="InputRole.Phone" class="control-label"></label>
                         <span asp-validation-for="InputRole.Phone" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class="w-100 form-floating mb-3">
                         <input asp-for="InputRole.Mobile" class="form-control" placeholder="Mobile" />
                         <label asp-for="InputRole.Mobile" class="control-label"></label>
                         <span asp-validation-for="InputRole.Mobile" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class="w-100 form-floating mb-3">
                         <input asp-for="InputRole.CHECode" class="form-control" placeholder="CHE IVA Code" />
                         <label asp-for="InputRole.CHECode" class="control-label"></label>
                         <span asp-validation-for="InputRole.CHECode" class="text-danger"></span>
                     </div>
-                    <div class="mt-4 mb-0">
+                    <div class="w-100 mt-4 mb-0">
                         <div class="d-grid">
                             <input type="submit" value="Register" class="btn btn-primary btn-block" />
                         </div>
                     </div>
+
+                    @if (!Model.IsValidInput)
+                    {
+                        <div class="mt-4">
+                            <p class="text-danger fw-bold">
+                                ! Error: Supplier with code @Model.InputRole.CHECode already exist !
+                            </p>
+                        </div>
+                    }
                 </form>
             </div>
         </div>
