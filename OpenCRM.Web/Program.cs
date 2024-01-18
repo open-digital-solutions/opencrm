@@ -15,7 +15,7 @@ var dataConnectionString = builder.Configuration.GetConnectionString("DBConnecti
 // builder.Services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<OpenCRMDataContext>();
 
 /// Registering OpenCRM Modules.
-builder.Services.AddOpenDHSServices<OpenCRMDataContext>();
+// builder.Services.AddOpenDHSServices<OpenCRMDataContext>();
 builder.Services.AddOpenCRMCoreWeb<OpenCRMDataContext>(dataConnectionString);
 builder.Services.AddOpenCRMFinance<OpenCRMDataContext>();
 builder.Services.AddOpenCRMSwissLPD<OpenCRMDataContext>();
@@ -41,7 +41,7 @@ app.UseRouting();
 // app.UseAuthorization();
 
 /// Using OpenCRM Modules.
-app.UseOpenDHSServices<OpenCRMDataContext>();
+// app.UseOpenDHSServices<OpenCRMDataContext>();
 app.UseOpenCRMCoreWeb<OpenCRMDataContext>();
 
 app.UseOpenCRMFinanceAsync<OpenCRMDataContext>();
