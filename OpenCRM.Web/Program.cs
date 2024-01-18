@@ -8,15 +8,15 @@ using OpenCRM.Core.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DBConnection") ?? throw new InvalidOperationException("Connection string 'DBConnection' not found.");
+var dataConnectionString = builder.Configuration.GetConnectionString("DBConnection") ?? throw new InvalidOperationException("Connection string 'DBConnection' not found.");
 
-builder.Services.AddDbContext<OpenCRMDataContext>(options => options.UseNpgsql(connectionString));
+// builder.Services.AddDbContext<OpenCRMDataContext>(options => options.UseNpgsql(connectionString));
 
-builder.Services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<OpenCRMDataContext>();
+// builder.Services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<OpenCRMDataContext>();
 
 /// Registering OpenCRM Modules.
 builder.Services.AddOpenDHSServices<OpenCRMDataContext>();
-builder.Services.AddOpenCRMCoreWeb<OpenCRMDataContext>();
+builder.Services.AddOpenCRMCoreWeb<OpenCRMDataContext>(dataConnectionString);
 builder.Services.AddOpenCRMFinance<OpenCRMDataContext>();
 builder.Services.AddOpenCRMSwissLPD<OpenCRMDataContext>();
 
@@ -38,11 +38,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+// app.UseAuthorization();
 
 /// Using OpenCRM Modules.
 app.UseOpenDHSServices<OpenCRMDataContext>();
 app.UseOpenCRMCoreWeb<OpenCRMDataContext>();
+
 app.UseOpenCRMFinanceAsync<OpenCRMDataContext>();
 app.UseOpenCRMSwissLPDAsync<OpenCRMDataContext>();
 
