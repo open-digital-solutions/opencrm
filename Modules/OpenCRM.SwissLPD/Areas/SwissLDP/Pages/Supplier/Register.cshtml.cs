@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity.UI.V5.Pages.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using OpenCRM.Core.Web.Areas.Identity.Services;
 using OpenCRM.SwissLPD.Services.SupplierService;
 using OpenCRM.Core.Data;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
 {
@@ -25,21 +27,20 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
 
         private RegisterService _registerService = new RegisterService();
 
-        public RegisterModel(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IUserStore<UserEntity> userStore)
+        public RegisterModel(UserManager<UserEntity> userManager, IUserStore<UserEntity> userStore)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = (IUserEmailStore<UserEntity>)_userStore;
         }
+        
+        public string ValidateError { get; set; } = string.Empty;
 
         [BindProperty]
         public InputRegisterModel InputUser { get; set; }
 
         [BindProperty]
         public RoleData InputRoleData { get; set; } = new RoleData();
-
-        [BindProperty]
-        public bool IsValidInput { get; set; } = true;
 
         public void OnGet()
         {
@@ -60,23 +61,19 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
                     UserExtras = JsonSerializer.Serialize(InputRoleData)
                 };
 
-                if(await _roleService.ValidateUserByCHECode(user, _userManager))
+                Tuple<bool, string> validateResult = await _roleService.ValidateUserByCHECode(user, _userManager);
+                ValidateError = validateResult.Item2;
+
+                if (validateResult.Item1)
                 {
                     var result = await _registerService.RegisterUser(user, _userManager, _userStore, _emailStore);
                  
                     if(result.Item1.Succeeded)
                     {
-                        IsValidInput = true;
                         return Redirect("./Index");
                     }
                 }
-                else
-                {
-                    IsValidInput = false;
-                    return Page();
-                }
             }
-            
             return Page();
         }
     }

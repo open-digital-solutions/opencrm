@@ -56,11 +56,11 @@
                         </div>
                     </div>
 
-                    @if (!Model.IsValidInput)
+                    @if(Model.ValidateError != "")
                     {
                         <div class="mt-4">
                             <p class="text-danger fw-bold">
-                                ! Error: Supplier already exist !
+                                ! Error: @Model.ValidateError
                             </p>
                         </div>
                     }
