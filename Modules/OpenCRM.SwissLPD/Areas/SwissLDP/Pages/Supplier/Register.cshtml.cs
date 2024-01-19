@@ -11,7 +11,6 @@ using OpenCRM.SwissLPD.Services.SupplierService;
 using OpenCRM.Core.Data;
 using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
 {
@@ -20,12 +19,19 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
         private readonly UserManager<UserEntity> _userManager;
 
         private readonly IUserStore<UserEntity> _userStore;
-        
+
         private readonly IUserEmailStore<UserEntity> _emailStore;
 
         private RoleService _roleService = new RoleService();
 
         private RegisterService _registerService = new RegisterService();
+
+        public RegisterModel(UserManager<UserEntity> userManager, IUserStore<UserEntity> userStore)
+        {
+            _userManager = userManager;
+            _userStore = userStore;
+            _emailStore = (IUserEmailStore<UserEntity>)_userStore;
+        }
 
         public string ValidateError { get; set; } = string.Empty;
 
@@ -35,51 +41,13 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
         [BindProperty]
         public RoleData InputRoleData { get; set; } = new RoleData();
 
-        [BindProperty]
-        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
-
-        public RegisterModel(UserManager<UserEntity> userManager, IUserStore<UserEntity> userStore)
-        {
-            _userManager = userManager;
-            _userStore = userStore;
-            _emailStore = (IUserEmailStore<UserEntity>)_userStore;
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "SwissLDP",
-                IsActive = true,
-                Name = "Supplier",
-                Page = "Supplier",
-                Url = "/SwissLDP/Supplier"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "SwissLDP",
-                IsActive = true,
-                Name = "Register Supplier",
-                Page = "Event",
-                Url = "/SwissLDP/Supplier/Register"
-            });
-        }
-
-
         public void OnGet()
         {
         }
 
-        public async Task<IActionResult> OnPostAsync() 
+        public async Task<IActionResult> OnPostAsync()
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 InputRoleData.Role = "Supplier";
 
@@ -98,8 +66,8 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
                 if (validateResult.Item1)
                 {
                     var result = await _registerService.RegisterUser(user, _userManager, _userStore, _emailStore);
-                 
-                    if(result.Item1.Succeeded)
+
+                    if (result.Item1.Succeeded)
                     {
                         return Redirect("./Index");
                     }
