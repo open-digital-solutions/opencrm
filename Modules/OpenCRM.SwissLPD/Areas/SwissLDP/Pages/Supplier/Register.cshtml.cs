@@ -14,8 +14,6 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<UserEntity> _signInManager;
-
         private readonly UserManager<UserEntity> _userManager;
 
         private readonly IUserStore<UserEntity> _userStore;
@@ -27,16 +25,18 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
 
         private RegisterService _registerService = new RegisterService();
 
-        public RegisterModel(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IUserStore<UserEntity> userStore, IUserEmailStore<UserEntity> emailStore)
+        public RegisterModel(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IUserStore<UserEntity> userStore)
         {
-            _signInManager = signInManager;
             _userManager = userManager;
             _userStore = userStore;
-            _emailStore = emailStore;
+            _emailStore = (IUserEmailStore<UserEntity>)_userStore;
         }
 
         [BindProperty]
-        public RoleModel InputRole { get; set; } = new RoleModel();
+        public InputRegisterModel InputUser { get; set; }
+
+        [BindProperty]
+        public RoleData InputRoleData { get; set; } = new RoleData();
 
         [BindProperty]
         public bool IsValidInput { get; set; } = true;
@@ -49,29 +49,26 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
         {
             if(ModelState.IsValid)
             {
+                InputRoleData.Role = "Supplier";
 
-                RoleModel extraData = new RoleModel()
+                var user = new InputRegisterModel()
                 {
-                    CHECode = InputRole.CHECode,
-                    Name = InputRole.Name,
-                    Role = "Supplier",
-                    Address = InputRole.Address,
-                    Phone = InputRole.Phone,
-                    Mobile = InputRole.Mobile
+                    Name = InputUser.Name,
+                    Email = InputUser.Email,
+                    Password = InputUser.Password,
+                    ConfirmPassword = InputUser.ConfirmPassword,
+                    UserExtras = JsonSerializer.Serialize(InputRoleData)
                 };
 
-                var inputData = new InputRegisterModel()
+                if(await _roleService.ValidateUserByCHECode(user, _userManager))
                 {
-                    Email = InputRole.Email,
-                    UserExtras = JsonSerializer.Serialize(extraData)
-                };
-
-                if(await _roleService.ValidateRole(inputData, _userStore))
-                {
-                    //TODO: Registrar el usuarion en la bd
-                    IsValidInput = true;
-                    var result = await _registerService.RegisterUser(inputData, _userManager, _userStore, _emailStore);
-                    return Redirect("./Index");
+                    var result = await _registerService.RegisterUser(user, _userManager, _userStore, _emailStore);
+                 
+                    if(result.Item1.Succeeded)
+                    {
+                        IsValidInput = true;
+                        return Redirect("./Index");
+                    }
                 }
                 else
                 {

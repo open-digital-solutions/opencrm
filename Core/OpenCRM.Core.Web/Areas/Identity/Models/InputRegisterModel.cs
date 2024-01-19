@@ -18,7 +18,6 @@ namespace OpenCRM.Core.Web.Areas.Identity.Models
         [Display(Name = "Name")]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
         [Display(Name = "Last Name")]
         public string Lastname { get; set; } = string.Empty;
 

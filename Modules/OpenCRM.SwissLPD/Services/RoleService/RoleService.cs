@@ -13,32 +13,14 @@ namespace OpenCRM.SwissLPD.Services.SupplierService
 {
     public class RoleService
     {
-
-        public async Task<bool> ValidateRole(InputRegisterModel inputData, IUserStore<UserEntity> userStore)
+        public async Task<bool> ValidateUserByCHECode(InputRegisterModel input, UserManager<UserEntity> _userManager)
         {
-            var user = await userStore.FindByNameAsync(inputData.Email, new CancellationToken());
-
-            //RoleModel extraData = new RoleModel()
-            //{
-            //    CHECode = "CHE-123.456.789 MWST",
-            //    Name = "Sandra",
-            //    Role = "Supplier",
-            //    Address = "Ermita 216",
-            //    Phone = "676",
-            //    Mobile = "7881"
-            //};
-
-            //var userResult = new UserEntity()
-            //{
-            //    UserName = "",
-            //    Email = "sandrahdez@gmail.com", //grettelhernandez@gmail.com
-            //    UserExtras = JsonSerializer.Serialize(extraData)
-            //};
-
+            var user = await _userManager.FindByEmailAsync(input.Email);
+            
             if (user != null)
             {
-                var inputExtras = JsonSerializer.Deserialize<RoleModel>(inputData.UserExtras);
-                var userExtras = JsonSerializer.Deserialize<RoleModel>(user.UserExtras);
+                var inputExtras = JsonSerializer.Deserialize<RoleData>(input.UserExtras);
+                var userExtras = JsonSerializer.Deserialize<RoleData>(user.UserExtras);
 
                 if (inputExtras?.CHECode == userExtras?.CHECode)
                 {

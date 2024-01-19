@@ -40,7 +40,7 @@ namespace OpenCRM.Core.Web.Areas.Identity.Services
             }
             //Serialize Later the real Extra Properties!!!
             var extra = new { Extra1 = "Extra1", Extra2 = "Extra2" };
-            var extraJson = JsonSerializer.Serialize(extra);
+            var extraJson = Input.UserExtras == null? JsonSerializer.Serialize(extra) : Input.UserExtras;
             user.UserExtras = extraJson;
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
