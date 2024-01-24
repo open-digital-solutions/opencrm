@@ -1,3 +1,7 @@
 ﻿.opc-breadcrumb {
-    background-color: burlywood
+    height: 1.5rem;
+}
+
+.opc-breadcrumb a {
+    text-decoration: none;
 }

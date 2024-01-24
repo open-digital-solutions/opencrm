@@ -39,10 +39,14 @@ button.accept-policy {
   line-height: inherit;
 }
 
+.btn-menu {
+    border: 1px solid rgba(0,0,0 0.15);
+}
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
 }
