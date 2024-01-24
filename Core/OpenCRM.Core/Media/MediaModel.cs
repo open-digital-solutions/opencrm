@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace OpenDHS.Shared
+namespace OpenCRM.Core
 {
     public class MediaModel
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OpenDHS.Shared.Data
+namespace OpenCRM.Core.Data
 {
 
     public interface IHasTimestamps

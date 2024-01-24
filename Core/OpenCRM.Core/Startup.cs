@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using OpenDHS.Shared.Data;
-using OpenDHS.Shared.Extensions;
-using OpenDHS.Shared.QRCode;
 using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Extensions;
+using OpenCRM.Core.QRCode;
 
-namespace OpenDHS.Shared
+namespace OpenCRM.Core
 {
     public static class StartupModuleExtensions
     {
@@ -21,6 +18,7 @@ namespace OpenDHS.Shared
 
             return services;
         }
+
             public static IApplicationBuilder UseOpenDHSServices<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
         {
             if (app == null)

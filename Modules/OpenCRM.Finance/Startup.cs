@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using OpenDHS.Shared.Extensions;
-using OpenDHS.Shared.QRCode;
-using OpenDHS.Shared;
+using OpenCRM.Core.Extensions;
+using OpenCRM.Core.QRCode;
+using OpenCRM.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

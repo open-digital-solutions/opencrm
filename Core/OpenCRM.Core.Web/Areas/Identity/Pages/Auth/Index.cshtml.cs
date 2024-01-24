@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Web.Areas.Identity.Models;
-using OpenDHS.Shared.Data;
+using OpenCRM.Core.Data;
 using System.ComponentModel.DataAnnotations;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.Login

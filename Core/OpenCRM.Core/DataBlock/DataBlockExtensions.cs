@@ -1,4 +1,4 @@
-﻿using OpenDHS.Shared.Data;
+﻿using OpenCRM.Core.Data;
 using System.Text.Json;
 
 namespace OpenCRM.Core.DataBlock

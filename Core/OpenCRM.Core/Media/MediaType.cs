@@ -1,4 +1,4 @@
-﻿namespace OpenDHS.Shared
+﻿namespace OpenCRM.Core
 {
     public enum MediaType
     {

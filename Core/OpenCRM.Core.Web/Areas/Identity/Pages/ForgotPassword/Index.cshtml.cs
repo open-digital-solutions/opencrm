@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using OpenDHS.Shared.Data;
+using OpenCRM.Core.Data;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Text;

@@ -1,8 +1,8 @@
-﻿using OpenDHS.Shared.Data;
+﻿using OpenCRM.Core.Data;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace OpenDHS.Shared
+namespace OpenCRM.Core
 {
     public class MediaEntity : BaseEntity
     {

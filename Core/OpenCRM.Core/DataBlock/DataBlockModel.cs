@@ -1,4 +1,4 @@
-﻿using OpenDHS.Shared.Data;
+﻿using OpenCRM.Core.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

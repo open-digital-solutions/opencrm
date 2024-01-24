@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using OpenDHS.Shared.Data;
+using OpenCRM.Core.Data;
 
 
-namespace OpenDHS.Shared
+namespace OpenCRM.Core
 {
     public class DataContext
         : IdentityDbContext<UserEntity, RoleEntity, Guid,

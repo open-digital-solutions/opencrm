@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace OpenDHS.Shared.Data
+namespace OpenCRM.Core.Data
 {
     public class UserClaimEntity : IdentityUserClaim<Guid>, IHasTimestamps
     {

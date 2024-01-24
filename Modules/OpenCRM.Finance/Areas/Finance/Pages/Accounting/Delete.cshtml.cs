@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Finance.Services;
-using OpenDHS.Shared.Data;
+using OpenCRM.Core.Data;
 
 namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
 {

@@ -1,7 +1,7 @@
 ﻿using QRCoder;
 using System.Drawing;
 
-namespace OpenDHS.Shared.QRCode
+namespace OpenCRM.Core.QRCode
 {
     public class QRCodeService 
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenDHS.Shared.Data
+namespace OpenCRM.Core.Data
 {
     public class HistoryEntity : BaseEntity
     {

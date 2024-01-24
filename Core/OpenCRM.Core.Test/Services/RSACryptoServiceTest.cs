@@ -1,6 +1,6 @@
-using OpenDHS.Shared.Services;
+using OpenCRM.Core.Services;
 
-namespace OpenDHS.Shared.Test.Services
+namespace OpenCRM.Core.Test.Services
 {
     [TestClass]
     public class RSACryptoServiceTest

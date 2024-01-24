@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using OpenCRM.Core.Web.Areas.Identity.Models;
-using OpenDHS.Shared.Data;
+using OpenCRM.Core.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;

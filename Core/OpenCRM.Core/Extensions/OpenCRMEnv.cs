@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenDHS.Shared.Extensions
+namespace OpenCRM.Core.Extensions
 {
     public static class OpenCRMEnv
     {

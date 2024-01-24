@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using OpenCRM.Finance;
 using OpenCRM.SwissLPD;
 using OpenCRM.Web.Data;
-using OpenDHS.Shared;
-using OpenDHS.Shared.Data;
 using OpenCRM.Core.Web;
 
 var builder = WebApplication.CreateBuilder(args);

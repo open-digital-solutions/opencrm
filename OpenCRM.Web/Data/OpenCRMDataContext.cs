@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OpenDHS.Shared;
+using OpenCRM.Core;
 
 namespace OpenCRM.Web.Data;
 

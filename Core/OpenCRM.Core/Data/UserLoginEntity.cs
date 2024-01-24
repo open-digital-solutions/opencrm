@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace OpenDHS.Shared.Data
+namespace OpenCRM.Core.Data
 {
     public class UserLoginEntity : IdentityUserLogin<Guid>, IHasTimestamps
     {

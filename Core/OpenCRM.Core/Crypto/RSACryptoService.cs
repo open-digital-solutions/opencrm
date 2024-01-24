@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace OpenDHS.Shared.Services
+namespace OpenCRM.Core.Services
 {
 
     public class RSACryptoService

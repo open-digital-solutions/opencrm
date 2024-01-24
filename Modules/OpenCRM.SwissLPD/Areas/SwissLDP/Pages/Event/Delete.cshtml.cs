@@ -5,7 +5,7 @@ using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Pages;
 using OpenCRM.SwissLPD.Services.EventService;
-using OpenDHS.Shared.Data;
+using OpenCRM.Core.Data;
 
 namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
 {

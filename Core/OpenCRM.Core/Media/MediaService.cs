@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using OpenDHS.Shared.Extensions;
+using OpenCRM.Core.Extensions;
 
-namespace OpenDHS.Shared
+namespace OpenCRM.Core
 {
     public class MediaService<TDBContext> : IMediaService where TDBContext : DataContext
     {

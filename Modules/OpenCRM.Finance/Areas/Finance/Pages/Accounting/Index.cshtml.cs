@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Finance.Services;
-using OpenDHS.Shared;
+using OpenCRM.Core;
 
 namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
 {

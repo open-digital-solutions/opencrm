@@ -1,5 +1,5 @@
 ﻿using OpenCRM.Core.DataBlock;
-using OpenDHS.Shared;
+using OpenCRM.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
