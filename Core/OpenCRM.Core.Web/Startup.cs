@@ -27,6 +27,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IMediaService, MediaService<TDBContext>>();
             services.AddScoped<IDataBlockService, DataBlockService<TDBContext>>();
             services.AddScoped<IEmailNotificationService, EmailNotificationService>();
+            services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
             services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TDBContext>();
             return services;
         }

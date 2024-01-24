@@ -39,12 +39,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages
                 IsActive = true,
                 Name = "Languages",
                 Page = "",
-                Url = "/Manage/Languages/Index"
+                Url = "/Manage/Languages"
             };
 
             Links.Add(link2);
 
-            var link3 = new BreadCrumbLinkModel()
+            /*var link3 = new BreadCrumbLinkModel()
             {
                 Area = "",
                 IsActive = true,
@@ -53,7 +53,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages
                 Url = "/Manage/Translations/Index"
             };
 
-            Links.Add(link3);
+            Links.Add(link3);*/
         }
     }
 }
