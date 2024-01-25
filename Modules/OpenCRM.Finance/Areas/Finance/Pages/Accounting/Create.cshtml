@@ -2,6 +2,7 @@
 @model OpenCRM.Finance.Areas.Finance.Pages.Accounting.CreateModel
 @{
     ViewData["Title"] = "Create";
+    Layout = "_CoreLayout";
 }
 
 <div class="container-fluid">
@@ -11,12 +12,12 @@
             <div class="card-body">
                 <form method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-floating mb-3">                          
+                    <div class="form-floating mb-3">
                         <select asp-for="Model.AccountingType" class="form-select">
-                            <option selected>Select a card</option>                            
+                            <option selected>Select a card</option>
                             <option value="CREDIT">CREDIT</option>
                             <option value="DEBIT">DEBIT</option>
-                        </select>                        
+                        </select>
                         <span asp-validation-for="Model.AccountingType" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
@@ -35,9 +36,6 @@
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="card-footer text-center py-3">
-                <a asp-page="Index">Back to List</a>
             </div>
         </div>
     </div>
