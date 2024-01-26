@@ -1,5 +1,57 @@
-﻿<h3>Navbar</h3>
+﻿
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-white border-bottom box-shadow mb-3z">
+    <div class="container-fluid d-flex align-items-center">
+        <div class="d-flex align-items-center text-center">
+            <a class="navbar-brand" href="/Index">
+                <img src="_content/OpenCRM.Core.Web/images/logo.png" alt="OpenDHS" width="64" height="32">
+            </a>
+            <div class="navbar-collapse collapse d-sm-inline-flex">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown">
+                        <ModuleDropdown />
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <BreadCrumb Links="@Links"/>
+
+        <div class="d-flex align-items-center text-center">
+            <div class="navbar-collapse collapse d-sm-inline-flex">
+                user@@email.com
+            </div>
+            <div class="navbar-collapse d-sm-inline-flex">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown p-1">
+                        <button class="btn btn-outline-light text-center ms-2" id="navbarDropdown" role="button" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false" type="button">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end p-2 mt-2" aria-labelledby="navbarDropdown">
+                            <li class="d-flex justify-content-center m-2">
+                                <div class="d-flex justify-content-center align-items-center" style="width:50px; height:50px; border: 1px solid gray; border-radius:50px; background-color:transparent;">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                            </li>
+
+                            <li class="dropdown-item">Name Lastname</li>
+                            <li class="dropdown-item">user@@email.com</li>
+                            
+                            <li class="dropstart">
+                                <ModuleDropdown />
+                            </li>
+                            
+                            <li class="dropdown-item">Edit Profile</li>
+                            <li class="dropdown-item">Logout</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
 
 @code {
-
+    [Parameter]
+    public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 }
