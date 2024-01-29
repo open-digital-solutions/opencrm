@@ -49,7 +49,7 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
                 Area = "Finance",
                 IsActive = true,
                 Name = "Accounting List",
-                Page = "Accounting",
+                Page = "",
                 Url = "/Finance"
             });
         }

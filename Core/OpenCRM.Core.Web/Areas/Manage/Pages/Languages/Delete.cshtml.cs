@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Pages;
-using OpenCRM.Core.Web.Services;
+using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Data;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages

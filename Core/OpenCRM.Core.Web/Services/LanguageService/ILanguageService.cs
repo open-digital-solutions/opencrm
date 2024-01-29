@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCRM.Core.Web.Services
+namespace OpenCRM.Core.Web.Services.LanguageService
 {
     public interface ILanguageService
     {

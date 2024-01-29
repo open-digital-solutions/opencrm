@@ -17,6 +17,7 @@ namespace OpenCRM.Core
             ChangeTracker.StateChanged += ChangeTracker_StateChanged;
             ChangeTracker.Tracked += ChangeTracker_StateChanged;
         }
+        
 
         public DataContext(DbSet<LanguageEntity> languagess)
         {

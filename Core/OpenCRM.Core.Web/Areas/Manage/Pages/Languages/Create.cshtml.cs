@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Web;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Data;
-using OpenCRM.Core.Web.Services;
+using OpenCRM.Core.Web.Services.LanguageService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {

@@ -9,7 +9,7 @@ using OpenCRM.Core.Data;
 using System.Text.Json;
 
 
-namespace OpenCRM.Core.Web.Services
+namespace OpenCRM.Core.Web.Services.LanguageService
 {
     public static class LanguageExtensions
     {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core;
 using OpenCRM.Core.Data;
