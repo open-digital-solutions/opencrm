@@ -14,10 +14,11 @@ using System.Net;
 using OpenCRM.Core.Web.Areas.Identity.Models;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Areas.Identity.Services;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CorePageModel
     {
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly UserManager<UserEntity> _userManager;

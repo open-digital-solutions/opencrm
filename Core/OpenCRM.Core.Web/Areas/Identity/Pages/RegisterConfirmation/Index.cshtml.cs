@@ -11,11 +11,12 @@ using System.Text.Encodings.Web;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.RegisterConfirmation
 {
     [AllowAnonymous]
-    public class IndexModel : PageModel
+    public class IndexModel : CorePageModel
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly IEmailSender _sender;

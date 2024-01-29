@@ -1,15 +1,14 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using OpenCRM.Core.Web.Areas.Identity.Models;
 using OpenCRM.Core.Data;
-using System.ComponentModel.DataAnnotations;
+using OpenCRM.Core.Web.Areas.Identity.Models;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.Login
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CorePageModel
     {
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly ILogger<IndexModel> _logger;

@@ -1,19 +1,13 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Data;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
+using OpenCRM.Core.Web.Models;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.ConfirmEmail
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CorePageModel
     {
         private readonly UserManager<UserEntity> _userManager;
 
