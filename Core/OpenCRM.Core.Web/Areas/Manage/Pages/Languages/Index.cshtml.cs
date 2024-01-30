@@ -1,15 +1,13 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Table;
-using OpenCRM.Core.Data;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CorePageModel
     {
         private readonly ILanguageService _languageService;
         
@@ -17,9 +15,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         [BindProperty]
         public List<LanguageModel<LanguageEntity>> LanguageList { get; set; } = new List<LanguageModel<LanguageEntity>>();
-
-        [BindProperty]
-        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [BindProperty]
         public string Title { get; set; } = "Languages";

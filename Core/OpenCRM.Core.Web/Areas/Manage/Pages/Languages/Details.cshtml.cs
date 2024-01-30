@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Data;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : CorePageModel
     {
         private readonly ILanguageService _languageService;
 
