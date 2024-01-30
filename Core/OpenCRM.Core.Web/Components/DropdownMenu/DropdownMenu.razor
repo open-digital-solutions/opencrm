@@ -1,0 +1,25 @@
+﻿
+<a class="dropdown-item dropdown-toggle" id="navbarDropdown" role="button" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+    @Menu.Name
+</a>
+<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+    @foreach (var item in Menu.Items)
+    {
+        if (item.Items.Count() != 0)
+        {
+            <li class="dropdown-item dropend">
+                <DropdownMenu Menu="@item" />
+            </li>
+        }
+        else
+        {
+            <li><a class="dropdown-item" href="@item.Url">@item.Name</a></li>
+        }
+    }
+</ul>
+
+@code {
+
+    [Parameter]
+    public DropdownModel Menu { get; set; } = new DropdownModel();
+}

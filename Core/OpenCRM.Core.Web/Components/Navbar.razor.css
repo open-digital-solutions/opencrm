@@ -1,11 +1,10 @@
 ﻿
-
 .dropstart {
     display: none;
 }
 
 @media(max-width: 575px) {
     .dropstart {
-        display:block;
+        display: block;
     }
 }
