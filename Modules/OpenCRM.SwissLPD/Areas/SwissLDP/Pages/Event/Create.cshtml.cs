@@ -13,18 +13,48 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
     {
 		private readonly IEventService _eventService;
 
-		public CreateModel(IEventService eventService)
+
+        [BindProperty]
+        public EventModel Model { get; set; } = default!;
+
+        [BindProperty]
+        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
+
+        public CreateModel(IEventService eventService)
 		{
 			_eventService = eventService;
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "",
+                IsActive = true,
+                Name = "Home",
+                Page = "",
+                Url = "/"
+            });
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "SwissLDP",
+                IsActive = true,
+                Name = "Event List",
+                Page = "Event",
+                Url = "/SwissLDP"
+            });
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "SwissLDP",
+                IsActive = true,
+                Name = "Create Event",
+                Page = "Event",
+                Url = "/SwissLDP/Event/Create"
+            });
         }
 
 		public IActionResult OnGet()
 		{
 			return Page();
 		}
-
-		[BindProperty]
-		public EventModel Model { get; set; } = default!;
 
         public IActionResult OnPost()
 		{

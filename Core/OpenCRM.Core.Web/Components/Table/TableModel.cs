@@ -10,31 +10,34 @@ namespace OpenCRM.Core.Web.Components.Table
 {
     public class TableModel
     {
-        private readonly string _title;
-        private readonly string _page;
+        private string _title;
+        private string _page;
+        private List<string> _headers;
+        private List<TableRow<TRowData>> _rows;
 
-        public TableModel(string title, string tablePage) 
+        public TableModel(string title="", string tablePage="") 
         { 
             _title = title;
             _page = tablePage;
+            _headers = new List<string>();
+            _rows = new List<TableRow<TRowData>>();
+
         }
 
-        public string Title {
-            get
-            {
-                return _title;
-            }
+        public TableModel(string title, string tablePage, List<string> headers, List<TableRow<TRowData>> rows)
+        {
+            _title = title;
+            _page = tablePage;
+            _headers = headers;
+            _rows = rows;
         }
 
-        public string TablePage { 
-            get
-            {
-                return _page;
-            } 
-        }
+        public string Title { get { return _title; } set { _title = value; } }
 
-        public List<string> TableHeaders { get; set; } = new List<string>();
+        public string Page { get { return _page; } set {  _page = value; } }
 
-        public List<TableRow<TRowData>> TableRows { get; set; } = new List<TableRow<TRowData>>();
+        public List<string> Headers { get { return _headers; } set { _headers = value; } }
+
+        public List<TableRow<TRowData>> Rows { get { return _rows; } set { _rows = value; } }
     }
 }

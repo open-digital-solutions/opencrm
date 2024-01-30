@@ -3,10 +3,10 @@
     <div class="card-header d-flex justify-content-between">
         <div>
             <i class="fas fa-table me-1"></i>
-            @Title
+            @TableData.Title
         </div>
         <div>
-            <ButtonLink Label="Create new" Url="@(Page + "/Create")" Style="btn btn-success" />
+            <ButtonLink Label="Create new" Url="@(TableData.Page + "/Create")" Style="btn btn-success"/>
         </div>
     </div>
     <div class="card-body">
@@ -14,7 +14,7 @@
             <table id="datatablesSimple" class="table">
              <thead>
                 <tr>
-                    @foreach(var item in Headers)
+                    @foreach (var item in TableData.Headers)
                     {
                         <th> 
                             @item
@@ -26,7 +26,7 @@
                 </tr>
              </thead>
             <tbody>
-                @foreach(var row in Rows)
+                @foreach (var row in TableData.Rows)
                 {
                     <tr>
                         @foreach(var item in row.Datas)
@@ -34,7 +34,7 @@
                             @if (item.IsButton)
                             {
                                 <td>
-                                    <ButtonLink Label="@item.Label" Url="@(Page + "/" + item.Label + "?id=" + row.ID)" Icon="@item.IconName" />
+                                    <ButtonLink Label="@item.Label" Url="@(TableData.Page + "/" + item.Label + "?id=" + row.ID)" Icon="@item.IconName" />
                                 </td>
                             }   
                             else
@@ -54,14 +54,5 @@
 
 @code {
     [Parameter]
-    public string Title { get; set; } = string.Empty;
-
-    [Parameter]
-    public string Page { get; set; } = string.Empty;
-
-    [Parameter]
-    public List<string> Headers { get; set; } = new List<string>();
-
-    [Parameter]
-    public List<TableRow<TRowData>> Rows { get; set; } = new List<TableRow<TRowData>>();
+    public TableModel TableData { get; set; } = new TableModel();
 }

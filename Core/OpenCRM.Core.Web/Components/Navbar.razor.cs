@@ -29,7 +29,10 @@ namespace OpenCRM.Core.Web.Components
                 new DropdownModel("SwissLDP", "/SwissLDP", new List<DropdownModel>()
                 {
                     new DropdownModel("Event", "/SwissLDP/Event"),
-                    new DropdownModel("Supplier", "/SwissLDP/Supplier")
+                    new DropdownModel("Supplier", "/SwissLDP/Supplier", new List<DropdownModel>()
+                    {
+                        new DropdownModel("Register", "/SwissLDP/Supplier/Register")
+                    })
                 }),
 
                 new DropdownModel("Finance", "/Finance", new List<DropdownModel>()

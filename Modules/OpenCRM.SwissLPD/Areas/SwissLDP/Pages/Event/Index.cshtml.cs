@@ -28,7 +28,6 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
         [BindProperty]
         public TableModel Table { get; set; } = new TableModel("Events", "Event");
 
-
         public IndexModel(IEventService eventService)
         {
             _eventService = eventService;
@@ -58,8 +57,9 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             if (events != null)
             {
                 EventList = events;
-				_tableService.BuildTable(EventList, Table.TableHeaders, Table.TableRows);
-			}
+				Table.Headers = _tableService.BuildTable(EventList).Item1;
+                Table.Rows = _tableService.BuildTable(EventList).Item2;
+            }
         }
     }
 }
