@@ -17,7 +17,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
     {
         private readonly IEventService _eventService;
 
-		private TableService<EventModel> _tableService { get; set; } = new TableService<EventModel>();
+		private TableService<EventModel> _tableService;
 
 		[BindProperty]
         public List<DataBlockModel<EventModel>> EventList { get; set; } = new List<DataBlockModel<EventModel>>();
@@ -31,6 +31,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
         public IndexModel(IEventService eventService)
         {
             _eventService = eventService;
+            _tableService = new TableService<EventModel>();
 
             Links.Add(new BreadCrumbLinkModel()
             {
@@ -57,7 +58,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             if (events != null)
             {
                 EventList = events;
-				Table.Headers = _tableService.BuildTable(EventList).Item1;
+                Table.Headers = _tableService.BuildTable(EventList).Item1;
                 Table.Rows = _tableService.BuildTable(EventList).Item2;
             }
         }
