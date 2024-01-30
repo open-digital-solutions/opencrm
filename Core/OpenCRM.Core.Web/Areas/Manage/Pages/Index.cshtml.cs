@@ -11,18 +11,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages
 
         public void OnGet()
         {
-            var link = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            };
-
-            Links.Add(link);
-
-            var link22 = new BreadCrumbLinkModel()
+            var linkManageHome = new BreadCrumbLinkModel()
             {
                 Area = "",
                 IsActive = true,
@@ -31,9 +20,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages
                 Url = "/Manage/Index"
             };
 
-            Links.Add(link22);
+            Links.Add(linkManageHome);
 
-            var link2 = new BreadCrumbLinkModel()
+            var linkLanguages = new BreadCrumbLinkModel()
             {
                 Area = "",
                 IsActive = true,
@@ -42,18 +31,18 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages
                 Url = "/Manage/Languages"
             };
 
-            Links.Add(link2);
+            Links.Add(linkLanguages);
 
-            /*var link3 = new BreadCrumbLinkModel()
+            var linkTranslations = new BreadCrumbLinkModel()
             {
                 Area = "",
                 IsActive = true,
                 Name = "Translations",
                 Page = "",
-                Url = "/Manage/Translations/Index"
+                Url = "/Manage/Translations"
             };
 
-            Links.Add(link3);*/
+            Links.Add(linkTranslations);
         }
     }
 }
