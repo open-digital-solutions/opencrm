@@ -13,7 +13,6 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
     {
 		private readonly IEventService _eventService;
 
-
         [BindProperty]
         public EventModel Model { get; set; } = default!;
 
@@ -23,6 +22,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
         public CreateModel(IEventService eventService)
 		{
 			_eventService = eventService;
+
             Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "",
