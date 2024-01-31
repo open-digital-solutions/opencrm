@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Table;
@@ -17,17 +18,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         public List<LanguageModel<LanguageEntity>> LanguageList { get; set; } = new List<LanguageModel<LanguageEntity>>();
 
         [BindProperty]
-        public string Title { get; set; } = "Languages";
-
-        [BindProperty]
-        public string TablePage { get; set; } = "Languages";
-
-        [BindProperty]
-        public List<string> TableHeaders { get; set; } = new List<string>();
-
-        [BindProperty]
-        public List<TableRow<TRowData>> TableRows { get; set; } = new List<TableRow<TRowData>>();
-
+        public TableModel Table { get; set; } = new TableModel("Languages", "Languages");
 
         public IndexModel(ILanguageService languageService)
         { 
@@ -73,8 +64,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             
             var result = _languageService.GetLanguageListAsync<LanguageEntity>();
             var response = result.Select(f => new DataBlockModel<LanguageModel<LanguageEntity>> { Data = f, ID = f.ID , Description = f.Name, Name = f.Code , Type = "" }).ToList();
-            _tableService.BuildTable(response, TableHeaders, TableRows);
-
+            
+            var tableResult = _tableService.BuildTable(response);
+            Table.Headers = tableResult.Item1;
+            Table.Rows = tableResult.Item2;
         }
     }
 }

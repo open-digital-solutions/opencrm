@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Table;
 using OpenCRM.Finance.Services;
@@ -51,7 +52,10 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
             if (acountings != null)
             {
                 AccountingList = acountings;
-                _tableService.BuildTable(AccountingList, TableHeaders, TableRows);
+                
+                var result = _tableService.BuildTable(AccountingList);
+                Table.Headers = result.Item1;
+                Table.Rows = result.Item2;
             }
         }
     }
