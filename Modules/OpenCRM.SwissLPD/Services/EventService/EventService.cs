@@ -1,4 +1,4 @@
-﻿using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.DataBlock;
 using OpenCRM.Core;
 using System;
 using System.Collections.Generic;
