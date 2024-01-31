@@ -1,19 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using OpenCRM.Core.DataBlock;
-using OpenCRM.Core.Web.Services.LanguageService;
-using OpenCRM.Core.Web.Services;
-using OpenCRM.Core;
 using OpenCRM.Core.Data;
+using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.QRCode;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenCRM.Core.Web.Services;
+using OpenCRM.Core.Web.Services.LanguageService;
 
 namespace OpenCRM.Core.Web
 {
