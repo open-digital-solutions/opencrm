@@ -58,8 +58,10 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             if (events != null)
             {
                 EventList = events;
-                Table.Headers = _tableService.BuildTable(EventList).Item1;
-                Table.Rows = _tableService.BuildTable(EventList).Item2;
+
+                var result = _tableService.BuildTable(EventList);
+                Table.Headers = result.Item1;
+                Table.Rows = result.Item2;
             }
         }
     }
