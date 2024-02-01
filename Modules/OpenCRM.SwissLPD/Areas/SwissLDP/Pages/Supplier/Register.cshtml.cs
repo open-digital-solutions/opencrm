@@ -1,11 +1,18 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity.UI.V5.Pages.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.Data;
+using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Web.Areas.Identity.Models;
 using OpenCRM.Core.Web.Areas.Identity.Services;
 using OpenCRM.SwissLPD.Services.SupplierService;
+using OpenCRM.Core.Data;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using OpenCRM.Core.Web.Models;
+using System.Xml.Linq;
 
 namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
 {
@@ -26,6 +33,33 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = (IUserEmailStore<UserEntity>)_userStore;
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "",
+                IsActive = true,
+                Name = "Home",
+                Page = "",
+                Url = "/"
+            });
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "SwissLDP",
+                IsActive = true,
+                Name = "Supplier",
+                Page = "Supplier",
+                Url = "/SwissLDP/Supplier"
+            });
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "SwissLDP",
+                IsActive = true,
+                Name = "Register",
+                Page = "Event",
+                Url = "/SwissLDP/Supplier/Register"
+            });
         }
 
         public string ValidateError { get; set; } = string.Empty;
@@ -35,6 +69,9 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
 
         [BindProperty]
         public RoleData InputRoleData { get; set; } = new RoleData();
+
+        [BindProperty]
+        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         public void OnGet()
         {

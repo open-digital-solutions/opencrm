@@ -11,6 +11,8 @@ namespace OpenCRM.Core.Web.Components
 {
     public partial class Navbar : ComponentBase
     {
+        public DropdownModel DropwdownMenuActive { get; set; } = new DropdownModel();
+
         [Parameter]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
@@ -41,5 +43,20 @@ namespace OpenCRM.Core.Web.Components
                 }),
             }
         };
+
+        [Parameter]
+        public DropdownModel SwissLDPModules { get; set; } = new DropdownModel()
+        {
+            Name = "SwissLDP",
+            Items = new List<DropdownModel>()
+            {
+                new DropdownModel("Event", "/SwissLDP/Event"),
+                new DropdownModel("Supplier", "/SwissLDP/Supplier", new List<DropdownModel>()
+                {
+                    new DropdownModel("Register", "/SwissLDP/Supplier/Register")
+                })
+            }
+        };
+        
     }
 }

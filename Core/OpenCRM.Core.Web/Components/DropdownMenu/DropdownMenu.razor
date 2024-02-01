@@ -7,7 +7,7 @@
     {
         if (item.Items.Count() != 0)
         {
-            <li class="dropdown-item dropend">
+            <li class="dropdown-item dropend menu-item @item.Name">
                 <DropdownMenu Menu="@item" />
             </li>
         }
@@ -22,4 +22,7 @@
 
     [Parameter]
     public DropdownModel Menu { get; set; } = new DropdownModel();
+
 }
+
+ @*onclick="selectMenuItem(event, @Menu.Name)"*@

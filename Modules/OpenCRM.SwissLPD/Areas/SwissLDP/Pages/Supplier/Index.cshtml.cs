@@ -28,7 +28,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
                 Area = "SwissLDP",
                 IsActive = true,
                 Name = "Supplier",
-                Page = "Event",
+                Page = "Supplier",
                 Url = "/SwissLDP/Supplier"
             });
         }
