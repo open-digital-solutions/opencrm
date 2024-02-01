@@ -12,10 +12,13 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
     {
         private readonly ILanguageService _languageService;
         
-        private TableService<LanguageModel<LanguageEntity>> _tableService { get; set; } = new TableService<LanguageModel<LanguageEntity>>();
+        private TableService<LanguageModel<LanguageEntity>> _tableService;
 
         [BindProperty]
         public List<LanguageModel<LanguageEntity>> LanguageList { get; set; } = new List<LanguageModel<LanguageEntity>>();
+
+        [BindProperty]
+        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [BindProperty]
         public TableModel Table { get; set; } = new TableModel("Languages", "Languages");
@@ -24,39 +27,25 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         { 
         
             _languageService = languageService;
+            _tableService = new TableService<LanguageModel<LanguageEntity>>();
 
-            var link = new BreadCrumbLinkModel()
+            Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "",
                 IsActive = true,
-                Name = "Home",
+                Name = "Home ...",
                 Page = "",
                 Url = "/"
-            };
+            });
 
-            Links.Add(link);
-
-            var link2 = new BreadCrumbLinkModel()
+            Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
+                Area = "Manage",
                 IsActive = true,
-                Name = "Languages",
-                Page = "",
-                Url = "/Manage/Languages"
-            };
-
-            Links.Add(link2);
-
-           /* var link3 = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Translations",
-                Page = "",
-                Url = "/Manage/Translations/Index"
-            };
-
-            Links.Add(link3);*/
+                Name = "Languages List",
+                Page = "Languages",
+                Url = "/Manage"
+            });            
         }
 
         public  void OnGet()

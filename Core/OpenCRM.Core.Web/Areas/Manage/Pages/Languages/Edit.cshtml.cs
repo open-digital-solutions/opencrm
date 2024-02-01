@@ -9,14 +9,36 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
     public class EditModel : CorePageModel
     {       
         private readonly ILanguageService _languageService;
-        public EditModel(ILanguageService languageService)
-        {
-            _languageService = languageService;
-        }
 
         [BindProperty]
         public LanguageModel<LanguageEntity> Language { get; set; } = default!;
 
+        [BindProperty]
+        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
+
+        public EditModel(ILanguageService languageService)
+        {
+            _languageService = languageService;
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "",
+                IsActive = true,
+                Name = "Home",
+                Page = "",
+                Url = "/"
+            });
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "Manage",
+                IsActive = true,
+                Name = "Languages List",
+                Page = "Languages",
+                Url = "/Manage"
+            });
+        }
+        
         public async Task<IActionResult> OnGet(Guid id)
         {
             var languageModel = await _languageService.GetLanguageAsync<LanguageEntity>(id);

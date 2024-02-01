@@ -9,13 +9,35 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
     {
         private readonly ILanguageService _languageService;
 
+        [BindProperty]
+        public LanguageModel<LanguageEntity> Language { get; set; } = default!;
+
+        [BindProperty]
+        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
+
+
         public DeleteModel(ILanguageService languageService)
         {
             _languageService = languageService;
-        }
 
-        [BindProperty]
-        public LanguageModel<LanguageEntity> Language { get; set; } = default!;
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "",
+                IsActive = true,
+                Name = "Home",
+                Page = "",
+                Url = "/"
+            });
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "Manage",
+                IsActive = true,
+                Name = "Language List",
+                Page = "Language",
+                Url = "/Manage"
+            });
+        }       
 
         public async Task<IActionResult> OnGet(Guid id)
         {            
