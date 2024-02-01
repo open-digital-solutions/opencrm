@@ -1,0 +1,42 @@
+﻿@page
+@model OpenCRM.Core.Web.Areas.Manage.Pages.Translations.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_CoreLayout";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="card border-1 rounded-lg p-0">
+            <div class="card-header"><h3 class="font-weight-light my-4 text-center">Details</h3></div>
+            <div class="card-body">
+                <form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>                   
+                    <div class="form-floating mb-3">
+                        <input asp-for="Translation.ID" class="form-control" readonly />
+                        <label asp-for="Translation.ID" class="control-label"></label>
+                        <span asp-validation-for="Translation.ID" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Translation.Key" class="form-control" readonly />
+                        <label asp-for="Translation.Key" class="control-label"></label>
+                        <span asp-validation-for="Translation.Key" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Translation.LanguageId" class="form-control" readonly />
+                        <label asp-for="Translation.LanguageId" class="control-label"></label>
+                        <span asp-validation-for="Translation.LanguageId" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Translation.Translation" class="form-control" readonly />
+                        <label asp-for="Translation.Translation" class="control-label"></label>
+                        <span asp-validation-for="Translation.Translation" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <a asp-page="./Index" class="btn btn-primary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

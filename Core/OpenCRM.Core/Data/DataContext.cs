@@ -18,10 +18,14 @@ namespace OpenCRM.Core
             ChangeTracker.Tracked += ChangeTracker_StateChanged;
         }
         
-
         public DataContext(DbSet<LanguageEntity> languagess)
         {
             Languagess = languagess;
+        }
+
+        public DataContext(DbSet<TranslationEntity> translationss)
+        {
+            Translationss = translationss;
         }
 
         private void ChangeTracker_StateChanged(object? sender, EntityEntryEventArgs e)
@@ -80,6 +84,7 @@ namespace OpenCRM.Core
         public DbSet<HistoryEntity> History { get; set; }
         public DbSet<DataBlockEntity> DataBlocks { get; set; }
         public DbSet<LanguageEntity> Languagess { get; set; }
+        public DbSet<TranslationEntity> Translationss { get; set; }
         public DbSet<DataContainerEntity> DataContainers { get; set; }
 
     }

@@ -41,7 +41,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Create Languages",
+                Name = "Create Language",
                 Page = "Languages",
                 Url = "/Manage/Languages/Create"
             });
