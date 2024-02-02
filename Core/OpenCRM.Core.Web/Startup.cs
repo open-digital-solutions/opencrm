@@ -23,6 +23,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IEmailNotificationService, EmailNotificationService>();
             services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
             services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TDBContext>();
+            services.AddScoped<QRCodeService>();
             return services;
         }
         public static IApplicationBuilder UseOpenCRMCoreWeb<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
