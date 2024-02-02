@@ -53,5 +53,13 @@ namespace OpenCRM.Core.Web.Components
         //TODO: Module informations as MenuLinks can be stored on the CRM database on the next future and this data cal be
         // loaded from there to load the current module dropdownModel.
 
+        static int _selectedModule = 1;
+        protected override void OnInitialized()
+        {
+            // Aqui puedes utilizar el NavigatorManager y otra cosa para saber el url en el que estas y a partir de ahi saber el modulo.
+            Console.WriteLine("Me initialice, ahora puedo ver cual es el modulo seleccionado y mostrar sus links!!!");
+
+            _selectedModule++;
+        }
     }
 }
