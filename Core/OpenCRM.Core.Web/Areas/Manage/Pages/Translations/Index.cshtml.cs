@@ -52,7 +52,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         public void OnGet()
         {
             var result = _translationService.GetTranslationListAsync<TranslationEntity>();
-            var response = result.Select(f => new DataBlockModel<TranslationModel<TranslationEntity>> { Data = f, Description = f.Translation, Name = f.Key, Type = ""}).ToList();
+            var response = result.Select(f => new DataBlockModel<TranslationModel<TranslationEntity>> { Data = f, Description = f.Translation, Name = f.Key, Type = "", ID=f.ID}).ToList();
 
             var tableResult = _tableService.BuildTable(response);
             Table.Headers = tableResult.Item1;

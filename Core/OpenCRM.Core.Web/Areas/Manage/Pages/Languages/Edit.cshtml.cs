@@ -6,7 +6,7 @@ using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    public class EditModel : CorePageModel
+    public class EditModel : PageModel
     {       
         private readonly ILanguageService _languageService;
 
@@ -70,7 +70,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                     Name = Language.Name,                   
                 };                
                 await _languageService.EditLanguage(languageModelEdit);
-                //return RedirectToAction("./Index");                
+                return RedirectToPage("./Index");                
             }
             return Page();
         }

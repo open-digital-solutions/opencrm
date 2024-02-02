@@ -63,7 +63,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
                     LanguageId = Translation.LanguageId,                 
                 };                
                 await _translationService.AddTranslation(translationModel);
-                return RedirectToAction("./Index");
+                return RedirectToPage("./Index");
             }
             return Page();
         }

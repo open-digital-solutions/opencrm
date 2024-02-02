@@ -12,13 +12,34 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
     {
         private readonly ITranslationService _translationService;
 
+        [BindProperty]
+        public TranslationModel<TranslationEntity> Translation { get; set; } = default!;
+
+        [BindProperty]
+        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
+
         public DeleteModel(ITranslationService translationService)
         {
             _translationService = translationService;
-        }
 
-        [BindProperty]
-        public TranslationModel<TranslationEntity> Translation { get; set; } = default!;
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "",
+                IsActive = true,
+                Name = "Home",
+                Page = "",
+                Url = "/"
+            });
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "Manage",
+                IsActive = true,
+                Name = "Translation List",
+                Page = "Translation",
+                Url = "/Manage"
+            });
+        }        
 
         public async Task<IActionResult> OnGet(Guid id)
         {
@@ -33,7 +54,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public async Task<IActionResult> OnPostAsync(Guid id)
         {
-            var translation = _translationService.GetTranslationAsync<TranslationEntity>(id);
+            var translation = await _translationService.GetTranslationAsync<TranslationEntity>(id);
             if (translation == null)
             {
                 return NotFound();

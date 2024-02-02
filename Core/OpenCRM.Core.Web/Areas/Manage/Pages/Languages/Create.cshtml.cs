@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    public class CreateModel : CorePageModel
+    public class CreateModel : PageModel
     {
         private readonly ILanguageService _languageService;
 
@@ -63,7 +64,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                     Name = Language.Name,
                 };
                 await _languageService.AddLanguage(languageModel);
-                return RedirectToAction("./Index");
+                return RedirectToPage("./Index");
             }
             return Page();
         }

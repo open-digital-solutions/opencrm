@@ -6,7 +6,7 @@ using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    public class DetailsModel : CorePageModel
+    public class DetailsModel : PageModel
     {
         private readonly ILanguageService _languageService;
 

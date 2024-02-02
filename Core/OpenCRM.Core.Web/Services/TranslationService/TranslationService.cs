@@ -104,7 +104,6 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                 //TODO: Handle errors and exceptions
                 var entity = await _dbContext.Translationss.FindAsync(model.ID);
                 if (entity == null) return null;
-                entity.LanguageId = model.LanguageId;
                 entity.Key = model.Key;
                 entity.Translation = model.Translation;
                 _dbContext.Translationss.Update(entity);
