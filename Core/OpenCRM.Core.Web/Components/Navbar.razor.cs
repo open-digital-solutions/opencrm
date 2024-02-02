@@ -11,7 +11,11 @@ namespace OpenCRM.Core.Web.Components
 {
     public partial class Navbar : ComponentBase
     {
+
         public DropdownModel DropwdownMenuActive { get; set; } = new DropdownModel();
+
+        [Parameter]
+        public string? Module { get; set; } = "SwissLDP"; //TODO: This can be an enumerator
 
         [Parameter]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -28,24 +32,12 @@ namespace OpenCRM.Core.Web.Components
 
                 new DropdownModel("Login", "/Identity/Auth"),
 
-                new DropdownModel("SwissLDP", "/SwissLDP", new List<DropdownModel>()
-                {
-                    new DropdownModel("Event", "/SwissLDP/Event"),
-                    new DropdownModel("Supplier", "/SwissLDP/Supplier", new List<DropdownModel>()
-                    {
-                        new DropdownModel("Register", "/SwissLDP/Supplier/Register")
-                    })
-                }),
-
-                new DropdownModel("Finance", "/Finance", new List<DropdownModel>()
-                {
-                    new DropdownModel("Accounting", "/Finance/Accounting")
-                }),
+                new DropdownModel("SwissLDP", "/SwissLDP"),
             }
         };
 
         [Parameter]
-        public DropdownModel SwissLDPModules { get; set; } = new DropdownModel()
+        public DropdownModel CurrentModuleLinks { get; set; } = new DropdownModel()
         {
             Name = "SwissLDP",
             Items = new List<DropdownModel>()
@@ -57,6 +49,9 @@ namespace OpenCRM.Core.Web.Components
                 })
             }
         };
-        
+
+        //TODO: Module informations as MenuLinks can be stored on the CRM database on the next future and this data cal be
+        // loaded from there to load the current module dropdownModel.
+
     }
 }
