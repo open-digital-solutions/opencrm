@@ -11,7 +11,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         private readonly ILanguageService _languageService;
 
         [BindProperty]
-        public LanguageModel<LanguageEntity> Language { get; set; } = default!;
+        public LanguageModel<TranslationModel> Language { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();

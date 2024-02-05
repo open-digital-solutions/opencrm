@@ -42,8 +42,11 @@ namespace OpenCRM.Core.Web
                 //TODO: Use scoped app to use any regitered service before starting up
                 var dbContext = scope.ServiceProvider
                   .GetRequiredService<TDBContext>();
-
                 dbContext.Database.EnsureCreated();
+
+                var languageService = scope.ServiceProvider.GetRequiredService<ILanguageService>();
+                languageService.SeedAsync().Wait();
+
             }
             return app;
         }

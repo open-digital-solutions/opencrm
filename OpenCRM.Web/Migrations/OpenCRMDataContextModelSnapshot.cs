@@ -22,7 +22,7 @@ namespace OpenCRM.Web.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.DataBlockEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.DataBlockEntity", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -66,7 +66,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("DataBlocks", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.DataContainerEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.DataContainerEntity", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -90,7 +90,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("DataContainers", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.HistoryEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.HistoryEntity", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -130,7 +130,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("History", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.LanguageEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.LanguageEntity", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -150,6 +150,10 @@ namespace OpenCRM.Web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Translations")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -158,7 +162,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("Languages", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.RoleClaimEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.RoleClaimEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -191,7 +195,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("RoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.RoleEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.RoleEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -227,7 +231,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("Roles", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.TranslationEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.TranslationEntity", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -263,7 +267,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("Translations", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserClaimEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserClaimEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -296,7 +300,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("UserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -381,7 +385,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserLoginEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserLoginEntity", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
@@ -413,7 +417,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("UserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserRoleEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserRoleEntity", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -437,7 +441,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserTokenEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserTokenEntity", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -467,7 +471,7 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.MediaEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.MediaEntity", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -499,27 +503,27 @@ namespace OpenCRM.Web.Migrations
                     b.ToTable("Medias", (string)null);
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.DataBlockEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.DataBlockEntity", b =>
                 {
-                    b.HasOne("OpenDHS.Shared.Data.DataContainerEntity", "DataContainer")
+                    b.HasOne("OpenCRM.Core.Data.DataContainerEntity", "DataContainer")
                         .WithMany("DataBlocks")
                         .HasForeignKey("DataContainerID");
 
                     b.Navigation("DataContainer");
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.RoleClaimEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.RoleClaimEntity", b =>
                 {
-                    b.HasOne("OpenDHS.Shared.Data.RoleEntity", null)
+                    b.HasOne("OpenCRM.Core.Data.RoleEntity", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.TranslationEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.TranslationEntity", b =>
                 {
-                    b.HasOne("OpenDHS.Shared.Data.LanguageEntity", "Language")
+                    b.HasOne("OpenCRM.Core.Data.LanguageEntity", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -528,58 +532,58 @@ namespace OpenCRM.Web.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserClaimEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserClaimEntity", b =>
                 {
-                    b.HasOne("OpenDHS.Shared.Data.UserEntity", null)
+                    b.HasOne("OpenCRM.Core.Data.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserEntity", b =>
                 {
-                    b.HasOne("OpenDHS.Shared.MediaEntity", "Avatar")
+                    b.HasOne("OpenCRM.Core.MediaEntity", "Avatar")
                         .WithMany()
                         .HasForeignKey("AvatarID");
 
                     b.Navigation("Avatar");
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserLoginEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserLoginEntity", b =>
                 {
-                    b.HasOne("OpenDHS.Shared.Data.UserEntity", null)
+                    b.HasOne("OpenCRM.Core.Data.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserRoleEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserRoleEntity", b =>
                 {
-                    b.HasOne("OpenDHS.Shared.Data.RoleEntity", null)
+                    b.HasOne("OpenCRM.Core.Data.RoleEntity", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OpenDHS.Shared.Data.UserEntity", null)
+                    b.HasOne("OpenCRM.Core.Data.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.UserTokenEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.UserTokenEntity", b =>
                 {
-                    b.HasOne("OpenDHS.Shared.Data.UserEntity", null)
+                    b.HasOne("OpenCRM.Core.Data.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OpenDHS.Shared.Data.DataContainerEntity", b =>
+            modelBuilder.Entity("OpenCRM.Core.Data.DataContainerEntity", b =>
                 {
                     b.Navigation("DataBlocks");
                 });
