@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Web.Components.DropdownMenu;
 using OpenCRM.Core.Web.Models;
 using System;
@@ -11,55 +13,78 @@ namespace OpenCRM.Core.Web.Components
 {
     public partial class Navbar : ComponentBase
     {
+        //TODO: Module informations as MenuLinks can be stored on the CRM database on the next future and this data cal be
+        // loaded from there to load the current module dropdownModel.
 
-        public DropdownModel DropwdownMenuActive { get; set; } = new DropdownModel();
+        private static List<DropdownMenuModel> dataModulesLinks = new List<DropdownMenuModel>()
+        {
+            new DropdownMenuModel("Management", "/Manage"),
 
-        [Parameter]
-        public string? Module { get; set; } = "SwissLDP"; //TODO: This can be an enumerator
+            new DropdownMenuModel("Register", "/Identity/Register"),
+
+            new DropdownMenuModel("Login", "/Identity/Auth"),
+
+            new DropdownMenuModel()
+            {
+                Name = "SwissLDP",
+                Url = "/SwissLDP",
+                ShowItemList = false,
+                Items = new List<DropdownMenuModel>()
+                {
+                    new DropdownMenuModel("Event", "/SwissLDP/Event"),
+                    new DropdownMenuModel("Supplier", "/SwissLDP/Supplier", new List<DropdownMenuModel>()
+                        {
+                            new DropdownMenuModel("Register", "/SwissLDP/Supplier/Register")
+                        }, false)
+                }
+            },
+
+            new DropdownMenuModel()
+            {
+                Name = "Finance",
+                Url = "Finance",
+                ShowItemList = false,
+                Items = new List<DropdownMenuModel>()
+                {
+                    new DropdownMenuModel("Accounting", "/Finance/Accounting"),
+                }
+            }
+        };
+
+        [Inject]
+        public NavigationManager Navigation { get;set; }
 
         [Parameter]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [Parameter]
-        public DropdownModel DropdownMenuModules { get; set; } = new DropdownModel()
-        {
-            Name = "Modules",
-            Items = new List<DropdownModel>()
-            {
-                new DropdownModel("Management", "/Manage"),
-
-                new DropdownModel("Register", "/Identity/Register"),
-
-                new DropdownModel("Login", "/Identity/Auth"),
-
-                new DropdownModel("SwissLDP", "/SwissLDP"),
-            }
-        };
+        public DropdownMenuModel DropdownMenuModules { get; set; } = new DropdownMenuModel("Modules", "", dataModulesLinks); //Modules DropdownMenu
 
         [Parameter]
-        public DropdownModel CurrentModuleLinks { get; set; } = new DropdownModel()
-        {
-            Name = "SwissLDP",
-            Items = new List<DropdownModel>()
-            {
-                new DropdownModel("Event", "/SwissLDP/Event"),
-                new DropdownModel("Supplier", "/SwissLDP/Supplier", new List<DropdownModel>()
-                {
-                    new DropdownModel("Register", "/SwissLDP/Supplier/Register")
-                })
-            }
-        };
+        public DropdownMenuModel CurrentModuleLinks { get; set; } = saveCurrentModelLinks; //Active Module
 
-        //TODO: Module informations as MenuLinks can be stored on the CRM database on the next future and this data cal be
-        // loaded from there to load the current module dropdownModel.
+        
+        static DropdownMenuModel saveCurrentModelLinks = new DropdownMenuModel();
 
-        static int _selectedModule = 1;
         protected override void OnInitialized()
         {
-            // Aqui puedes utilizar el NavigatorManager y otra cosa para saber el url en el que estas y a partir de ahi saber el modulo.
-            Console.WriteLine("Me initialice, ahora puedo ver cual es el modulo seleccionado y mostrar sus links!!!");
+            string currentModuleUrl = "/" + Navigation.ToBaseRelativePath(Navigation.Uri);
 
-            _selectedModule++;
+            if(currentModuleUrl != "")
+            {
+                DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
+
+                if (result == null && CurrentModuleLinks.Items.Count() != 0)
+                {
+                    result = CurrentModuleLinks.FindItemByUrl(currentModuleUrl);
+                }
+                
+                if(result != null)
+                { 
+                    saveCurrentModelLinks = new DropdownMenuModel(result.Name, result.Url, result.Items);
+                    CurrentModuleLinks = saveCurrentModelLinks;
+                }
+            }
         }
     }
 }

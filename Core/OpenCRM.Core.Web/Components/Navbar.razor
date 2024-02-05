@@ -5,7 +5,6 @@
                 <img src="_content/OpenCRM.Core.Web/images/logo.png" alt="OpenDHS" width="64" height="32">
             </a>
             <div class="navbar-collapse collapse d-sm-inline-flex me-2">
-                <h4>Soy otro modo de mantener el estado de un componente: @_selectedModule</h4>
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item dropdown">
                         <DropdownMenu Menu="@DropdownMenuModules" />
@@ -15,7 +14,14 @@
             <div class="navbar-collapse collapse d-sm-inline-flex">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item dropdown" id="dropdown-submenu">
-                        <DropdownMenu Menu="@CurrentModuleLinks" />
+                        @if(CurrentModuleLinks.Items.Count() > 0)
+                        {
+                            <DropdownMenu Menu="@CurrentModuleLinks" />
+                        }
+                        else
+                        {
+                            <a class="dropdown-item" href="@CurrentModuleLinks.Url">@CurrentModuleLinks.Name</a>
+                        }
                     </li>
                 </ul>
             </div>
