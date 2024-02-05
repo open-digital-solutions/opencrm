@@ -16,7 +16,7 @@ namespace OpenCRM.Core.Web.Components
         //TODO: Module informations as MenuLinks can be stored on the CRM database on the next future and this data cal be
         // loaded from there to load the current module dropdownModel.
 
-        private static List<DropdownMenuModel> dataModulesLinks = new List<DropdownMenuModel>()
+        private static List<DropdownMenuModel> mainModulesLinks = new List<DropdownMenuModel>()
         {
             new DropdownMenuModel("Management", "/Manage"),
 
@@ -38,17 +38,6 @@ namespace OpenCRM.Core.Web.Components
                         }, false)
                 }
             },
-
-            new DropdownMenuModel()
-            {
-                Name = "Finance",
-                Url = "Finance",
-                ShowItemList = false,
-                Items = new List<DropdownMenuModel>()
-                {
-                    new DropdownMenuModel("Accounting", "/Finance/Accounting"),
-                }
-            }
         };
 
         [Inject]
@@ -58,10 +47,10 @@ namespace OpenCRM.Core.Web.Components
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [Parameter]
-        public DropdownMenuModel DropdownMenuModules { get; set; } = new DropdownMenuModel("Modules", "", dataModulesLinks); //Main Modules
+        public DropdownMenuModel DropdownMenuModules { get; set; } = new DropdownMenuModel("Modules", "", mainModulesLinks); //Main Modules
 
         [Parameter]
-        public DropdownMenuModel CurrentModuleLinks { get; set; } = saveCurrentModelLinks; //Active Module
+        public DropdownMenuModel CurrentModuleLinks { get; set; } = saveCurrentModelLinks; //Active Main Module
 
         
         static DropdownMenuModel saveCurrentModelLinks = new DropdownMenuModel();
@@ -72,7 +61,7 @@ namespace OpenCRM.Core.Web.Components
 
             if(currentModuleUrl != "")
             {
-                DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl) ?? CurrentModuleLinks.FindItemByUrl(currentModuleUrl);
+                DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
 
                 if(result != null)
                 { 
