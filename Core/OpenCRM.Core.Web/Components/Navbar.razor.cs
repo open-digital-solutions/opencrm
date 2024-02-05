@@ -22,7 +22,7 @@ namespace OpenCRM.Core.Web.Components
 
             new DropdownMenuModel("Register", "/Identity/Register"),
 
-            new DropdownMenuModel("Login", "/Identity/Auth"),
+            new DropdownMenuModel("Login", "/Identity/Login"),
 
             new DropdownMenuModel()
             {
@@ -58,7 +58,7 @@ namespace OpenCRM.Core.Web.Components
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [Parameter]
-        public DropdownMenuModel DropdownMenuModules { get; set; } = new DropdownMenuModel("Modules", "", dataModulesLinks); //Modules DropdownMenu
+        public DropdownMenuModel DropdownMenuModules { get; set; } = new DropdownMenuModel("Modules", "", dataModulesLinks); //Main Modules
 
         [Parameter]
         public DropdownMenuModel CurrentModuleLinks { get; set; } = saveCurrentModelLinks; //Active Module
@@ -72,13 +72,8 @@ namespace OpenCRM.Core.Web.Components
 
             if(currentModuleUrl != "")
             {
-                DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
+                DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl) ?? CurrentModuleLinks.FindItemByUrl(currentModuleUrl);
 
-                if (result == null && CurrentModuleLinks.Items.Count() != 0)
-                {
-                    result = CurrentModuleLinks.FindItemByUrl(currentModuleUrl);
-                }
-                
                 if(result != null)
                 { 
                     saveCurrentModelLinks = new DropdownMenuModel(result.Name, result.Url, result.Items);
