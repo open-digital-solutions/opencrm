@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 
-namespace OpenCRM.Core.Web.Services
+namespace OpenCRM.Core.Web.Services.EmailNotificationService
 {
     public class EmailNotificationService : IEmailNotificationService
     {
@@ -15,7 +15,7 @@ namespace OpenCRM.Core.Web.Services
         {
             try
             {
-                if (_configuration.GetValue<bool>("EmailSettings:EmailEnabled")) 
+                if (_configuration.GetValue<bool>("EmailSettings:EmailEnabled"))
                 {
                     MailMessage message = new();
                     SmtpClient smtpClient = new();

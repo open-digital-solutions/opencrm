@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OpenCRM.Core.Data
@@ -9,12 +8,8 @@ namespace OpenCRM.Core.Data
         public string Name { get; set; } = string.Empty;
         public string Lastname { get; set; } = string.Empty;
 
-        public Guid? MediaId { get; set; }
-        public MediaEntity? Avatar { get; set; }
-
-
         [Column(TypeName = "jsonb")]
-        public required string UserExtras { get; set; }
+        public string Data { get; set; } = "{}";
 
         DateTime? IHasTimestamps.AddedAt { get; set;  } = DateTime.UtcNow;
         DateTime? IHasTimestamps.UpdatedAt { get; set; } = DateTime.UtcNow;

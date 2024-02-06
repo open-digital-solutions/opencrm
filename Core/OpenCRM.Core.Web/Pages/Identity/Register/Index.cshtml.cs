@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Web.Areas.Identity.Models;
 using OpenCRM.Core.Web.Models;
@@ -10,18 +9,18 @@ namespace OpenCRM.Core.Web.Pages.Identity.Register
     public class IndexModel : CorePageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly IdentityService _identityService;
+        private readonly IIdentityService _identityService;
       
         [BindProperty]
         public required InputRegisterModel Input { get; set; }
 
         [BindProperty]
-        public string ReturnUrl { get; set; } = string.Empty;
+        public string? ReturnUrl { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, IdentityService identityService)
+        public IndexModel(ILogger<IndexModel> logger, IIdentityService identityService)
         {
-            _identityService = identityService;
             _logger = logger;
+            _identityService = identityService;
         }
         public void OnGet()
         {
@@ -33,34 +32,21 @@ namespace OpenCRM.Core.Web.Pages.Identity.Register
 
             if (ModelState.IsValid)
             {
-               
                 var result = await _identityService.RegisterUser(Input);
                 if (result.Item1.Succeeded)
                 {
-                    var user = result.Item2;
                     _logger.LogInformation("User created a new account with password.");
 
-                    //var userId = await _userManager.GetUserIdAsync(user);
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    //var callbackUrl = Url.Page(
-                    //    "/Account/ConfirmEmail",
-                    //    pageHandler: null,
-                    //    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    //    protocol: Request.Scheme);
+                    var emailSendResult = await _identityService.SendConfirmationEmail(result.Item2, this);
 
-                    //_emailSender.SendEmail(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    //{
-                    //    return RedirectToPage("/RegisterConfirmation/Index", new { email = Input.Email, returnUrl = returnUrl });
-                    //}
-                    //else
-                    //{
-                    //    await _signInManager.SignInAsync(user, isPersistent: false);
-                    //    return LocalRedirect(returnUrl);
-                    //}
+                    if (emailSendResult)
+                    {
+                        return RedirectToPage("/Identity/RegisterConfirm/Index", new { email = Input.Email,  returnUrl });
+                    }
+                    else {
+                        //TODO: Change page
+                        return RedirectToPage("/Identity/RegisterConfirm/Index", new { email = Input.Email,  returnUrl });
+                    }
                 }
                 foreach (var error in result.Item1.Errors)
                 {

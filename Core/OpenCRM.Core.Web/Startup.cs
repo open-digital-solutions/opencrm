@@ -5,9 +5,9 @@ using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.QRCode;
-using OpenCRM.Core.Web.Services;
+using OpenCRM.Core.Web.Services.EmailNotificationService;
+using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
-using OpenCRM.Core.Web.Services.TranslationService;
 
 namespace OpenCRM.Core.Web
 {
@@ -16,16 +16,19 @@ namespace OpenCRM.Core.Web
         public static IServiceCollection AddOpenCRMCoreWeb<TDBContext>(this IServiceCollection services, string connectionString) where TDBContext : DataContext
         {
             OpenCRMEnv.SetWebRoot();
+            
             //TODO: Register all module services here
+            
             services.AddDbContext<TDBContext>(options => options.UseNpgsql(connectionString));
             services.AddScoped<QRCodeService>();
             services.AddScoped<IMediaService, MediaService<TDBContext>>();
             services.AddScoped<IDataBlockService, DataBlockService<TDBContext>>();
             services.AddScoped<IEmailNotificationService, EmailNotificationService>();
             services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
-            services.AddScoped<ITranslationService, TranslationService<TDBContext>>();
+            services.AddScoped<IIdentityService, IdentityService>();
+
             services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TDBContext>();
-            services.AddScoped<QRCodeService>();
+           
             return services;
         }
         public static IApplicationBuilder UseOpenCRMCoreWeb<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
@@ -42,11 +45,8 @@ namespace OpenCRM.Core.Web
                 //TODO: Use scoped app to use any regitered service before starting up
                 var dbContext = scope.ServiceProvider
                   .GetRequiredService<TDBContext>();
+
                 dbContext.Database.EnsureCreated();
-
-                var languageService = scope.ServiceProvider.GetRequiredService<ILanguageService>();
-                languageService.SeedAsync().Wait();
-
             }
             return app;
         }

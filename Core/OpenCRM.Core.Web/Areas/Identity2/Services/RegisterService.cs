@@ -38,10 +38,10 @@ namespace OpenCRM.Core.Web.Areas.Identity.Services
             {
                 user.Lastname = Input.Lastname;
             }
-            //Serialize Later the real Extra Properties!!!
-            var extra = new { Extra1 = "Extra1", Extra2 = "Extra2" };
-            var extraJson = Input.UserExtras == null? JsonSerializer.Serialize(extra) : Input.UserExtras;
-            user.UserExtras = extraJson;
+            ////Serialize Later the real Extra Properties!!!
+            //var extra = new { Extra1 = "Extra1", Extra2 = "Extra2" };
+            //var extraJson = Input.UserExtras == null? JsonSerializer.Serialize(extra) : Input.UserExtras;
+            //user.Extras = extraJson;
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, Input.Password);

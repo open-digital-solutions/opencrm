@@ -16,7 +16,4 @@
   <ItemGroup>
     <ProjectReference Include="..\OpenCRM.Core\OpenCRM.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Areas\Identity\Services\" />
-  </ItemGroup>
 </Project>

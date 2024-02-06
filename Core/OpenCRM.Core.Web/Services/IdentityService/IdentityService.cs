@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Areas.Identity.Models;
-using System.Text.Encodings.Web;
 using System.Text;
 using System.Text.Json;
-using static QRCoder.PayloadGenerator;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text.Encodings.Web;
+using OpenCRM.Core.Web.Services.EmailNotificationService;
 
 namespace OpenCRM.Core.Web.Services.IdentityService
 {
-    public class IdentityService
+    public class IdentityService : IIdentityService
     {
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly UserManager<UserEntity> _userManager;
@@ -54,35 +56,46 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 user.Lastname = Input.Lastname;
             }
 
-            //Serialize Later the real Extra Properties!!!
-            var extra = new { Extra1 = "Extra1", Extra2 = "Extra2" };
-            var extraJson = Input.UserExtras == null ? JsonSerializer.Serialize(extra) : Input.UserExtras;
-            user.UserExtras = extraJson;
+            ////Serialize Later the real Extra Properties!!!
+            //var extra = new { Extra1 = "Extra1", Extra2 = "Extra2" };
+            //var extraJson = Input.UserExtras == null ? JsonSerializer.Serialize(extra) : Input.UserExtras;
+            //user.UserExtras = extraJson;
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, Input.Password);
             return new Tuple<IdentityResult, UserEntity>(result, user);
         }
 
-        public async Task SendConfirmationEmail(UserEntity user) {
+        public async Task<bool> SendConfirmationEmail(UserEntity user, PageModel page)
+        {
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            //var callbackUrl = Url.Page(
-            //    "/Account/ConfirmEmail",
-            //    pageHandler: null,
-            //    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-            //    protocol: Request.Scheme);
+            var encodedCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var returnUrl = "";
 
-            //_emailSender.SendEmail(Input.Email, "Confirm your email",
-            //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            var callbackUrl = page.Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId, code = encodedCode, returnUrl },
+                protocol: page.Request.Scheme);
+
+            if (callbackUrl == null || string.IsNullOrEmpty(user.Email))
+            {
+                return false;
+            }
+
+            return _emailSender.SendEmail(user.Email, "Confirm your email",
+                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
         }
 
         private UserEntity CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<UserEntity>();
+                var instance = Activator.CreateInstance<UserEntity>();
+                instance.Data = "{}";
+                return instance;
             }
             catch
             {

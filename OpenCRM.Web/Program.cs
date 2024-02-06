@@ -25,7 +25,6 @@ dataConnectionString = builder.Configuration.GetConnectionString("DBConnection")
 // builder.Services.AddOpenDHSServices<OpenCRMDataContext>();
 
 builder.Services.AddOpenCRMCoreWeb<OpenCRMDataContext>(dataConnectionString);
-builder.Services.AddOpenCRMFinance<OpenCRMDataContext>();
 builder.Services.AddOpenCRMSwissLPD<OpenCRMDataContext>();
 
 // Add services to the container.

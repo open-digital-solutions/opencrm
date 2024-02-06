@@ -12,9 +12,9 @@ using System.Text;
 using System.Net.Mail;
 using System.Net;
 using OpenCRM.Core.Web.Areas.Identity.Models;
-using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Areas.Identity.Services;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services.EmailNotificationService;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
 {
