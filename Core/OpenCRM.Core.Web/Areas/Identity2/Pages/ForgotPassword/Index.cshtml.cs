@@ -13,9 +13,9 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.ForgotPassword
     public class IndexModel : CorePageModel
     {
         private readonly UserManager<UserEntity> _userManager;
-        private readonly IEmailNotificationService _emailSender;
+        private readonly IEmailService _emailSender;
 
-        public IndexModel(UserManager<UserEntity> userManager, IEmailNotificationService emailSender)
+        public IndexModel(UserManager<UserEntity> userManager, IEmailService emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;

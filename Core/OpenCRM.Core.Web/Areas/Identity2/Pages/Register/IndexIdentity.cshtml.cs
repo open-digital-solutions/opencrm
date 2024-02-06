@@ -25,13 +25,13 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
         private readonly IUserStore<UserEntity> _userStore;
         private readonly IUserEmailStore<UserEntity> _emailStore;
         private readonly ILogger<IndexModel> _logger;
-        private readonly IEmailNotificationService _emailSender;
+        private readonly IEmailService _emailSender;
         public IndexModel(
             UserManager<UserEntity> userManager,
             IUserStore<UserEntity> userStore,
             SignInManager<UserEntity> signInManager,
             ILogger<IndexModel> logger,
-            IEmailNotificationService emailSender)
+            IEmailService emailSender)
         {
             _userManager = userManager;
             _userStore = userStore;

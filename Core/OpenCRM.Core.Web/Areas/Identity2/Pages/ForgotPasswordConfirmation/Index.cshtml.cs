@@ -13,9 +13,9 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.ForgotPasswordConfirmation
     public class IndexModel : CorePageModel
     {
         private readonly UserManager<UserEntity> _userManager;
-        private readonly IEmailNotificationService _emailSender;
+        private readonly IEmailService _emailSender;
 
-        public IndexModel(UserManager<UserEntity> userManager, IEmailNotificationService emailSender)
+        public IndexModel(UserManager<UserEntity> userManager, IEmailService emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
@@ -26,7 +26,7 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.ForgotPasswordConfirmation
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [BindProperty]
-        public InputModel Input { get; set; }
+        public required InputModel Input { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -40,7 +40,7 @@ namespace OpenCRM.Core.Web.Areas.Identity.Pages.ForgotPasswordConfirmation
             /// </summary>
             [Required]
             [EmailAddress]
-            public string Email { get; set; }
+            public required string Email { get; set; }
         }
 
         public async Task<IActionResult> OnPostAsync()
