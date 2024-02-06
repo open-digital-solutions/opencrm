@@ -52,9 +52,9 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             });
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            var events = _eventService.GetEvents();
+            var events = await _eventService.GetEvents();
             if (events != null)
             {
                 EventList = events;
