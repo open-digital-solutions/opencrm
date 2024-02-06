@@ -18,13 +18,13 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         private readonly UserManager<UserEntity> _userManager;
         private readonly IUserStore<UserEntity> _userStore;
         private readonly ILogger<IdentityService> _logger;
-        private readonly IEmailNotificationService _emailSender;
+        private readonly IEmailService _emailSender;
 
         public IdentityService(UserManager<UserEntity> userManager,
             IUserStore<UserEntity> userStore,
         SignInManager<UserEntity> signInManager,
         ILogger<IdentityService> logger,
-        IEmailNotificationService emailSender)
+        IEmailService emailSender)
         {
             _userManager = userManager;
             _userStore = userStore;

@@ -1,36 +1,41 @@
 ﻿using Microsoft.Extensions.Configuration;
+using OpenCRM.Core.Web.Models;
 using System.Net;
 using System.Net.Mail;
 
 namespace OpenCRM.Core.Web.Services.EmailNotificationService
 {
-    public class EmailNotificationService : IEmailNotificationService
+    public class EmailService : IEmailService
     {
-        private IConfiguration _configuration;
-        public EmailNotificationService(IConfiguration iConfig)
+
+        private readonly IConfiguration _configuration;
+        public EmailService(IConfiguration configuration)
         {
-            _configuration = iConfig;
+            _configuration = configuration;
         }
-        public bool SendEmail(string email, string subject, string confirmLink)
+        public bool SendEmail(string email, string subject, string confirmLink) //TODO: Generalize
         {
+            EmailSettings emailSettings = new();
+            _configuration.GetRequiredSection("Email").GetRequiredSection("SMTP").Bind(emailSettings);
+
             try
             {
-                if (_configuration.GetValue<bool>("EmailSettings:EmailEnabled"))
+                if (emailSettings.Enable)
                 {
                     MailMessage message = new();
                     SmtpClient smtpClient = new();
-                    message.From = new MailAddress(_configuration.GetValue<string>("EmailSettings:Email"));
+                    message.From = new MailAddress(emailSettings.Email);
                     message.To.Add(email);
                     message.Subject = subject;
                     message.IsBodyHtml = true;
                     message.Body = confirmLink;
 
-                    smtpClient.Port = 587;
-                    smtpClient.Host = "smtp.simply.com";
+                    smtpClient.Port = emailSettings.Port;
+                    smtpClient.Host = emailSettings.Server;
 
                     smtpClient.EnableSsl = true;
                     smtpClient.UseDefaultCredentials = true;
-                    smtpClient.Credentials = new NetworkCredential(_configuration.GetValue<string>("EmailSettings:Email"), _configuration.GetValue<string>("EmailSettings:Password"));
+                    smtpClient.Credentials = new NetworkCredential(emailSettings.Username, emailSettings.Password);
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpClient.Send(message);
                     return true;

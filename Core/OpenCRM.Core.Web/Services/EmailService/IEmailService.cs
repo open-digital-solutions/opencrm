@@ -1,6 +1,6 @@
 ﻿namespace OpenCRM.Core.Web.Services.EmailNotificationService
 {
-    public interface IEmailNotificationService
+    public interface IEmailService
     {
         bool SendEmail(string email, string subject, string confirmLink);
     }

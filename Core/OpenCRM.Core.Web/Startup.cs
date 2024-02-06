@@ -27,7 +27,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<QRCodeService>();
             services.AddScoped<IMediaService, MediaService<TDBContext>>();
             services.AddScoped<IDataBlockService, DataBlockService<TDBContext>>();
-            services.AddScoped<IEmailNotificationService, EmailNotificationService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
             services.AddScoped<IIdentityService, IdentityService>();
 
@@ -59,9 +59,9 @@ namespace OpenCRM.Core.Web
                 dbContext.Database.EnsureCreated();
 
                 var emailService = scope.ServiceProvider
-                  .GetRequiredService<IEmailNotificationService>();
+                  .GetRequiredService<IEmailService>();
 
-                emailService.SendMSGraphEmail().Wait();
+                emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");
 
             }
             return app;
