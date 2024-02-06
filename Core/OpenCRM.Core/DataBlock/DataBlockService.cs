@@ -1,18 +1,21 @@
-﻿using OpenCRM.Core;
+﻿using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Data;
 using System.Text.Json;
 
 namespace OpenCRM.Core.DataBlock
 {
-    public class DataBlockService<TDBContext> : IDataBlockService where TDBContext : DataContext
+    public class DataBlockService<TDBContext> :  IDataBlockService where TDBContext : DataContext
     {
         private readonly TDBContext _dbContext;
-        public DataBlockService(TDBContext dBContext) { 
+        public DataBlockService(TDBContext dBContext)
+        {
             _dbContext = dBContext;
         }
-        public async Task<DataBlockModel<TDataModel>?> GetDataBlockAsync<TDataModel>(Guid id) { 
-           
-            try {
+        public async Task<DataBlockModel<TDataModel>?> GetDataBlockAsync<TDataModel>(Guid id)
+        {
+
+            try
+            {
                 var dataBlock = await _dbContext.DataBlocks.FindAsync(id);
                 if (dataBlock == null || string.IsNullOrWhiteSpace(dataBlock.Data))
                 {
@@ -21,22 +24,23 @@ namespace OpenCRM.Core.DataBlock
                 }
                 return dataBlock.ToDataModel<TDataModel>();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 //TODO: Handle this error
                 Console.WriteLine(ex.ToString());
                 return null;
             }
         }
-        public List<DataBlockModel<TDataModel>> GetDataBlockListAsync<TDataModel>()
+        public async Task<List<DataBlockModel<TDataModel>>> GetDataBlockListAsync<TDataModel>()
         {
             List<DataBlockModel<TDataModel>> result = new();
             try
             {
-                var dataBlocks = _dbContext.DataBlocks.Where(block => block.Type == typeof(TDataModel).Name).ToList();
+                var dataBlocks = await _dbContext.DataBlocks.Where(block => block.Type == typeof(TDataModel).Name).ToListAsync();
 
                 if (dataBlocks == null || dataBlocks.Count == 0) return result;
 
-                foreach ( var dataBlock in dataBlocks)
+                foreach (var dataBlock in dataBlocks)
                 {
                     if (dataBlock == null || string.IsNullOrWhiteSpace(dataBlock.Data))
                     {
@@ -63,8 +67,10 @@ namespace OpenCRM.Core.DataBlock
             }
             return result;
         }
-        public async Task<DataBlockModel<TDataModel>?> AddBlock<TDataModel>(DataBlockModel<TDataModel> model) {
-            try {
+        public async Task<DataBlockModel<TDataModel>?> AddBlock<TDataModel>(DataBlockModel<TDataModel> model)
+        {
+            try
+            {
                 //TODO: Handle errors and exceptions
                 var entity = Activator.CreateInstance<DataBlockEntity>();
                 entity.Name = model.Name;
@@ -74,25 +80,29 @@ namespace OpenCRM.Core.DataBlock
                 _dbContext.DataBlocks.Add(entity);
                 await _dbContext.SaveChangesAsync();
                 return entity.ToDataModel<TDataModel>();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e.Message);
                 return null;
-            } 
+            }
         }
-        public async Task DeleteBlock<TDataModel>(Guid Id) {
+        public async Task DeleteBlock<TDataModel>(Guid Id)
+        {
             //TODO: Handle errors and exceptions
             var entity = await _dbContext.DataBlocks.FindAsync(Id);
             if (entity == null) return;
             _dbContext.Remove(entity);
             await _dbContext.SaveChangesAsync();
         }
-        public async Task<DataBlockModel<TDataModel>?> EditBlock<TDataModel>(DataBlockModel<TDataModel> model) {
+        public async Task<DataBlockModel<TDataModel>?> EditBlock<TDataModel>(DataBlockModel<TDataModel> model)
+        {
             try
             {
                 //TODO: Handle errors and exceptions
                 var entity = await _dbContext.DataBlocks.FindAsync(model.ID);
                 if (entity == null) return null;
-                if(entity.Type != typeof(TDataModel).Name) return null;
+                if (entity.Type != typeof(TDataModel).Name) return null;
                 entity.Name = model.Name;
                 entity.Description = model.Description;
                 entity.Type = typeof(TDataModel).Name;
