@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Graph.ExternalConnectors;
+using Microsoft.Identity.Web;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Extensions;
@@ -30,7 +32,12 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IIdentityService, IdentityService>();
 
             services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TDBContext>();
-           
+
+            services.AddMicrosoftIdentityWebApiAuthentication(configuration)
+                   .EnableTokenAcquisitionToCallDownstreamApi()
+                       .AddMicrosoftGraph(configuration.GetSection("DownstreamApi"))
+                       .AddInMemoryTokenCaches();
+
             return services;
         }
         public static IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
@@ -50,6 +57,12 @@ namespace OpenCRM.Core.Web
                   .GetRequiredService<TDBContext>();
 
                 dbContext.Database.EnsureCreated();
+
+                var emailService = scope.ServiceProvider
+                  .GetRequiredService<IEmailNotificationService>();
+
+                emailService.SendMSGraphEmail().Wait();
+
             }
             return app;
         }
