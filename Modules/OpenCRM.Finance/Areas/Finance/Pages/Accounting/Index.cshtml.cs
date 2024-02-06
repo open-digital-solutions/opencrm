@@ -47,9 +47,9 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
             });
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            var acountings = _accountingDataService.GetAccountings();
+            var acountings = await _accountingDataService.GetAccountings();
             if (acountings != null)
             {
                 AccountingList = acountings;

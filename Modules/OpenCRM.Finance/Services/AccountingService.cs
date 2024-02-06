@@ -18,29 +18,27 @@ namespace OpenCRM.Finance.Services
             _dataBlockService = dataBlockService;
         }
 
-        public DataBlockModel<AccountingModel> AddAccounting(DataBlockModel<AccountingModel> model)
+        public async Task<DataBlockModel<AccountingModel>> AddAccounting(DataBlockModel<AccountingModel> model)
         {
-            var blockRsult = _dataBlockService.AddBlock(model).Result;
-            return blockRsult;
+            return await _dataBlockService.AddBlock(model);
         }
 
-        public DataBlockModel<AccountingModel> EditAccounting(DataBlockModel<AccountingModel> model)
+        public async Task<DataBlockModel<AccountingModel>> EditAccounting(DataBlockModel<AccountingModel> model)
         {
-            var blockResult = _dataBlockService.EditBlock(model).Result;
-            return blockResult;
+            return await _dataBlockService.EditBlock(model);
         }
 
-        public DataBlockModel<AccountingModel> GetAccounting(Guid id)
+        public async Task<DataBlockModel<AccountingModel>> GetAccounting(Guid id)
         {
-            var blockResult = _dataBlockService.GetDataBlockAsync<AccountingModel>(id).Result;
-            return blockResult;
+            return await _dataBlockService.GetDataBlockAsync<AccountingModel>(id);
         }
 
 
-        public List<DataBlockModel<AccountingModel>> GetAccountings()
+        public async Task<List<DataBlockModel<AccountingModel>>> GetAccountings()
         {
-            var blocksResult = _dataBlockService.GetDataBlockListAsync<AccountingModel>();
-            return blocksResult;
+            var result = await _dataBlockService.GetDataBlockListAsync<AccountingModel>();
+            if (result == null) return new List<DataBlockModel<AccountingModel>>();
+            return result;
         }
 
         public async Task RemoveAccounting(Guid Id)
@@ -48,7 +46,7 @@ namespace OpenCRM.Finance.Services
             await _dataBlockService.DeleteBlock<AccountingModel>(Id);
         }
 
-        public async Task SeedAsync()
+        public async Task Seed()
         {
             var dataModel = new AccountingModel()
             {
@@ -57,7 +55,7 @@ namespace OpenCRM.Finance.Services
                 Description = $"Seeded at {DateTime.UtcNow}"
             };
 
-            DataBlockModel<AccountingModel> dataBlockModel = new ()
+            DataBlockModel<AccountingModel> dataBlockModel = new()
             {
                 Name = dataModel.Description,
                 Description = dataModel.Description,
@@ -65,13 +63,9 @@ namespace OpenCRM.Finance.Services
                 Data = dataModel
             };
 
-           var result =  await _dataBlockService.AddBlock(dataBlockModel);
-           Console.WriteLine(result);
+            var result = await _dataBlockService.AddBlock(dataBlockModel);
+            Console.WriteLine(result);
         }
 
-        public Task Seed()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -40,9 +40,9 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
             });
         }
 
-        public IActionResult OnGet(Guid id) 
+        public async Task<IActionResult> OnGetAsync(Guid id) 
         {
-            var dataModel = _accountingService.GetAccounting(id);
+            var dataModel = await _accountingService.GetAccounting(id);
 
             if (dataModel == null) 
             {
