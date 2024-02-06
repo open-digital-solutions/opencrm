@@ -14,18 +14,20 @@ namespace OpenCRM.SwissLPD
             services.AddScoped<IEventService, EventService<TDBContext>>();
             return services;
         }
-        public static async Task<IApplicationBuilder> UseOpenCRMSwissLPDAsync<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
+        public static IApplicationBuilder UseOpenCRMSwissLPDAsync<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
         {
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
+
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 //TODO: Use scoped app to use any regitered service before starting up
                 var eventService = scope.ServiceProvider
                .GetRequiredService<IEventService>();
-                await eventService.Seed();
+                
+                eventService.Seed().Wait();
             }
             return app;
         }

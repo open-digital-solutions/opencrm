@@ -19,6 +19,7 @@ namespace OpenCRM.Core.Web
             OpenCRMEnv.SetWebRoot();
 
             //TODO: Register all module services here
+
             string connectionString = configuration.GetConnectionString("DBConnection") ?? throw new InvalidOperationException("OpenCRM DB Connection string 'DBConnection' not found.");
             services.AddDbContext<TDBContext>(options => options.UseNpgsql(connectionString));
             services.AddScoped<QRCodeService>();
@@ -44,6 +45,7 @@ namespace OpenCRM.Core.Web
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 //TODO: Use scoped app to use any regitered service before starting up
+
                 var dbContext = scope.ServiceProvider
                   .GetRequiredService<TDBContext>();
 
