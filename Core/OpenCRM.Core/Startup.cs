@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.QRCode;
 
@@ -14,7 +13,6 @@ namespace OpenCRM.Core
     
             services.AddScoped<QRCodeService>();
             services.AddScoped<IMediaService, MediaService<TDBContext>>();
-            services.AddScoped<IDataBlockService, DataBlockService<TDBContext>>();
 
             return services;
         }
