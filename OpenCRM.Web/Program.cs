@@ -1,30 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using OpenCRM.Finance;
+using OpenCRM.Core.Web;
 using OpenCRM.SwissLPD;
 using OpenCRM.Web.Data;
-using OpenCRM.Core.Web;
 
 var builder = WebApplication.CreateBuilder(args);
-
-string dataConnectionString;
-//if (builder.Environment.IsProduction())
-//{
-//    dataConnectionString = builder.Configuration.GetConnectionString("AZURE_POSTGRESQL_CONNECTIONSTRING") ?? throw new InvalidOperationException("Connection string 'DBConnection' not found.");
-//}
-//else
-//{
-//    dataConnectionString = builder.Configuration.GetConnectionString("DBConnection") ?? throw new InvalidOperationException("Connection string 'DBConnection' not found.");
-//}
-dataConnectionString = builder.Configuration.GetConnectionString("DBConnection") ?? throw new InvalidOperationException("Connection string 'DBConnection' not found.");
-
-// builder.Services.AddDbContext<OpenCRMDataContext>(options => options.UseNpgsql(connectionString));
-
-// builder.Services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<OpenCRMDataContext>();
-
-/// Registering OpenCRM Modules.
-// builder.Services.AddOpenDHSServices<OpenCRMDataContext>();
-
-builder.Services.AddOpenCRMCoreWeb<OpenCRMDataContext>(dataConnectionString);
+builder.Services.AddOpenCRM<OpenCRMDataContext>(builder.Configuration);
 builder.Services.AddOpenCRMSwissLPD<OpenCRMDataContext>();
 
 // Add services to the container.
@@ -45,13 +24,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// app.UseAuthorization();
-
-/// Using OpenCRM Modules.
-// app.UseOpenDHSServices<OpenCRMDataContext>();
-app.UseOpenCRMCoreWeb<OpenCRMDataContext>();
-
-app.UseOpenCRMFinanceAsync<OpenCRMDataContext>();
+app.UseOpenCRM<OpenCRMDataContext>();
 app.UseOpenCRMSwissLPDAsync<OpenCRMDataContext>();
 
 app.MapRazorPages();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
@@ -13,12 +14,12 @@ namespace OpenCRM.Core.Web
 {
     public static class StartupModuleExtensions
     {
-        public static IServiceCollection AddOpenCRMCoreWeb<TDBContext>(this IServiceCollection services, string connectionString) where TDBContext : DataContext
+        public static IServiceCollection AddOpenCRM<TDBContext>(this IServiceCollection services, IConfiguration configuration) where TDBContext : DataContext
         {
             OpenCRMEnv.SetWebRoot();
-            
+
             //TODO: Register all module services here
-            
+            string connectionString = configuration.GetConnectionString("DBConnection") ?? throw new InvalidOperationException("OpenCRM DB Connection string 'DBConnection' not found.");
             services.AddDbContext<TDBContext>(options => options.UseNpgsql(connectionString));
             services.AddScoped<QRCodeService>();
             services.AddScoped<IMediaService, MediaService<TDBContext>>();
@@ -31,7 +32,7 @@ namespace OpenCRM.Core.Web
            
             return services;
         }
-        public static IApplicationBuilder UseOpenCRMCoreWeb<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
+        public static IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
         {
             if (app == null)
             {
