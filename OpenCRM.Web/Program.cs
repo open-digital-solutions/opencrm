@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using OpenCRM.Core.Web;
 using OpenCRM.SwissLPD;
 using OpenCRM.Web.Data;
@@ -10,6 +11,11 @@ builder.Services.AddOpenCRMSwissLPD<OpenCRMDataContext>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 if (!app.Environment.IsDevelopment())
 {
