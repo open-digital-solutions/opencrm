@@ -38,6 +38,10 @@
   },
   "iisSettings": {
     "windowsAuthentication": false,
-    "anonymousAuthentication": true
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "",
+      "sslPort": 44396
+    }
   }
 }
