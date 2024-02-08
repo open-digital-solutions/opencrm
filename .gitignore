@@ -8,3 +8,4 @@ bin
 *.db-wal
 *.csproj.user
 /OpenCRM.Web/appsettings.Stage.json
+/OpenCRM.Web/wwwroot/media
