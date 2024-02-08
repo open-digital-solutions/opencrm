@@ -55,6 +55,10 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             {
                 user.Lastname = Input.Lastname;
             }
+            if (Input.Email != "")
+            {
+                user.Email = Input.Email;
+            }
 
             ////Serialize Later the real Extra Properties!!!
             //var extra = new { Extra1 = "Extra1", Extra2 = "Extra2" };
@@ -68,6 +72,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
 
         public async Task<bool> SendConfirmationEmail(UserEntity user, PageModel page)
         {
+
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var encodedCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -82,6 +87,11 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             if (callbackUrl == null || string.IsNullOrEmpty(user.Email))
             {
                 return false;
+            }
+
+            var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            if (!emailConfirmed) {
+                await _userManager.ConfirmEmailAsync(user, encodedCode);
             }
 
             return _emailSender.SendEmail(user.Email, "Confirm your email",
