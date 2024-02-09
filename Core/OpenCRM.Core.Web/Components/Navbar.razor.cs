@@ -41,7 +41,7 @@ namespace OpenCRM.Core.Web.Components
         };
 
         [Inject]
-        public NavigationManager Navigation { get;set; }
+        public NavigationManager? Navigation { get;set; }
 
         [Parameter]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -57,16 +57,19 @@ namespace OpenCRM.Core.Web.Components
 
         protected override void OnInitialized()
         {
-            string currentModuleUrl = "/" + Navigation.ToBaseRelativePath(Navigation.Uri);
-
-            if(currentModuleUrl != "")
+            if (Navigation != null)
             {
-                DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
+                string currentModuleUrl = "/" + Navigation.ToBaseRelativePath(Navigation.Uri);
 
-                if(result != null)
-                { 
-                    saveCurrentModelLinks = new DropdownMenuModel(result.Name, result.Url, result.Items);
-                    CurrentModuleLinks = saveCurrentModelLinks;
+                if (currentModuleUrl != "")
+                {
+                    DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
+
+                    if (result != null)
+                    {
+                        saveCurrentModelLinks = new DropdownMenuModel(result.Name, result.Url, result.Items);
+                        CurrentModuleLinks = saveCurrentModelLinks;
+                    }
                 }
             }
         }
