@@ -93,11 +93,6 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 return false;
             }
 
-            var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
-            if (!emailConfirmed)
-            {
-                await _userManager.ConfirmEmailAsync(user, encodedCode);
-            }
 
             return _emailSender.SendEmail(user.Email, "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
