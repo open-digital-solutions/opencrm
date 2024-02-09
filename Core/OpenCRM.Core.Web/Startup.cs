@@ -61,7 +61,7 @@ namespace OpenCRM.Core.Web
                 var emailService = scope.ServiceProvider
                   .GetRequiredService<IEmailService>();
 
-                emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");
+                // emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");
 
             }
             return app;

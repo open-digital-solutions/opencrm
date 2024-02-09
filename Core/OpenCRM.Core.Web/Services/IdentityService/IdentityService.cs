@@ -9,6 +9,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Encodings.Web;
 using OpenCRM.Core.Web.Services.EmailNotificationService;
+using Microsoft.AspNetCore.Http;
 
 namespace OpenCRM.Core.Web.Services.IdentityService
 {
@@ -76,13 +77,15 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var encodedCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var returnUrl = "";
+            // var returnUrl = "";
 
-            var callbackUrl = page.Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { area = "Identity", userId, code = encodedCode, returnUrl },
-                protocol: page.Request.Scheme);
+            //var callbackUrl = page.Url.Page(
+            //    "Identity/ConfirmEmail",
+            //    pageHandler: null,
+            //    values: new { area = "", userId, code = encodedCode, returnUrl },
+            //    protocol: page.Request.Scheme);
+
+            var callbackUrl = $"{page.Request.Scheme}://{page.Request.Host.Value}/Identity/ConfirmEmail?userId={userId}&code={encodedCode}";
 
             if (callbackUrl == null || string.IsNullOrEmpty(user.Email))
             {
