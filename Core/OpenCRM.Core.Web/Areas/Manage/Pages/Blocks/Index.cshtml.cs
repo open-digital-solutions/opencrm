@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Table;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 {
@@ -45,6 +46,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         public void OnGet()
         {
-        }
+		
+		}
     }
 }
