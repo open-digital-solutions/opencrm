@@ -18,11 +18,19 @@ namespace OpenCRM.Core.Web.Components
 
         private static List<DropdownMenuModel> mainModulesLinks = new List<DropdownMenuModel>()
         {
-            new DropdownMenuModel("Management", "/Manage"),
-
             new DropdownMenuModel("Register", "/Identity/Register"),
 
             new DropdownMenuModel("Login", "/Identity/Login"),
+
+            new DropdownMenuModel()
+            {
+                Name = "Management",
+                Url = "/Manage",
+                Items = new List<DropdownMenuModel>()
+                {
+                    new DropdownMenuModel("Blocks", "/Manage/Blocks"),
+                }
+            },
 
             new DropdownMenuModel()
             {
