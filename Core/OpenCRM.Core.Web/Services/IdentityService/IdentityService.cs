@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Areas.Identity.Models;
-using System.Text;
-using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text.Encodings.Web;
 using OpenCRM.Core.Web.Services.EmailNotificationService;
-using Microsoft.AspNetCore.Http;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace OpenCRM.Core.Web.Services.IdentityService
 {
@@ -20,18 +19,20 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         private readonly IUserStore<UserEntity> _userStore;
         private readonly ILogger<IdentityService> _logger;
         private readonly IEmailService _emailSender;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public IdentityService(UserManager<UserEntity> userManager,
             IUserStore<UserEntity> userStore,
         SignInManager<UserEntity> signInManager,
         ILogger<IdentityService> logger,
-        IEmailService emailSender)
+        IEmailService emailSender, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _userStore = userStore;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _httpContextAccessor = httpContextAccessor;
 
         }
 
@@ -93,13 +94,34 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             }
 
             var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
-            if (!emailConfirmed) {
+            if (!emailConfirmed)
+            {
                 await _userManager.ConfirmEmailAsync(user, encodedCode);
             }
 
             return _emailSender.SendEmail(user.Email, "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+        }
+        public async Task<SignInResult> SignInUser(string username, string password, bool rememberMe)
+        {
+            var result = await _signInManager.PasswordSignInAsync(username, password, rememberMe, lockoutOnFailure: false);
+
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+            _logger.LogInformation("User logged in.");
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return result;
+            }
+
+            var  userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+            _httpContextAccessor?.HttpContext?.SignInAsync(userPrincipal);
+
+            return result;
         }
 
         private UserEntity CreateUser()
