@@ -59,7 +59,7 @@ namespace OpenCRM.Core.Web.Pages.Identity.Login
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {

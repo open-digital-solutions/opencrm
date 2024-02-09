@@ -33,8 +33,8 @@ namespace OpenCRM.Core.Web.Services.EmailNotificationService
                     smtpClient.Port = emailSettings.Port;
                     smtpClient.Host = emailSettings.Server;
 
-                    smtpClient.EnableSsl = true;
-                    smtpClient.UseDefaultCredentials = true;
+                    smtpClient.EnableSsl = emailSettings.EnableSsl;
+                    smtpClient.UseDefaultCredentials = emailSettings.DefaultCredentials;
                     smtpClient.Credentials = new NetworkCredential(emailSettings.Username, emailSettings.Password);
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpClient.Send(message);
