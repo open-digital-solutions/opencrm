@@ -5,12 +5,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Areas.Identity.Models;
+using OpenCRM.Core.Web.Services.IdentityService;
+using System.Security.Principal;
 
 namespace OpenCRM.Core.Web.Pages.Identity.Login
 {
     public class IndexModel : PageModel
     {
         private readonly SignInManager<UserEntity> _signInManager;
+        private readonly IIdentityService _identityService;
         private readonly ILogger<IndexModel> _logger;
 
         [BindProperty]
@@ -21,10 +24,11 @@ namespace OpenCRM.Core.Web.Pages.Identity.Login
         [TempData]
         public string ErrorMessage { get; set; } = string.Empty;
 
-        public IndexModel(SignInManager<UserEntity> signInManager, ILogger<IndexModel> logger)
+        public IndexModel(SignInManager<UserEntity> signInManager, IIdentityService identityService, ILogger<IndexModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _identityService = identityService;
         }
         public void OnGet(string? returnUrl = null)
         {
@@ -51,10 +55,10 @@ namespace OpenCRM.Core.Web.Pages.Identity.Login
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _identityService.SignInUser(Input.Email, Input.Password, Input.RememberMe);
+                //var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
