@@ -22,7 +22,7 @@ namespace OpenCRM.Core.Web
             OpenCRMEnv.SetWebRoot();
 
             //TODO: Register all module services here
-
+            
             string connectionString = configuration.GetConnectionString("DBConnection") ?? throw new InvalidOperationException("OpenCRM DB Connection string 'DBConnection' not found.");
             services.AddDbContext<TDBContext>(options => options.UseNpgsql(connectionString));
             services.AddScoped<QRCodeService>();
@@ -35,10 +35,13 @@ namespace OpenCRM.Core.Web
 
             services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TDBContext>();
 
+            services.AddHttpContextAccessor();
+
             services.AddMicrosoftIdentityWebApiAuthentication(configuration)
                    .EnableTokenAcquisitionToCallDownstreamApi()
                        .AddMicrosoftGraph(configuration.GetSection("DownstreamApi"))
                        .AddInMemoryTokenCaches();
+
 
             return services;
         }
@@ -62,8 +65,8 @@ namespace OpenCRM.Core.Web
 
                 var emailService = scope.ServiceProvider
                   .GetRequiredService<IEmailService>();
-
-                // emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");
+               
+                emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");
 
             }
             return app;
