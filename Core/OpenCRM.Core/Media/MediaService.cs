@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.FileIO;
 using OpenCRM.Core.Extensions;
+using System.Text.Json;
 
 namespace OpenCRM.Core
 {
@@ -24,7 +26,7 @@ namespace OpenCRM.Core
                     FileType = MediaType.GENERIC,
                     IsPublic = isPublic
                 };
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
                 using (var stream = new MemoryStream())
                 {
                     fileData.CopyTo(stream);
@@ -43,14 +45,46 @@ namespace OpenCRM.Core
                 throw;
             }
         }
+        public async Task PostFileAsync(MediaModel model)
+        {
+            try
+            {
+                string extension=Path.GetExtension(model.FileData.FileName).ToLower();
+                var fileDetails = new MediaEntity()
+                {
+                    ID = Guid.NewGuid(),
+                    FileName = model.FileName,
+                    FileType = extension==".pdf"?MediaType.PDF: extension == ".docx" ? MediaType.DOCX : MediaType.GENERIC,
+                    IsPublic = model.IsPublic
+                };
 
-       
+                using (var stream = new MemoryStream())
+                {
+                    model.FileData.CopyTo(stream);
+                    fileDetails.FileData = stream.ToArray();
+                }
+                if (model.IsPublic)
+                {
+                    StoreMediaToPublicFile(fileDetails);
+                }
+
+                var result = dbContextClass.Medias.Add(fileDetails);
+                await dbContextClass.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
 
         public async Task PostMultiFileAsync(List<MediaUploadModel> fileData)
         {
             try
             {
-                foreach(MediaUploadModel file in fileData)
+                foreach (MediaUploadModel file in fileData)
                 {
                     var fileDetails = new MediaEntity()
                     {
@@ -72,7 +106,7 @@ namespace OpenCRM.Core
                     }
 
                     var result = dbContextClass.Medias.Add(fileDetails);
-                }             
+                }
                 await dbContextClass.SaveChangesAsync();
             }
             catch (Exception)
@@ -85,19 +119,21 @@ namespace OpenCRM.Core
         {
             try
             {
-                var file =  await dbContextClass.Medias.Where(x => x.ID == uuid).FirstOrDefaultAsync();
+                var file = await dbContextClass.Medias.Where(x => x.ID == uuid).FirstOrDefaultAsync();
                 if (file == null) return null;
                 if (file.FileName == null) return null;
                 if (file.FileData == null) return null;
 
-                if (file.IsPublic) {
+                if (file.IsPublic)
+                {
                     StoreMediaToPublicFile(file);
                 }
-               
+
                 var content = new System.IO.MemoryStream(file.FileData);
 
                 var webRootPath = OpenCRMEnv.GetWebRoot();
-                if (!string.IsNullOrEmpty(webRootPath)) {
+                if (!string.IsNullOrEmpty(webRootPath))
+                {
                     var path = Path.Combine(webRootPath, "media", file.FileName);
                     await CopyStream(content, path);
                 }
@@ -107,14 +143,14 @@ namespace OpenCRM.Core
             catch (Exception)
             {
                 throw;
-            }        
+            }
         }
- 
+
         public async Task CopyStream(Stream stream, string downloadPath)
         {
             using (var fileStream = new FileStream(downloadPath, FileMode.Create, FileAccess.Write))
             {
-               await stream.CopyToAsync(fileStream);
+                await stream.CopyToAsync(fileStream);
             }
         }
 
@@ -137,5 +173,52 @@ namespace OpenCRM.Core
                 File.WriteAllBytes(filePath, fileDetails.FileData);
             }
         }
+        public List<MediaEntity> GetMedias()
+        {
+            var result = dbContextClass.Medias.ToList() ?? new List<MediaEntity>();
+            return result;
+        }
+        public MediaEntity GetMedia(Guid Id)
+        {
+            return dbContextClass.Medias.FirstOrDefault(s => s.ID == Id);
+
+        }
+        public async Task RemoveMedia(Guid Id)
+        {
+            var media = await dbContextClass.Medias.FindAsync(Id);
+            if (media == null) return;
+            dbContextClass.Medias.Remove(media);
+            dbContextClass.SaveChanges();
+        }
+        public async Task<MediaEntity> EditFileAsync(Guid Id,MediaEntity media)
+        {
+            try
+            {
+                var entity = await dbContextClass.Medias.FindAsync(Id);
+                
+                if (entity == null) return null;
+                
+                    entity.FileName = media.FileName;
+                    entity.FileType=media.FileType;
+                    entity.IsPublic = media.IsPublic;
+                    entity.FileData = media.FileData;
+                    entity.UpdatedAt = DateTime.UtcNow;
+                    
+                    if (media.IsPublic)
+                    {
+                        StoreMediaToPublicFile(entity);
+                    }
+                    await dbContextClass.SaveChangesAsync();
+                    return entity;
+               
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+
     }
 }
