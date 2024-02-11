@@ -1,0 +1,27 @@
+﻿
+@if (Text != null && Text != "")
+{
+	<p>@Text</p>
+}
+
+@if (ListItems != null && ListItems.Count() != 0)
+{
+	<p>
+		<ul>
+			@foreach (var item in ListItems)
+			{
+				<li>
+					<Description Text="@item.Text" ListItems="@item.ListItems" />
+				</li>
+			}
+		</ul>
+	</p>
+}
+
+@code {
+	[Parameter]
+	public string? Text { get; set; }
+
+	[Parameter]
+	public List<DescriptionModel>? ListItems { get; set; }
+}
