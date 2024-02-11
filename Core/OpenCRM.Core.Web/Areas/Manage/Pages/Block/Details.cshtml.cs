@@ -1,21 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.Web.Components.Table;
+using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Web.Components.Block;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Table;
+using OpenCRM.Core.Web.Services.BlockService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 {
-    public class IndexModel : PageModel
+    public class DetailsModel : PageModel
     {
+        private readonly IBlockService _blockService;
+
+        [BindProperty]
+        public DataBlockModel<BlockModel> Model { get; set; } = default!;
+
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        [BindProperty]
-        public TableModel Table { get; set; } = new TableModel();
-
-        public IndexModel() 
+        public DetailsModel(IBlockService blockService)
         {
+            _blockService = blockService;
+
             Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "",
@@ -38,15 +43,23 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Blocks List",
+                Name = "Blocks",
                 Page = "",
                 Url = "/Manage/Blocks"
             });
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
-		
-		}
+            var dataBlockModel = await _blockService.GetBlock(id);
+
+            if (dataBlockModel == null)
+            {
+                return NotFound();
+            }
+
+            Model = dataBlockModel;
+            return Page();
+        }
     }
 }

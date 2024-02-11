@@ -34,7 +34,6 @@ namespace OpenCRM.SwissLPD.Services.EventService
         public async Task<List<DataBlockModel<EventModel>>> GetEvents()
         {
             var result = await _dataBlockService.GetDataBlockListAsync<EventModel>();
-            if (result == null) return new List<DataBlockModel<EventModel>>();
             return result;
         }
 

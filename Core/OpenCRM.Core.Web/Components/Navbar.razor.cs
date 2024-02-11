@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.Extensions.Logging;
+using OpenCRM.Core.Web.Components.Block;
 using OpenCRM.Core.Web.Components.DropdownMenu;
 using OpenCRM.Core.Web.Models;
 using System;
@@ -28,7 +29,7 @@ namespace OpenCRM.Core.Web.Components
                 Url = "/Manage",
                 Items = new List<DropdownMenuModel>()
                 {
-                    new DropdownMenuModel("Blocks", "/Manage/Blocks"),
+                    new DropdownMenuModel("Blocks", "/Manage/Block"),
                 }
             },
 
@@ -60,7 +61,6 @@ namespace OpenCRM.Core.Web.Components
         [Parameter]
         public DropdownMenuModel CurrentModuleLinks { get; set; } = saveCurrentModelLinks; //Active Main Module
 
-        
         static DropdownMenuModel saveCurrentModelLinks = new DropdownMenuModel();
 
         protected override void OnInitialized()

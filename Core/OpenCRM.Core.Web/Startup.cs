@@ -8,6 +8,7 @@ using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.QRCode;
+using OpenCRM.Core.Web.Services.BlockService;
 using OpenCRM.Core.Web.Services.EmailNotificationService;
 using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
@@ -30,6 +31,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IBlockService, BlockService<TDBContext>>();
 
             services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TDBContext>();
 
