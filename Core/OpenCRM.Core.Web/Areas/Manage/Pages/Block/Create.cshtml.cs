@@ -43,9 +43,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Blocks",
+                Name = "Block",
                 Page = "",
-                Url = "/Manage/Blocks"
+                Url = "/Manage/Block"
             });
 
 
@@ -55,7 +55,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 IsActive = true,
                 Name = "Create Block",
                 Page = "",
-                Url = "/Manage/Blocks/Create"
+                Url = "/Manage/Block/Create"
             });
         }
 
