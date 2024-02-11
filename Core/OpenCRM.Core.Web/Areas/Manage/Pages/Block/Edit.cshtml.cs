@@ -100,6 +100,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
 
+                if(Model.Image != null)
+                {
+                    Model.Type = BlockType.Card;
+                }
+
                 var dataBlockModelEdit = new DataBlockModel<BlockModel>()
                 {
                     ID = id,
