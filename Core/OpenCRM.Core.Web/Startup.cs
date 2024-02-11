@@ -11,6 +11,8 @@ using OpenCRM.Core.QRCode;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.BlockService;
 using OpenCRM.Core.Web.Services.EmailService;
+using OpenCRM.Core.Web.Services.BlockService;
+using OpenCRM.Core.Web.Services.EmailNotificationService;
 using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Services.RoleService;
@@ -56,6 +58,9 @@ namespace OpenCRM.Core.Web
             });
             services.AddAuthorization();
             services.AddHttpContextAccessor();
+            services.AddScoped<IBlockService, BlockService<TDBContext>>();
+
+            services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TDBContext>();
 
             services.AddMicrosoftIdentityWebApiAuthentication(configuration)
                    .EnableTokenAcquisitionToCallDownstreamApi()
