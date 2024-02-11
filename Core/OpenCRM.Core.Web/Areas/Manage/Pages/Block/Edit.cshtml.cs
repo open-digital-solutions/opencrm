@@ -73,6 +73,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     return NotFound();
                 }
 
+                if(Model.Image != null)
+                {
+                    Model.Type = BlockType.Card;
+                }
+
                 var dataBlockModelEdit = new DataBlockModel<BlockModel>()
                 {
                     ID = id,
