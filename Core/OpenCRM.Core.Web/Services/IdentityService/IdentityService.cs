@@ -96,7 +96,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 return false;
             }
 
-            var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
             if (!emailConfirmed) {
                 await _userManager.ConfirmEmailAsync(user, encodedCode);
             }
