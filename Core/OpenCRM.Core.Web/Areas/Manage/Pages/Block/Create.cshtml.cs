@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Graph.CallRecords;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.BlockService;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 
@@ -15,6 +17,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
     public class CreateModel : PageModel
     {
         private readonly IBlockService _blockService;
+
+        private readonly IMediaService _mediaService;
+
+        [Required]
+        [BindProperty]
+        public IFormFile FileData { get; set; } = default!;
 
         private readonly IMediaService _mediaService;
 
