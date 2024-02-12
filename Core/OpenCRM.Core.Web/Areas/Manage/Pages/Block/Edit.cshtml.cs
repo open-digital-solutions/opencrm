@@ -64,7 +64,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             return Page();
         }
 
-        public IActionResult OnPost(Guid id)
+        public async Task<IActionResult> OnPost(Guid id)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     Data = Model
                 };
 
-                _blockService.EditBlock(dataBlockModelEdit);
+                await _blockService.EditBlock(dataBlockModelEdit);
                 return RedirectToPage("./Index");
             }
             return Page();

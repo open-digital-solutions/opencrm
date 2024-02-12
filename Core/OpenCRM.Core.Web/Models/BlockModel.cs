@@ -13,6 +13,7 @@ namespace OpenCRM.Core.Web.Models
 
     public class BlockModel
     {
+
         public string Title { get; set; } = string.Empty;
 
         public string? SubTitle { get; set; }
@@ -21,7 +22,7 @@ namespace OpenCRM.Core.Web.Models
 
         public string? Description { get; set; }
 
-        public string? ImageId { get; set; } = string.Empty;
+        public Guid? ImageId { get; set; }
 
         public string? ImageUrl { get; set; }
     }

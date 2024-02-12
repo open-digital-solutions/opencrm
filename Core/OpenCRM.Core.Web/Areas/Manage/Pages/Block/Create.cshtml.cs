@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Graph.CallRecords;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.BlockService;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 
@@ -13,22 +17,25 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
     {
         private readonly IBlockService _blockService;
 
+        private readonly IMediaService _mediaService;
+
+        [Required]
         [BindProperty]
-        public string ImageName { get;set; } = string.Empty;
+        public IFormFile FileData { get; set; } = default!;
+
+        [BindProperty]
+        public bool IsPublic { get; set; } = false;
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
 
         [BindProperty]
-        [Column(TypeName = "jsonb")]
-        public string? Description { get; set; }
-
-        [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public CreateModel(IBlockService blockService)
+        public CreateModel(IBlockService blockService, IMediaService mediaService)
         {
             _blockService = blockService;
+            _mediaService = mediaService;
 
             Links.Add(new BreadCrumbLinkModel()
             {
@@ -79,18 +86,26 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             return list;
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (ModelState.IsValid)
             {
-                var modelType = (ImageName != "")? BlockType.Card : BlockType.Text;
+                Guid imageID = default!;
+                var modelType = BlockType.Text;
+
+                if (FileData != null)
+                {
+                    modelType = BlockType.Card;
+                    var result = await _mediaService.PostFileAsync(FileData, IsPublic);
+                    imageID = result.ID;
+                }
 
                 var blockModel = new BlockModel()
                 {
                     Title = Model.Title,
                     SubTitle = Model.SubTitle,
                     Type = modelType,
-                    ImageId = Model.ImageId,
+                    ImageId = imageID,
                 };
 
                 var dataBlockModel = new DataBlockModel<BlockModel>()
@@ -101,7 +116,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     Data = blockModel
                 };
 
-                _blockService.AddBlock(dataBlockModel);
+                await _blockService.AddBlock(dataBlockModel);
                 return RedirectToPage("./Index");
             }
             return Page();
