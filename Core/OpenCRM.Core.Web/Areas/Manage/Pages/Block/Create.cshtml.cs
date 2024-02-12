@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Components.Block;
+using OpenCRM.Core.Web.Components.Block.Description;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.BlockService;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 {
@@ -13,6 +17,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
+
+        [BindProperty]
+        [Column(TypeName = "jsonb")]
+        public string? Description { get; set; }
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -64,18 +72,25 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             return Page();
         }
 
+        public List<DescriptionItem> ToListItem()
+        {
+            var list = new List<DescriptionItem>();
+            return list;
+        }
+
         public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
                 var modelType = (Model.Image != null)? BlockType.Card : BlockType.Text;
+                var description = (Description != null)? JsonSerializer.Deserialize<DescriptionModel>(Description) : null;
 
                 var blockModel = new BlockModel()
                 {
                     Title = Model.Title,
                     SubTitle = Model.SubTitle,
                     Type = modelType,
-                    Description = Model.Description,
+                    Description = description,
                     Image = Model.Image,
                 };
 
