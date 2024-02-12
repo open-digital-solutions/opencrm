@@ -29,6 +29,8 @@ namespace OpenCRM.Core.Web.Components
                 Items = new List<DropdownMenuModel>()
                 {
                     new DropdownMenuModel("Blocks", "/Manage/Block"),
+
+                    new DropdownMenuModel("Medias", "Manage/Media")
                 }
             },
 
