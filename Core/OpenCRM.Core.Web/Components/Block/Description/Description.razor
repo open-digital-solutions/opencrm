@@ -1,17 +1,17 @@
 ﻿
-@if (Text != null && Text != "")
+@if (DescriptionModel.Text != null && DescriptionModel.Text != "")
 {
-	<p>@Text</p>
+	<p>@DescriptionModel.Text</p>
 }
 
-@if (ListItems != null && ListItems.Count() != 0)
+@if (DescriptionModel.ListItems != null && DescriptionModel.ListItems.Count() != 0)
 {
 	<p>
 		<ul>
-			@foreach (var item in ListItems)
+			@foreach (var item in DescriptionModel.ListItems)
 			{
 				<li>
-					<Description Text="@item.Text" ListItems="@item.ListItems" />
+					<ListDescriptionItems Text="@item.Text" Items="@item.Items"/>
 				</li>
 			}
 		</ul>
@@ -20,8 +20,5 @@
 
 @code {
 	[Parameter]
-	public string? Text { get; set; }
-
-	[Parameter]
-	public List<DescriptionModel>? ListItems { get; set; }
+	public DescriptionModel DescriptionModel { get; set; } = new DescriptionModel();
 }
