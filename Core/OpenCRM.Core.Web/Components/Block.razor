@@ -10,12 +10,12 @@
 
     @if(BlockModel.Description != null)
     {
-        <Description Text="@BlockModel.Description.Text" ListItems="@BlockModel.Description.ListItems" />
+        <p>@BlockModel.Description</p>
     }
 
     @if(BlockModel.Type == BlockType.Card)
     {
-        <img src="@BlockModel.Image"/>
+        <img src="@BlockModel.ImageUrl"/>
     }
 }
 

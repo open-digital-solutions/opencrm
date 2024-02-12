@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
-using OpenCRM.Core.Web.Components.Block;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.BlockService;
 
@@ -10,6 +9,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
     public class DeleteModel : PageModel
     {
         private readonly IBlockService _blockService;
+
+        [BindProperty]
+        public string ImageName { get; set; } = string.Empty;
 
         [BindProperty]
         public DataBlockModel<BlockModel> Model { get; set; } = default!;

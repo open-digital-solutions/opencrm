@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
-using OpenCRM.Core.Web.Components.Block;
 using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.BlockService;

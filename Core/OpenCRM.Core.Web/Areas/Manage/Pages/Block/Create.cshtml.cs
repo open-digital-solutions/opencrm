@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OpenCRM.Core.DataBlock;
-using OpenCRM.Core.Web.Components.Block;
-using OpenCRM.Core.Web.Components.Block.Description;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.BlockService;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,6 +12,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
     public class CreateModel : PageModel
     {
         private readonly IBlockService _blockService;
+
+        [BindProperty]
+        public string ImageName { get;set; } = string.Empty;
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
@@ -82,16 +83,14 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         {
             if (ModelState.IsValid)
             {
-                var modelType = (Model.Image != null)? BlockType.Card : BlockType.Text;
-                var description = (Description != null)? JsonSerializer.Deserialize<DescriptionModel>(Description) : null;
+                var modelType = (ImageName != "")? BlockType.Card : BlockType.Text;
 
                 var blockModel = new BlockModel()
                 {
                     Title = Model.Title,
                     SubTitle = Model.SubTitle,
                     Type = modelType,
-                    Description = description,
-                    Image = Model.Image,
+                    ImageId = Model.ImageId,
                 };
 
                 var dataBlockModel = new DataBlockModel<BlockModel>()

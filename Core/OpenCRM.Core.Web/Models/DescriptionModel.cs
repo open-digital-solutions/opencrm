@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCRM.Core.Web.Components.Block.Description
+namespace OpenCRM.Core.Web.Models
 {
-	public class DescriptionItem
+    public class DescriptionItem
     {
         public string Text { get; set; } = string.Empty;
 
