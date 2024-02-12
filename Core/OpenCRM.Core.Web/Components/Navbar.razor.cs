@@ -67,6 +67,37 @@ namespace OpenCRM.Core.Web.Components
         [Parameter]
         public DropdownMenuModel CurrentModuleLinks { get; set; } = saveCurrentModelLinks; //Active Main Module
 
+        public DescriptionModel DescriptionItem = new DescriptionModel()
+        {
+            ListItems = new List<DescriptionItem>()
+            {
+                new DescriptionItem()
+                {
+                    Text = "Ricarica da 10ml con 600ml acqua superfici lavabili"
+				},
+
+                new DescriptionItem()
+                {
+                    Text = "Disifezioni mani e supperfici si consiglia:",
+                    Items = new List<DescriptionItem>()
+                    {
+                        new DescriptionItem()
+                        {
+                            Text = "alcool etilico al 95%"
+						},
+                        new DescriptionItem()
+                        {
+                            Text = "ml 200 acqua"
+						},
+                        new DescriptionItem()
+                        {
+							Text = "ml 12 OmniumBio"
+						}
+                    }
+				}
+            }
+        };
+
         static DropdownMenuModel saveCurrentModelLinks = new DropdownMenuModel();
         static string UserName = "";
         static string Name = "";
