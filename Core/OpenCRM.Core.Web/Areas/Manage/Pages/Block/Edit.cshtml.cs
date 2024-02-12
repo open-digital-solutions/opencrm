@@ -26,6 +26,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
 
         [BindProperty]
+        public string ImageName { get; set; } = string.Empty;
+
+        [BindProperty]
         public BlockModel Model { get; set; } = default!;
 
         [BindProperty]
@@ -100,7 +103,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
 
-                if(Model.Image != null)
+                if(Model.ImageId != null)
                 {
                     Model.Type = BlockType.Card;
                 }
