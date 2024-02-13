@@ -219,6 +219,11 @@ namespace OpenCRM.Core
             }
         }
 
+        public string GetImageUrl(Guid id)
+        {
+            string url = string.Empty;
 
+            return url;
+        }
     }
 }

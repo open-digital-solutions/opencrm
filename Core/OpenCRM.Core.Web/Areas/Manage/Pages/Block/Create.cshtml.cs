@@ -91,6 +91,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             if (ModelState.IsValid)
             {
                 Guid imageID = default!;
+                string imageUrl = "";
                 var modelType = BlockType.Text;
 
                 if (FileData != null)
@@ -98,6 +99,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     modelType = BlockType.Card;
                     var result = await _mediaService.PostFileAsync(FileData, IsPublic);
                     imageID = result.ID;
+                    imageUrl = _mediaService.GetImageUrl(imageID);
                 }
 
                 var blockModel = new BlockModel()
