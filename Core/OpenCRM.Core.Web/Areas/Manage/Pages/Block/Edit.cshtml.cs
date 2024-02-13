@@ -27,7 +27,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
 
         [BindProperty]
-        public string ImageName { get; set; } = string.Empty;
+        public bool IsPublic { get; set; } = false;
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;

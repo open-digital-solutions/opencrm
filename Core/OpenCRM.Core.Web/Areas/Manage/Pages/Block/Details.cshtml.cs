@@ -13,9 +13,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         private readonly IBlockService _blockService;
 
         [BindProperty]
-        public string ImageName { get; set; } = string.Empty;
-
-        [BindProperty]
         public DataBlockModel<BlockModel> Model { get; set; } = default!;
 
         [BindProperty]
@@ -62,7 +59,16 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 return NotFound();
             }
 
-            Model = dataBlockModel;
+            var showModel = new BlockModel
+            {
+                Code = dataBlockModel.Data.Code,
+                Title = dataBlockModel.Data.Title,
+                SubTitle = dataBlockModel.Data.SubTitle,
+                Description = dataBlockModel.Data.Description,
+                ImageUrl = dataBlockModel.Data.ImageUrl,
+            };
+
+            Model.Data = showModel;
             return Page();
         }
     }
