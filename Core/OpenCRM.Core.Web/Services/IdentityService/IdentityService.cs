@@ -168,7 +168,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             var adminUser = new InputRegisterModel
             {
                 Email = "info@opends.io",
-                Name = "Administrator",
+                Name = "Admin",
                 Lastname = "OpenDS",
                 Password = "Password.-0",
                 ConfirmPassword = "Password.-0"
