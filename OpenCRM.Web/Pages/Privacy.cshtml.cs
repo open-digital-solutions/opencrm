@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Web.Pages
 {
-    public class PrivacyModel : PageModel
+    [Authorize]
+    public class PrivacyModel : CorePageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
 
