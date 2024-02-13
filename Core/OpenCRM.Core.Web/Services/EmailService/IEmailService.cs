@@ -1,4 +1,4 @@
-﻿namespace OpenCRM.Core.Web.Services.EmailNotificationService
+﻿namespace OpenCRM.Core.Web.Services.EmailService
 {
     public interface IEmailService
     {

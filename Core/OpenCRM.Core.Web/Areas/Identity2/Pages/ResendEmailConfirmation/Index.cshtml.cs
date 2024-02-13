@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.EmailNotificationService;
+using OpenCRM.Core.Web.Services.EmailService;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;

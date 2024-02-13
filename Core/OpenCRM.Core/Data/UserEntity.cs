@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using OpenCRM.Core.Crypto;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OpenCRM.Core.Data
@@ -7,6 +8,9 @@ namespace OpenCRM.Core.Data
     {
         public string Name { get; set; } = string.Empty;
         public string Lastname { get; set; } = string.Empty;
+
+        public string RSAPublic { get; set; } = string.Empty;
+        public string RSAPrivate { get; set; } = string.Empty;
 
         [Column(TypeName = "jsonb")]
         public string Data { get; set; } = "{}";

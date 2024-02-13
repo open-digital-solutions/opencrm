@@ -8,7 +8,9 @@ namespace OpenCRM.Core.Web.Services.IdentityService
 {
     public interface IIdentityService
     {
+        Task<IdentityResult> ConfirmUserEmail(UserEntity user, string token);
         Task<UserModel?> GetLoggedUser();
+        Task<UserEntity?> GetUser(string userId);
         Task Logout();
         Task<Tuple<IdentityResult, UserEntity>> RegisterUser(InputRegisterModel Input);
         Task<bool> SendConfirmationEmail(UserEntity user, PageModel page);

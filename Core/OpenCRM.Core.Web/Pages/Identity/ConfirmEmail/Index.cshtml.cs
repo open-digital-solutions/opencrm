@@ -1,25 +1,20 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services.IdentityService;
 using System.Text;
 
 namespace OpenCRM.Core.Web.Pages.Identity.ConfirmEmail
 {
     public class IndexModel : CorePageModel
     {
-        private readonly UserManager<UserEntity> _userManager;
+        private readonly IIdentityService _identityService;
 
-        public IndexModel(UserManager<UserEntity> userManager)
+        public IndexModel(IIdentityService identityService)
         {
-            _userManager = userManager;
+            _identityService = identityService;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; } = string.Empty;
 
@@ -31,14 +26,14 @@ namespace OpenCRM.Core.Web.Pages.Identity.ConfirmEmail
                 return RedirectToPage("/Index");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _identityService.GetUser(userId);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{userId}'.");
             }
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ConfirmEmailAsync(user, code);
+            var result = await _identityService.ConfirmUserEmail(user, code);
             StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
             return Page();
         }
