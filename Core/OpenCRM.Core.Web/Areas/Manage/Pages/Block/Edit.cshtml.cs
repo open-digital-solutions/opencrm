@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Extensions;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.BlockService;
@@ -26,7 +27,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
 
         [BindProperty]
-        public string ImageName { get; set; } = string.Empty;
+        public bool IsPublic { get; set; } = false;
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
@@ -105,8 +106,13 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
                 if(Model.ImageId != null)
                 {
-                    Model.Type = BlockType.Card;
-                }
+                    Code = Model.Code,
+                    Title = Model.Title,
+                    SubTitle = Model.SubTitle,
+                    Type = modelType,
+                    ImageId = imageID,
+                    ImageUrl = imageUrl
+                };
 
                 var dataBlockModelEdit = new DataBlockModel<BlockModel>()
                 {
