@@ -63,6 +63,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
                 return NotFound();
             }
             return File(media.FileData, "application/octet-stream", media.FileName);
+
         }
 
     }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
 {
@@ -14,8 +15,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
         public MediaEntity Model { get; set; } = default!;
 
         [BindProperty]
-        public IFormFile UploadedFile { get; set; } 
-
+        public IFormFile? UploadedFile { get; set; }
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -67,17 +67,17 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
                    if (UploadedFile != null)
                    {
                         using (var memoryStream = new MemoryStream())
-                {
+                         {
                             UploadedFile.CopyTo(memoryStream);
                             Model.FileData = memoryStream.ToArray();
                         }
                         string extension = Path.GetExtension(UploadedFile.FileName).ToLower();
                         Model.FileType = extension == ".pdf" ? MediaType.PDF : extension == ".docx" ? MediaType.DOCX : MediaType.GENERIC;
-                  
-                        await _mediaService.EditFileAsync(id,Model);
-                        return RedirectToPage("./Index");
+                    
                     }
-                }
+                await _mediaService.EditFileAsync(id, Model);
+                return RedirectToPage("./Index");
+            }
 
             return Page();
         }
