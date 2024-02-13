@@ -13,6 +13,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         Task<UserEntity?> GetUser(string userId);
         Task Logout();
         Task<Tuple<IdentityResult, UserEntity>> RegisterUser(InputRegisterModel Input);
+        Task Seed();
         Task<bool> SendConfirmationEmail(UserEntity user, PageModel page);
         Task<SignInResult> SignInUser(string username, string password, bool rememberMe);
     }

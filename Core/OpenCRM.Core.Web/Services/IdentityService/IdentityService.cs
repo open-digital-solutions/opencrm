@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph;
 using Microsoft.Identity.Web;
 using OpenCRM.Core.Crypto;
 using OpenCRM.Core.Data;
@@ -149,6 +148,29 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         public async Task<IdentityResult> ConfirmUserEmail(UserEntity user, string token)
         {
             return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+        public async Task Seed()
+        {
+
+            var existedAdminUser = await _userManager.FindByEmailAsync("info@opends.io");
+            if (existedAdminUser != null) return;
+
+            var adminUser = new InputRegisterModel
+            {
+                Email = "info@opends.io",
+                Name = "Administrator",
+                Lastname = "OpenDS",
+                Password = "Password.-0",
+                ConfirmPassword = "Password.-0"
+            };
+            var result = await RegisterUser(adminUser);
+            if (result.Item1.Succeeded)
+            {
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(result.Item2);
+                var resultEmailCOnfirm = await ConfirmUserEmail(result.Item2, code);
+                Console.WriteLine(resultEmailCOnfirm.Succeeded);
+            }
         }
         private UserEntity CreateUser()
         {
