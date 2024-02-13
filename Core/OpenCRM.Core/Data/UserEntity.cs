@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using OpenCRM.Core.Crypto;
 using System.ComponentModel.DataAnnotations.Schema;

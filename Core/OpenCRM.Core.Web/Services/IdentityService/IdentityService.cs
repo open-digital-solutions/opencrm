@@ -70,10 +70,12 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 user.Email = Input.Email;
             }
 
-            ////Serialize Later the real Extra Properties!!!
-            //var extra = new { Extra1 = "Extra1", Extra2 = "Extra2" };
-            //var extraJson = Input.UserExtras == null ? JsonSerializer.Serialize(extra) : Input.UserExtras;
-            //user.UserExtras = extraJson;
+            var userCryptoData = RSACryptoService.GetKeyPairs();
+            if (userCryptoData != null)
+            {
+                user.RSAPublic = userCryptoData.GetStringPublicKey();
+                user.RSAPrivate = userCryptoData.GetStringPrivateKey();
+            }
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
 
