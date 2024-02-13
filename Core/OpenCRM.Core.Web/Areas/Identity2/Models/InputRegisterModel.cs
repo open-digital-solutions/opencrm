@@ -50,5 +50,8 @@ namespace OpenCRM.Core.Web.Areas.Identity.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public required string ConfirmPassword { get; set; }
+
+        [Display(Name = "Roles")]
+        public List<string> Roles { get; set; } = new List<string>();
     }
 }
