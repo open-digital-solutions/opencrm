@@ -19,6 +19,8 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         private readonly IMediaService _mediaService;
 
+        public string ValidateError { get; set; } = string.Empty;
+
         [Required]
         [BindProperty]
         public IFormFile FileData { get; set; } = default!;
@@ -28,6 +30,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
+
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -99,15 +102,21 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     modelType = BlockType.Card;
                     var result = await _mediaService.PostFileAsync(FileData, IsPublic);
                     imageID = result.ID;
-                    imageUrl = _mediaService.GetImageUrl(imageID);
+                    
+                    if(IsPublic)
+                    {
+                        imageUrl = _mediaService.GetImageUrl(imageID);
+                    }
                 }
 
                 var blockModel = new BlockModel()
                 {
+                    Code = Model.Code,
                     Title = Model.Title,
                     SubTitle = Model.SubTitle,
                     Type = modelType,
                     ImageId = imageID,
+                    ImageUrl = imageUrl
                 };
 
                 var dataBlockModel = new DataBlockModel<BlockModel>()
@@ -118,7 +127,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     Data = blockModel
                 };
 
-                await _blockService.AddBlock(dataBlockModel);
+                if (await _blockService.AddBlock(dataBlockModel) == null)
+                {
+                    ValidateError = "Block with code " + Model.Code + " already exists";
+                    return Page();
+                }
+                
                 return RedirectToPage("./Index");
             }
             return Page();

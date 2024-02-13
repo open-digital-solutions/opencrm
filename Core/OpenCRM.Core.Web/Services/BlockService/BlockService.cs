@@ -19,6 +19,15 @@ namespace OpenCRM.Core.Web.Services.BlockService
 
 		public async Task<DataBlockModel<BlockModel>?> AddBlock(DataBlockModel<BlockModel> model)
 		{
+			var blocks = await GetBlocks();
+
+			foreach(var block in blocks)
+			{
+				if(block.Data.Code == model.Data.Code)
+				{
+					return null;
+				}
+			}
 			return await _dataBlockService.AddBlock(model);
 		}
 

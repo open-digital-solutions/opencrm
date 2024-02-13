@@ -11,6 +11,11 @@
                 <form method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-floating mb-3">
+                        <input asp-for="Model.Code" class="form-control" placeholder="Code" />
+                        <label asp-for="Model.Code" class="control-label"></label>
+                        <span asp-validation-for="Model.Code" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
                         <input asp-for="Model.Title" class="form-control" placeholder="Main Text" />
                         <label asp-for="Model.Title" class="control-label"></label>
                         <span asp-validation-for="Model.Title" class="text-danger"></span>
@@ -39,6 +44,14 @@
                             <input type="submit" value="Create" class="btn btn-primary btn-block"/>
                         </div>
                     </div>
+                    @if (Model.ValidateError != "")
+                    {
+                        <div class="mt-4">
+                            <p class="text-danger fw-bold">
+                                ! Error: @Model.ValidateError
+                            </p>
+                        </div>
+                    }
                 </form>
             </div>
         </div>
