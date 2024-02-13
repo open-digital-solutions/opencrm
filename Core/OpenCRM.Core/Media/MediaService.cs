@@ -199,9 +199,9 @@ namespace OpenCRM.Core
                 if (entity == null) return null;
                 
                     entity.FileName = media.FileName;
-                    entity.FileType=media.FileType;
+                    entity.FileType= media.FileData != null ? media.FileType:entity.FileType;
                     entity.IsPublic = media.IsPublic;
-                    entity.FileData = media.FileData;
+                    entity.FileData =media.FileData!=null ?media.FileData:entity.FileData;
                     entity.UpdatedAt = DateTime.UtcNow;
                     
                     if (media.IsPublic)
