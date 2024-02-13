@@ -38,6 +38,7 @@ namespace OpenCRM.Core.Web
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Login";
+                options.LogoutPath = "/Identity/Logout";
             });
             services.AddAuthentication();
             services.Configure<IdentityOptions>(options =>

@@ -122,10 +122,15 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 return result;
             }
 
-            var  userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+            var userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
             _httpContextAccessor?.HttpContext?.SignInAsync(userPrincipal);
 
             return result;
+        }
+
+        public async Task Logout()
+        {
+            await _signInManager.SignOutAsync();
         }
 
         private UserEntity CreateUser()
