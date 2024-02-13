@@ -4,6 +4,7 @@
     {
         GENERIC = 0,
         PDF = 1,
-        DOCX = 2
+        DOCX = 2,
+        IMAGE = 3,
     }
 }
