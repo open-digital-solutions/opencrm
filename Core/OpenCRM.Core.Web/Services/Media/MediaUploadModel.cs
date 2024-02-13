@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace OpenCRM.Core
+namespace OpenCRM.Core.Web.Services
 {
     public class MediaUploadModel
     {
