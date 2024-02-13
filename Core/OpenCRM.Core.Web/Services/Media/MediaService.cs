@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph.CallRecords;
@@ -9,7 +10,7 @@ using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Services
 {
-    public class MediaService<TDBContext> :  IMediaService where TDBContext : DataContext
+    public class MediaService<TDBContext> : IMediaService where TDBContext : DataContext
     {
         private readonly TDBContext dbContextClass;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -24,15 +25,11 @@ namespace OpenCRM.Core.Web.Services
         {
             try
             {
-                var filename = fileData.FileName ?? "UnknowFileName.generic";
-                var extension = Path.GetExtension(filename);
-
                 var fileDetails = new MediaEntity()
                 {
                     ID = Guid.NewGuid(),
-                    FileName = filename,
-                    Extension = extension,
-                    FileType = GetMediaType(extension),
+                    FileName = fileData.FileName,
+                    FileType = MediaType.GENERIC,
                     IsPublic = isPublic
                 };
 
@@ -95,6 +92,8 @@ namespace OpenCRM.Core.Web.Services
                 throw;
             }
         }
+
+
 
         public async Task PostMultiFileAsync(List<MediaUploadModel> fileData)
         {
@@ -209,6 +208,7 @@ namespace OpenCRM.Core.Web.Services
         public MediaEntity GetMedia(Guid Id)
         {
             return dbContextClass.Medias.FirstOrDefault(s => s.ID == Id);
+
         }
         public async Task RemoveMedia(Guid Id)
         {
@@ -319,16 +319,16 @@ namespace OpenCRM.Core.Web.Services
 
         public string GetMediaUrl(string mediaId)
         {
-            var baseUrl = _httpContextAccessor.GetBaseUrl();
+
+            var baseUrl = _httpContextAccessor?.HttpContext?.Request.PathBase ?? string.Empty;
             if (string.IsNullOrEmpty(baseUrl)) return string.Empty;
 
             var mediaGuid = Guid.Parse(mediaId);
             var media = GetMedia(mediaGuid);
             if (media == null) return string.Empty;
 
-            var extension = Path.GetExtension(media.FileName);
-
-            return $"{baseUrl}/media/{media.ID.ToString() + extension}";
+            //TODO: Extension to be evaluated!
+            return $"{baseUrl}/media/{media.ID}";
         }
 
         public bool IsImage(string fileName)
