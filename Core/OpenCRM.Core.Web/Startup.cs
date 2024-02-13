@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,8 +34,18 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IBlockService, BlockService<TDBContext>>();
 
-            services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TDBContext>();
-
+            services.AddIdentity<UserEntity, RoleEntity>().AddEntityFrameworkStores<TDBContext>().AddDefaultTokenProviders();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Login";
+            });
+            services.AddAuthentication();
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Configure Customize password requirements, lockout settings, etc.
+                options.SignIn.RequireConfirmedEmail = true;
+            });
+            services.AddAuthorization();
             services.AddHttpContextAccessor();
 
             services.AddMicrosoftIdentityWebApiAuthentication(configuration)
@@ -51,6 +62,7 @@ namespace OpenCRM.Core.Web
             {
                 throw new ArgumentNullException(nameof(app));
             }
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
