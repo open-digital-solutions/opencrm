@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
 using OpenCRM.Core.Web.Components.DropdownMenu;
 using OpenCRM.Core.Web.Models;
 using System;
@@ -42,6 +44,8 @@ namespace OpenCRM.Core.Web.Components
 
         [Inject]
         public NavigationManager Navigation { get;set; }
+        [Inject]
+        public IHttpContextAccessor ContextAccessor { get; set; }
 
         [Parameter]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -54,10 +58,15 @@ namespace OpenCRM.Core.Web.Components
 
         
         static DropdownMenuModel saveCurrentModelLinks = new DropdownMenuModel();
+        static string UserName = "";
 
         protected override void OnInitialized()
         {
             string currentModuleUrl = "/" + Navigation.ToBaseRelativePath(Navigation.Uri);
+            var username = ContextAccessor?.HttpContext?.User.GetDisplayName();
+            if(!string.IsNullOrEmpty(username) ) {
+                UserName = username;
+            }
 
             if(currentModuleUrl != "")
             {
