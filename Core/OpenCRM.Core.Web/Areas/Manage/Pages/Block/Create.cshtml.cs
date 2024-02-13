@@ -20,6 +20,8 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         private readonly IMediaService _mediaService;
 
+        public string ValidateError { get; set; } = string.Empty;
+
         [Required]
         [BindProperty]
         public IFormFile FileData { get; set; } = default!;
