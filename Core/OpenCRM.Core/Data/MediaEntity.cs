@@ -9,7 +9,9 @@ namespace OpenCRM.Core
     {
         public bool IsPublic { get; set; }
         public required string FileName { get; set; }
+        public required string Extension { get; set; }
         public byte[]? FileData { get; set; }
         public MediaType FileType { get; set; }
+        
     }
 }

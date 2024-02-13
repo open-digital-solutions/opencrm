@@ -50,12 +50,15 @@ namespace OpenCRM.Core.Web.Services
         {
             try
             {
-                string extension = Path.GetExtension(model.FileData.FileName).ToLower();
+                var filename = model.FileName ?? "UnknowFileName.generic";
+                var extension = Path.GetExtension(filename);
+
                 var fileDetails = new MediaEntity()
                 {
                     ID = Guid.NewGuid(),
-                    FileName = model.FileName,
-                    FileType = extension == ".pdf" ? MediaType.PDF : extension == ".docx" ? MediaType.DOCX : MediaType.GENERIC,
+                    FileName = filename,
+                    Extension = extension,
+                    FileType = GetMediaType(extension),
                     IsPublic = model.IsPublic
                 };
 
@@ -79,19 +82,22 @@ namespace OpenCRM.Core.Web.Services
             }
         }
 
-
-
         public async Task PostMultiFileAsync(List<MediaUploadModel> fileData)
         {
+
             try
             {
                 foreach (MediaUploadModel file in fileData)
                 {
+                    var filename = file.FileDetails?.FileName ?? "UnknowFileName.generic";
+                    var extension = Path.GetExtension(filename);
+                    
                     var fileDetails = new MediaEntity()
                     {
                         ID = Guid.NewGuid(),
-                        FileName = file.FileDetails?.FileName,
-                        FileType = MediaType.GENERIC,
+                        FileName = filename,
+                        Extension = extension,
+                        FileType = GetMediaType(extension),
                         IsPublic = file.IsPublic
                     };
 
@@ -182,7 +188,6 @@ namespace OpenCRM.Core.Web.Services
         public MediaEntity GetMedia(Guid Id)
         {
             return dbContextClass.Medias.FirstOrDefault(s => s.ID == Id);
-
         }
         public async Task RemoveMedia(Guid Id)
         {
@@ -217,6 +222,37 @@ namespace OpenCRM.Core.Web.Services
             {
                 Console.WriteLine(e.Message);
                 return null;
+            }
+        }
+
+        public MediaType GetMediaType(string extension) {
+
+            switch (extension)
+            {
+                case ".doc": {
+                        return MediaType.DOCX;    
+                }
+                case ".docx": {
+                        return MediaType.DOCX;
+                }
+                case ".pdf": {
+                        return MediaType.PDF;
+                }
+                case ".png":
+                {
+                        return MediaType.IMAGE;
+                }
+                case ".jpg":
+                {
+                    return MediaType.IMAGE;
+                }
+                case ".svg":
+                {
+                    return MediaType.IMAGE;
+                }
+                default: {
+                    return MediaType.GENERIC; 
+                }
             }
         }
 
