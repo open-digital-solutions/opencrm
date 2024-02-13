@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using Microsoft.Identity.Web;
 using OpenCRM.Core.Crypto;
 using OpenCRM.Core.Data;
