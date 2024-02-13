@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using OpenCRM.Core.Data;
+using OpenCRM.Core.Web.Services.EmailService;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 
@@ -12,7 +12,7 @@ namespace OpenCRM.Core.Web.Pages.Identity.RegisterConfirm
     public class IndexModel : PageModel
     {
         private readonly UserManager<UserEntity> _userManager;
-        private readonly IEmailSender _sender;
+        private readonly IEmailService _sender;
         private readonly IConfiguration _configuration;
 
 
@@ -20,7 +20,7 @@ namespace OpenCRM.Core.Web.Pages.Identity.RegisterConfirm
         public bool DisplayConfirmAccountLink { get; set; }
         public string? EmailConfirmationUrl { get; set; }
 
-        public IndexModel(UserManager<UserEntity> userManager, IEmailSender sender, IConfiguration configuration)
+        public IndexModel(UserManager<UserEntity> userManager, IEmailService sender, IConfiguration configuration)
         {
             _userManager = userManager;
             _sender = sender;

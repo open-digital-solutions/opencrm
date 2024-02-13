@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using Microsoft.Identity.Web;
+using OpenCRM.Core.Crypto;
 using OpenCRM.Core.Data;
+using OpenCRM.Core.Services;
 using OpenCRM.Core.Web.Areas.Identity.Models;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.EmailNotificationService;
+using OpenCRM.Core.Web.Services.EmailService;
 using System.Text;
 using System.Text.Encodings.Web;
 
@@ -38,15 +41,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
 
         }
 
-        /// <summary>
-        /// For general registration User
-        /// </summary>
-        /// <param name="Input">Input Register Model to use for user registration</param>
-        /// <param name="_userManager"></param>
-        /// <param name="_userStore"></param>
-        /// <param name="_emailStore"></param>
-        /// <returns>A Tuple, first parameter contains the result of the user registration and second
-        /// parameter contains the user created</returns>
+
         public async Task<Tuple<IdentityResult, UserEntity>> RegisterUser(InputRegisterModel Input)
         {
             Console.WriteLine(Input.UserExtras);
@@ -64,10 +59,12 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 user.Email = Input.Email;
             }
 
-            ////Serialize Later the real Extra Properties!!!
-            //var extra = new { Extra1 = "Extra1", Extra2 = "Extra2" };
-            //var extraJson = Input.UserExtras == null ? JsonSerializer.Serialize(extra) : Input.UserExtras;
-            //user.UserExtras = extraJson;
+            var userCryptoData = RSACryptoService.GetKeyPairs();
+            if (userCryptoData != null)
+            {
+                user.RSAPublic = userCryptoData.GetStringPublicKey();
+                user.RSAPrivate = userCryptoData.GetStringPrivateKey();
+            }
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, Input.Password);
@@ -142,6 +139,16 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 UserName = userEntity.UserName ?? string.Empty
             };
 
+        }
+
+        public async Task<UserEntity?> GetUser(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<IdentityResult> ConfirmUserEmail(UserEntity user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
         }
         private UserEntity CreateUser()
         {

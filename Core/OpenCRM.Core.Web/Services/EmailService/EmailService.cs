@@ -3,7 +3,7 @@ using OpenCRM.Core.Web.Models;
 using System.Net;
 using System.Net.Mail;
 
-namespace OpenCRM.Core.Web.Services.EmailNotificationService
+namespace OpenCRM.Core.Web.Services.EmailService
 {
     public class EmailService : IEmailService
     {
@@ -47,6 +47,11 @@ namespace OpenCRM.Core.Web.Services.EmailNotificationService
                 Console.WriteLine(ex.ToString());
                 return false;
             }
+        }
+
+        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -14,7 +14,7 @@ using System.Net;
 using OpenCRM.Core.Web.Areas.Identity.Models;
 using OpenCRM.Core.Web.Areas.Identity.Services;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.EmailNotificationService;
+using OpenCRM.Core.Web.Services.EmailService;
 
 namespace OpenCRM.Core.Web.Areas.Identity.Pages.Register
 {
