@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Areas.Identity.Models;
+using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.EmailNotificationService;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -132,7 +134,24 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         {
             await _signInManager.SignOutAsync();
         }
+        public async Task<UserModel?> GetLoggedUser()
+        {
+            var principal = _httpContextAccessor?.HttpContext?.User;
+            if (principal == null) return null;
+            var userId = principal.GetNameIdentifierId();
+            if (userId == null) return null;
+            var userEntity = await _userManager.FindByIdAsync(userId);
+            if (userEntity == null) return null;
+            return new UserModel
+            {
+                UserId = userEntity.Id,
+                Name = userEntity.Name,
+                Lastname = userEntity.Lastname,
+                Email = userEntity.Email ?? string.Empty,
+                UserName = userEntity.UserName ?? string.Empty
+            };
 
+        }
         private UserEntity CreateUser()
         {
             try
