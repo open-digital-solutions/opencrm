@@ -61,9 +61,15 @@ namespace OpenCRM.Core.Web.Services
                 var filename = model.FileName ?? "UnknowFileName.generic";
                 var extension = Path.GetExtension(filename);
 
+                var filename = model.FileName ?? "UnknowFileName.generic";
+                var extension = Path.GetExtension(filename);
+
                 var fileDetails = new MediaEntity()
                 {
                     ID = Guid.NewGuid(),
+                    FileName = filename,
+                    Extension = extension,
+                    FileType = GetMediaType(extension),
                     FileName = filename,
                     Extension = extension,
                     FileType = GetMediaType(extension),
@@ -93,16 +99,23 @@ namespace OpenCRM.Core.Web.Services
         public async Task PostMultiFileAsync(List<MediaUploadModel> fileData)
         {
 
+
             try
             {
                 foreach (MediaUploadModel file in fileData)
                 {
                     var filename = file.FileDetails?.FileName ?? "UnknowFileName.generic";
                     var extension = Path.GetExtension(filename);
+                    
+                    var filename = file.FileDetails?.FileName ?? "UnknowFileName.generic";
+                    var extension = Path.GetExtension(filename);
 
                     var fileDetails = new MediaEntity()
                     {
                         ID = Guid.NewGuid(),
+                        FileName = filename,
+                        Extension = extension,
+                        FileType = GetMediaType(extension),
                         FileName = filename,
                         Extension = extension,
                         FileType = GetMediaType(extension),
@@ -230,6 +243,37 @@ namespace OpenCRM.Core.Web.Services
             {
                 Console.WriteLine(e.Message);
                 return null;
+            }
+        }
+
+        public MediaType GetMediaType(string extension) {
+
+            switch (extension)
+            {
+                case ".doc": {
+                        return MediaType.DOCX;    
+                }
+                case ".docx": {
+                        return MediaType.DOCX;
+                }
+                case ".pdf": {
+                        return MediaType.PDF;
+                }
+                case ".png":
+                {
+                        return MediaType.IMAGE;
+                }
+                case ".jpg":
+                {
+                    return MediaType.IMAGE;
+                }
+                case ".svg":
+                {
+                    return MediaType.IMAGE;
+                }
+                default: {
+                    return MediaType.GENERIC; 
+                }
             }
         }
 
