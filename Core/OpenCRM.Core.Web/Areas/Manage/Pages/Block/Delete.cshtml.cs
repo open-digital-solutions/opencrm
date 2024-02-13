@@ -11,9 +11,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         private readonly IBlockService _blockService;
 
         [BindProperty]
-        public string ImageName { get; set; } = string.Empty;
-
-        [BindProperty]
         public DataBlockModel<BlockModel> Model { get; set; } = default!;
 
         [BindProperty]
