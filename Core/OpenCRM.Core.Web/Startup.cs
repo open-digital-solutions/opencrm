@@ -12,6 +12,7 @@ using OpenCRM.Core.QRCode;
 using OpenCRM.Core.Web.Services.EmailService;
 using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
+using OpenCRM.Core.Web.Services.RoleService;
 
 namespace OpenCRM.Core.Web
 {
@@ -31,6 +32,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.AddIdentity<UserEntity, RoleEntity>().AddEntityFrameworkStores<TDBContext>().AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(options =>
@@ -76,8 +78,11 @@ namespace OpenCRM.Core.Web
 
                 var emailService = scope.ServiceProvider
                   .GetRequiredService<IEmailService>();
-               
                 emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");
+
+                var roleService = scope.ServiceProvider
+                .GetRequiredService<IRoleService>();
+                roleService.Seed().Wait();
 
                 var identityService = scope.ServiceProvider
                .GetRequiredService<IIdentityService>();

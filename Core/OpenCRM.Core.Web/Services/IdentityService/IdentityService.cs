@@ -11,6 +11,7 @@ using OpenCRM.Core.Services;
 using OpenCRM.Core.Web.Areas.Identity.Models;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.EmailService;
+using OpenCRM.Core.Web.Services.RoleService;
 using System.Text;
 using System.Text.Encodings.Web;
 
@@ -24,12 +25,15 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         private readonly ILogger<IdentityService> _logger;
         private readonly IEmailService _emailSender;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IRoleService _roleService;
 
         public IdentityService(UserManager<UserEntity> userManager,
             IUserStore<UserEntity> userStore,
         SignInManager<UserEntity> signInManager,
         ILogger<IdentityService> logger,
-        IEmailService emailSender, IHttpContextAccessor httpContextAccessor)
+        IEmailService emailSender, 
+        IHttpContextAccessor httpContextAccessor,
+        IRoleService roleService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -37,13 +41,12 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             _logger = logger;
             _emailSender = emailSender;
             _httpContextAccessor = httpContextAccessor;
-
+            _roleService = roleService;
         }
 
 
         public async Task<Tuple<IdentityResult, UserEntity>> RegisterUser(InputRegisterModel Input)
         {
-            Console.WriteLine(Input.UserExtras);
             var user = CreateUser();
             if (Input.Name != "")
             {
@@ -66,6 +69,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             }
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+          
             var result = await _userManager.CreateAsync(user, Input.Password);
             return new Tuple<IdentityResult, UserEntity>(result, user);
         }
@@ -76,14 +80,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var encodedCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            // var returnUrl = "";
-
-            //var callbackUrl = page.Url.Page(
-            //    "Identity/ConfirmEmail",
-            //    pageHandler: null,
-            //    values: new { area = "", userId, code = encodedCode, returnUrl },
-            //    protocol: page.Request.Scheme);
-
+     
             var callbackUrl = $"{page.Request.Scheme}://{page.Request.Host.Value}/Identity/ConfirmEmail?userId={userId}&code={encodedCode}";
 
             if (callbackUrl == null || string.IsNullOrEmpty(user.Email))
@@ -168,8 +165,10 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             if (result.Item1.Succeeded)
             {
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(result.Item2);
-                var resultEmailCOnfirm = await ConfirmUserEmail(result.Item2, code);
-                Console.WriteLine(resultEmailCOnfirm.Succeeded);
+                await ConfirmUserEmail(result.Item2, code);
+                await _roleService.AddToUserRole(result.Item2);
+                await _roleService.AddToAdminRole(result.Item2);
+                await _roleService.AddToSuperAdminRole(result.Item2);
             }
         }
         private UserEntity CreateUser()
