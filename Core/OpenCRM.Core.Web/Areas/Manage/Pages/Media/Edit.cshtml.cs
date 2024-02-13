@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Models;
 using OpenCRM.Core.Web.Models;
-using System.ComponentModel.DataAnnotations;
+using OpenCRM.Core.Web.Services;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
 {

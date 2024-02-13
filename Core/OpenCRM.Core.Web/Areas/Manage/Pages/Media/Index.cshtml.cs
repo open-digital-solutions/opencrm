@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.LanguageService;
+using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Table;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media

@@ -1,4 +1,4 @@
-﻿namespace OpenCRM.Core
+﻿namespace OpenCRM.Core.Models
 {
     public enum MediaType
     {

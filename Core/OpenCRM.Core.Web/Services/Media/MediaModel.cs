@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace OpenCRM.Core
+namespace OpenCRM.Core.Web.Services
 {
     public class MediaModel
     {
