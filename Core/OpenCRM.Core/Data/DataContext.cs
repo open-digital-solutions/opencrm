@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OpenCRM.Core.Data;
@@ -64,7 +64,8 @@ namespace OpenCRM.Core
             builder.Entity<UserLoginEntity>().ToTable("UserLogins");
             builder.Entity<UserRoleEntity>().ToTable("UserRoles");
             builder.Entity<UserTokenEntity>().ToTable("UserTokens");
-            
+            builder.Entity<UserSessionEntity>().ToTable("UserSessions");
+
             builder.Entity<RoleEntity>().ToTable("Roles");
             builder.Entity<RoleClaimEntity>().ToTable("RoleClaims");
 
