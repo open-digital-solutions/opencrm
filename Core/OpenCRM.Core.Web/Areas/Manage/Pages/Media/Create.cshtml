@@ -2,7 +2,7 @@
 @model OpenCRM.Core.Web.Areas.Manage.Pages.Media.CreateModel
 @{
     ViewData["Title"] = "Create";
-    
+
 }
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -12,30 +12,38 @@
                 <form method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row justify-content-between">
+                      
+                            <div class="col-6">
+                                <input asp-for="Model.FileData" type="file" class="form-control" id="fileData" data-msg-invalid-file="Select File" />
+                                <span asp-validation-for="Model.FileData" class="text-danger"></span>
+                            </div>
                         <div class="col-4">
-                            <input asp-for="Model.FileName" class="form-control" placeholder="File Name" />
-                            @* <label asp-for="Model.FileName" class="control-label"></label> *@
+                            <input asp-for="Model.FileName" id="FileName" class="form-control" placeholder="File Name" />
                             <span asp-validation-for="Model.FileName" class="text-danger"></span>
                         </div>
                         <div class="col-2">
                             <input asp-for="Model.IsPublic" class="form-check-input" />
-                            <label asp-for="Model.IsPublic" class="form-check-label"></label> 
+                            <label asp-for="Model.IsPublic" class="form-check-label"></label>
                             <span asp-validation-for="Model.IsPublic" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-6">
-                        @* <label asp-for="Model.FileData" class="form-label"></label> *@
-                        <input asp-for="Model.FileData" type="file" class="form-control"  data-msg-invalid-file="Select File" />
-                        <span asp-validation-for="Model.FileData" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group" style="margin-top: 10px;">
                         <input type="submit" value="Create" class="btn btn-primary" />
                         <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
-                    </div> 
+                    </div>
 
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById("fileData").addEventListener("change", function() {
+            var fileName = this.files[0].name;
+            // console.log("File Data", fileName);
+            document.getElementById("FileName").value = fileName;
+        });
+    </script>
+}
