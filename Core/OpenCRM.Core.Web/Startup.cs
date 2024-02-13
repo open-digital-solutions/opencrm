@@ -57,7 +57,7 @@ namespace OpenCRM.Core.Web
 
             return services;
         }
-        public static IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
+        public static  IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
         {
             if (app == null)
             {
@@ -80,6 +80,10 @@ namespace OpenCRM.Core.Web
                   .GetRequiredService<IEmailService>();
                
                 emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");
+
+                var identityService = scope.ServiceProvider
+               .GetRequiredService<IIdentityService>();
+                identityService.Seed().Wait();
 
             }
             return app;
