@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -67,7 +68,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 Url = "/Manage/Block"
             });
 
-
             Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "Manage",
@@ -100,12 +100,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 if (FileData != null)
                 {
                     modelType = BlockType.Card;
-                    var result = await _mediaService.PostFileAsync(FileData, IsPublic);
-                    imageID = result.ID;
+                    var file = await _mediaService.PostFileAsync(FileData, IsPublic);
+                    imageID = file.ID;
                     
                     if(IsPublic)
                     {
-                        imageUrl = _mediaService.GetImageUrl(imageID);
+                        imageUrl = _mediaService.GetImageUrl(file);
                     }
                 }
 

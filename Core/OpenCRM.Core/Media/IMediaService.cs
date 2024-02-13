@@ -13,6 +13,6 @@ namespace OpenCRM.Core
         Task RemoveMedia(Guid Id);
         public Task<MediaEntity> EditFileAsync(Guid Id,MediaEntity media);
 
-        public string GetImageUrl(Guid id);
+        public string GetImageUrl(MediaEntity file);
     }
 }

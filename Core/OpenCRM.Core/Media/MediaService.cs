@@ -219,11 +219,19 @@ namespace OpenCRM.Core
             }
         }
 
-        public string GetImageUrl(Guid id)
+        public string GetImageUrl(MediaEntity file)
         {
-            string url = string.Empty;
+            var webRootPath = OpenCRMEnv.GetWebRoot();
 
-            return url;
+            string root = ""; // _navigationManager.BaseUri.ToString();
+
+            string mediaPublicDirPath = Path.Combine(webRootPath, "media");
+            
+            var extension = Path.GetExtension(file.FileName);
+
+            string imageUrl = Path.Combine(root, "media", file.ID.ToString() + extension);
+
+            return imageUrl;
         }
     }
 }

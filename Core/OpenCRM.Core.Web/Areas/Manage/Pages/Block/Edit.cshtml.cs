@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Extensions;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.BlockService;
 
@@ -10,8 +12,15 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
     {
         private readonly IBlockService _blockService;
 
+        private readonly IMediaService _mediaService;
+
+        public string MediaPublicDirPath { get; set; } = Path.Combine(OpenCRMEnv.GetWebRoot(), "media");
+
         [BindProperty]
-        public string ImageName { get; set; } = string.Empty;
+        public IFormFile FileData { get; set; } = default!;
+
+        [BindProperty]
+        public bool IsPublic { get; set; } = false;
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
@@ -19,9 +28,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public EditModel(IBlockService blockService)
+        public EditModel(IBlockService blockService, IMediaService mediaService)
         {
             _blockService = blockService;
+            _mediaService = mediaService;
 
             Links.Add(new BreadCrumbLinkModel()
             {
@@ -60,7 +70,16 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 return NotFound();
             }
 
-            Model = dataBlockModel.Data;
+            var showModel = new BlockModel
+            {
+                Code = dataBlockModel.Data.Code,
+                Title = dataBlockModel.Data.Title,
+                SubTitle = dataBlockModel.Data.SubTitle,
+                Description = dataBlockModel.Data.Description,
+                ImageUrl = dataBlockModel.Data.ImageUrl,
+            };
+
+            Model = showModel;
             return Page();
         }
 
@@ -68,17 +87,31 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         {
             if (ModelState.IsValid)
             {
-                var dataBlockModel = _blockService.GetBlock(id);
+                Guid imageID = default!;
+                string imageUrl = "";
+                var modelType = BlockType.Text;
 
-                if (dataBlockModel == null)
+                if (FileData != null)
                 {
-                    return NotFound();
+                    modelType = BlockType.Card;
+                    var file = await _mediaService.PostFileAsync(FileData, IsPublic);
+                    imageID = file.ID;
+
+                    if (IsPublic)
+                    {
+                        imageUrl = _mediaService.GetImageUrl(file);
+                    }
                 }
 
-                if(Model.ImageId != null)
+                var blockModel = new BlockModel()
                 {
-                    Model.Type = BlockType.Card;
-                }
+                    Code = Model.Code,
+                    Title = Model.Title,
+                    SubTitle = Model.SubTitle,
+                    Type = modelType,
+                    ImageId = imageID,
+                    ImageUrl = imageUrl
+                };
 
                 var dataBlockModelEdit = new DataBlockModel<BlockModel>()
                 {
@@ -86,7 +119,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     Name = Model.Title,
                     Description = Model.Title,
                     Type = typeof(BlockModel).Name,
-                    Data = Model
+                    Data = blockModel
                 };
 
                 await _blockService.EditBlock(dataBlockModelEdit);
