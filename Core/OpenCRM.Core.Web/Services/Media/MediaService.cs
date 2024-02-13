@@ -93,8 +93,6 @@ namespace OpenCRM.Core.Web.Services
             }
         }
 
-
-
         public async Task PostMultiFileAsync(List<MediaUploadModel> fileData)
         {
 
@@ -208,7 +206,6 @@ namespace OpenCRM.Core.Web.Services
         public MediaEntity GetMedia(Guid Id)
         {
             return dbContextClass.Medias.FirstOrDefault(s => s.ID == Id);
-
         }
         public async Task RemoveMedia(Guid Id)
         {
