@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.BlockService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
@@ -99,7 +100,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
                     if (IsPublic)
                     {
-                        imageUrl = _mediaService.GetImageUrl(file);
+                        imageUrl = _mediaService.GetMediaUrl(imageID.ToString());
                     }
                 }
 

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Graph.CallRecords;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.BlockService;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -105,7 +106,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     
                     if(IsPublic)
                     {
-                        imageUrl = _mediaService.GetImageUrl(file);
+                        imageUrl = _mediaService.GetMediaUrl(imageID.ToString());
                     }
                 }
 

@@ -74,20 +74,21 @@ namespace OpenCRM.Core.Web.Components
         {
             string currentModuleUrl = "/" + Navigation.ToBaseRelativePath(Navigation.Uri);
             var usermodel = await IdentityService.GetLoggedUser();
-            if (usermodel != null) {
+
+            if (usermodel != null)
+            {
                 UserName = usermodel.UserName;
                 Name = $"{usermodel.Name} {usermodel.Lastname}";
             }
 
-                if (currentModuleUrl != "")
-                {
-                    DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
+            if (currentModuleUrl != "")
+            {
+                DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
 
-                    if (result != null)
-                    {
-                        saveCurrentModelLinks = new DropdownMenuModel(result.Name, result.Url, result.Items);
-                        CurrentModuleLinks = saveCurrentModelLinks;
-                    }
+                if (result != null)
+                {
+                    saveCurrentModelLinks = new DropdownMenuModel(result.Name, result.Url, result.Items);
+                    CurrentModuleLinks = saveCurrentModelLinks;
                 }
             }
         }

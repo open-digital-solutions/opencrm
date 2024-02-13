@@ -11,8 +11,6 @@ using OpenCRM.Core.QRCode;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.BlockService;
 using OpenCRM.Core.Web.Services.EmailService;
-using OpenCRM.Core.Web.Services.BlockService;
-using OpenCRM.Core.Web.Services.EmailNotificationService;
 using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Services.RoleService;
