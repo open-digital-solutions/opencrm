@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using OpenCRM.Core.Web.Components.DropdownMenu;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services.IdentityService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,9 +44,9 @@ namespace OpenCRM.Core.Web.Components
         };
 
         [Inject]
-        public NavigationManager Navigation { get;set; }
+        public required NavigationManager Navigation { get;set; }
         [Inject]
-        public IHttpContextAccessor ContextAccessor { get; set; }
+        public required IIdentityService IdentityService { get; set; }
 
         [Parameter]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -59,16 +60,18 @@ namespace OpenCRM.Core.Web.Components
         
         static DropdownMenuModel saveCurrentModelLinks = new DropdownMenuModel();
         static string UserName = "";
+        static string Name = "";
 
-        protected override void OnInitialized()
+        protected override async void OnInitialized()
         {
             string currentModuleUrl = "/" + Navigation.ToBaseRelativePath(Navigation.Uri);
-            var username = ContextAccessor?.HttpContext?.User.GetDisplayName();
-            if(!string.IsNullOrEmpty(username) ) {
-                UserName = username;
+            var usermodel = await IdentityService.GetLoggedUser();
+            if (usermodel != null) {
+                UserName = usermodel.UserName;
+                Name = $"{usermodel.Name} {usermodel.Lastname}";
             }
 
-            if(currentModuleUrl != "")
+            if (currentModuleUrl != "")
             {
                 DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
 
