@@ -270,12 +270,9 @@ namespace OpenCRM.Core.Web.Services
             var media = GetMedia(mediaGuid);
             if (media == null) return string.Empty;
 
-            //TODO: Extension to be evaluated!
-            return $"{baseUrl}/media/{media.ID}";
             var extension = Path.GetExtension(media.FileName);
 
             return $"{baseUrl}/media/{media.ID.ToString() + extension}";
-            return mediaUrl;
         }
 
     }
