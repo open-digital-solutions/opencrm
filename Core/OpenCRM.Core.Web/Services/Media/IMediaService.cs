@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Services
 {
@@ -14,5 +15,6 @@ namespace OpenCRM.Core.Web.Services
         Task PostFileAsync(MediaModel model);
         Task PostMultiFileAsync(List<MediaUploadModel> fileData);
         Task RemoveMedia(Guid Id);
+        List<MediaBlockModel> GetImageMedias();
     }
 }
