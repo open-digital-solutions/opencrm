@@ -45,6 +45,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 
         app.UseRouting();
         app.UseAuthentication();
+
        #region Globalization and Localization
 var supportedCultures = new[] { "en","fr"};
       var optionLocalization = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
@@ -52,7 +53,9 @@ var supportedCultures = new[] { "en","fr"};
     .AddSupportedUICultures(supportedCultures);
   app.UseRequestLocalization(optionLocalization);
 #endregion
-        app.UseOpenCRMSwissLPDAsync<OpenCRMDataContext>();
+
+app.UseOpenCRM<OpenCRMDataContext>();
+app.UseOpenCRMSwissLPDAsync<OpenCRMDataContext>();
 
         app.MapRazorPages();
 
