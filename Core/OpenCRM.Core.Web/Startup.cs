@@ -56,9 +56,6 @@ namespace OpenCRM.Core.Web
             });
             services.AddAuthorization();
             services.AddHttpContextAccessor();
-            services.AddScoped<IBlockService, BlockService<TDBContext>>();
-
-            services.AddDefaultIdentity<UserEntity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TDBContext>();
 
             services.AddMicrosoftIdentityWebApiAuthentication(configuration)
                    .EnableTokenAcquisitionToCallDownstreamApi()
