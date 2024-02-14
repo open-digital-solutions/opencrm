@@ -272,16 +272,41 @@ namespace OpenCRM.Core.Web.Services
 
         public string GetMediaUrl(string mediaId)
         {
-            var baseUrl = _httpContextAccessor.GetBaseUrl();
+            var baseUrl = _httpContextAccessor?.HttpContext?.Request.PathBase ?? string.Empty;
             if (string.IsNullOrEmpty(baseUrl)) return string.Empty;
 
             var mediaGuid = Guid.Parse(mediaId);
             var media = GetMedia(mediaGuid);
             if (media == null) return string.Empty;
 
-            var extension = Path.GetExtension(media.FileName);
+            //TODO: Extension to be evaluated!
+            return $"{baseUrl}/media/{media.ID}";
+        }
 
-            return $"{baseUrl}/media/{media.ID.ToString() + extension}";
+        public bool IsImage(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+            return (extension == ".png" || extension == ".jpg" || extension == ".jpeg" || 
+                    extension == ".gif" || extension == ".svg" || extension == ".webp");
+        }
+
+        public List<MediaBlockModel> GetImageMedias()
+        {
+            var medias = GetMedias();
+            var mediasUrl = new List<MediaBlockModel>();
+
+            foreach(var media in medias)
+            {
+                if (IsImage(media.FileName))
+                {
+                    mediasUrl.Add(new MediaBlockModel()
+                    {
+                        ImageName = media.FileName,
+                        ImageUrl = GetMediaUrl(media.ID.ToString())
+                    });
+                }
+            }
+            return mediasUrl;
         }
 
         public bool IsImage(string fileName)
