@@ -20,11 +20,15 @@ namespace OpenCRM.Core.Web.Services
         {
             try
             {
+                var filename = fileData.FileName ?? "UnknowFileName.generic";
+                var extension = Path.GetExtension(filename);
+
                 var fileDetails = new MediaEntity()
                 {
                     ID = Guid.NewGuid(),
-                    FileName = fileData.FileName,
-                    FileType = MediaType.GENERIC,
+                    FileName = filename,
+                    Extension = extension,
+                    FileType = GetMediaType(extension),
                     IsPublic = isPublic
                 };
 
