@@ -223,7 +223,6 @@ namespace OpenCRM.Core.Web.Services
 
         public string GetMediaUrl(string mediaId)
         {
-
             var baseUrl = _httpContextAccessor?.HttpContext?.Request.PathBase ?? string.Empty;
             if (string.IsNullOrEmpty(baseUrl)) return string.Empty;
 
@@ -231,8 +230,10 @@ namespace OpenCRM.Core.Web.Services
             var media = GetMedia(mediaGuid);
             if (media == null) return string.Empty;
 
-            //TODO: Extension to be evaluated!
-            return $"{baseUrl}/media/{media.ID}";
+            var extension = Path.GetExtension(media.FileName);
+            var mediaUrl = Path.Combine(baseUrl, media.ID.ToString() + extension);
+
+            return mediaUrl;
         }
 
     }
