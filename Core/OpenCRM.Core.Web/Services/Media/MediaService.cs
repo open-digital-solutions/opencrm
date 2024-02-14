@@ -319,7 +319,7 @@ namespace OpenCRM.Core.Web.Services
 
         public string GetMediaUrl(string mediaId)
         {
-            var baseUrl = _httpContextAccessor?.HttpContext?.Request.PathBase ?? string.Empty;
+            var baseUrl = _httpContextAccessor.GetBaseUrl();
             if (string.IsNullOrEmpty(baseUrl)) return string.Empty;
 
             var mediaGuid = Guid.Parse(mediaId);
