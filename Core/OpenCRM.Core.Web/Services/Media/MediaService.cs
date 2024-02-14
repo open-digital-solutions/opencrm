@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.Models;
+using OpenCRM.Core.Web.Extensions;
 
 namespace OpenCRM.Core.Web.Services
 {
@@ -262,8 +263,7 @@ namespace OpenCRM.Core.Web.Services
 
         public string GetMediaUrl(string mediaId)
         {
-
-            var baseUrl = _httpContextAccessor?.HttpContext?.Request.PathBase ?? string.Empty;
+            var baseUrl = _httpContextAccessor.GetBaseUrl();
             if (string.IsNullOrEmpty(baseUrl)) return string.Empty;
 
             var mediaGuid = Guid.Parse(mediaId);
@@ -272,6 +272,10 @@ namespace OpenCRM.Core.Web.Services
 
             //TODO: Extension to be evaluated!
             return $"{baseUrl}/media/{media.ID}";
+            var extension = Path.GetExtension(media.FileName);
+
+            return $"{baseUrl}/media/{media.ID.ToString() + extension}";
+            return mediaUrl;
         }
 
     }
