@@ -57,6 +57,6 @@ var supportedCultures = new[] { "en","fr"};
 app.UseOpenCRM<OpenCRMDataContext>();
 app.UseOpenCRMSwissLPDAsync<OpenCRMDataContext>();
 
-app.MapRazorPages();
+        app.MapRazorPages();
 
         app.Run();
