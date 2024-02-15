@@ -10,7 +10,7 @@ using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Services
 {
-    public class MediaService<TDBContext> : IMediaService where TDBContext : DataContext
+    public class MediaService<TDBContext> :  IMediaService where TDBContext : DataContext
     {
         private readonly TDBContext dbContextClass;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -332,7 +332,7 @@ namespace OpenCRM.Core.Web.Services
         public bool IsImage(string fileName)
         {
             var extension = Path.GetExtension(fileName);
-            return (extension == ".png" || extension == ".jpg" || extension == ".jpeg" || 
+            return (extension == ".png" || extension == ".jpg" || extension == ".jpeg" ||
                     extension == ".gif" || extension == ".svg" || extension == ".webp");
         }
 
@@ -341,7 +341,7 @@ namespace OpenCRM.Core.Web.Services
             var medias = GetMedias();
             var mediasUrl = new List<MediaBlockModel>();
 
-            foreach(var media in medias)
+            foreach (var media in medias)
             {
                 if (IsImage(media.FileName))
                 {
@@ -356,4 +356,5 @@ namespace OpenCRM.Core.Web.Services
             return mediasUrl;
         }
     }
+
 }
