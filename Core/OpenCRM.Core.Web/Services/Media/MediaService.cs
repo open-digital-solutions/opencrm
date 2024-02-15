@@ -272,15 +272,16 @@ namespace OpenCRM.Core.Web.Services
 
         public string GetMediaUrl(string mediaId)
         {
-            var baseUrl = _httpContextAccessor?.HttpContext?.Request.PathBase ?? string.Empty;
+            var baseUrl = _httpContextAccessor.GetBaseUrl();
             if (string.IsNullOrEmpty(baseUrl)) return string.Empty;
 
             var mediaGuid = Guid.Parse(mediaId);
             var media = GetMedia(mediaGuid);
             if (media == null) return string.Empty;
 
-            //TODO: Extension to be evaluated!
-            return $"{baseUrl}/media/{media.ID}";
+            var extension = Path.GetExtension(media.FileName);
+
+            return $"{baseUrl}/media/{media.ID.ToString() + extension}";
         }
 
         public bool IsImage(string fileName)
@@ -301,6 +302,7 @@ namespace OpenCRM.Core.Web.Services
                 {
                     mediasUrl.Add(new MediaBlockModel()
                     {
+                        Id = media.ID,
                         ImageName = media.FileName,
                         ImageUrl = GetMediaUrl(media.ID.ToString())
                     });
