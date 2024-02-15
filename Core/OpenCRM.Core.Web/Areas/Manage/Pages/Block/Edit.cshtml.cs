@@ -22,12 +22,16 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         [BindProperty]
         public string? ImageIdSelected { get; set; }
+        public string ValidateError { get; set; } = string.Empty;
+
+        public string ImageUrlSelected { get; set; } = string.Empty;
 
         [BindProperty]
         public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
+        public string ImageIdSelected { get; set; } = string.Empty;
 
         [BindProperty]
-        public bool IsPublic { get; set; } = false;
+        public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
@@ -68,6 +72,8 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             });
 
             Images = _mediaService.GetImageMedias();
+
+            Images = _mediaService.GetImageMedias();
         }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
@@ -95,6 +101,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 ImageUrlSelected = showModel.ImageUrl;
             }
 
+
+            if(showModel.ImageUrl != null)
+            {
+                ImageUrlSelected = showModel.ImageUrl;
+            }
+
             return Page();
         }
 
@@ -113,15 +125,23 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     ImageId = imageID,
                     ImageUrl = imageUrl
                 };
+                var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
 
                 var dataBlockModelEdit = new DataBlockModel<BlockModel>()
                 {
                     ID = id,
                     Name = blockModel.Title,
                     Description = blockModel.Title,
+                    Name = blockModel.Title,
+                    Description = blockModel.Title,
                     Type = typeof(BlockModel).Name,
                     Data = blockModel
                 };
+
+                if (!string.IsNullOrEmpty(blockModel.ImageUrl))
+                {
+                    ImageUrlSelected = blockModel.ImageUrl;
+                }
 
                 if (!string.IsNullOrEmpty(blockModel.ImageUrl))
                 {
