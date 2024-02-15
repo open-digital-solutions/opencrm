@@ -12,7 +12,6 @@ using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.EmailService;
 using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
-using OpenCRM.Core.Web.Services.TranslationService;
 using OpenCRM.Core.Web.Services.RoleService;
 
 namespace OpenCRM.Core.Web
@@ -31,7 +30,6 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IDataBlockService, DataBlockService<TDBContext>>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
-            services.AddScoped<ITranslationService, TranslationService<TDBContext>>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddAntiforgery(options =>
@@ -42,7 +40,7 @@ namespace OpenCRM.Core.Web
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Login";
-                options.LogoutPath = "/Identity/Logout";
+                options.LogoautPath = "/Identity/Logout";
                 options.Cookie.Name = "OpenCRM.Identity.Token";
                 
             });
@@ -80,10 +78,6 @@ namespace OpenCRM.Core.Web
                   .GetRequiredService<TDBContext>();
 
                 dbContext.Database.EnsureCreated();
-
-                dbContext.Database.EnsureCreated();
-                var languageService = scope.ServiceProvider.GetRequiredService<ILanguageService>();
-                languageService.SeedAsync().Wait();
 
                 var emailService = scope.ServiceProvider
                   .GetRequiredService<IEmailService>();
