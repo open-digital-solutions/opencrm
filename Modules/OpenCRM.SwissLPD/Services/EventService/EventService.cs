@@ -11,6 +11,7 @@ namespace OpenCRM.SwissLPD.Services.EventService
     public class EventService<TDBContext> :  IEventService where TDBContext : DataContext
     {
         public readonly IDataBlockService _dataBlockService;
+
         public EventService(IDataBlockService dataBlockService)
         {
             _dataBlockService = dataBlockService;
@@ -33,7 +34,6 @@ namespace OpenCRM.SwissLPD.Services.EventService
         public async Task<List<DataBlockModel<EventModel>>> GetEvents()
         {
             var result = await _dataBlockService.GetDataBlockListAsync<EventModel>();
-            if (result == null) return new List<DataBlockModel<EventModel>>();
             return result;
         }
 

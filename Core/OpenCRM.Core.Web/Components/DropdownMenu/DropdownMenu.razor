@@ -5,24 +5,27 @@
         @Menu.Name
     </a>
 
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="margin-top: 1.3rem">
-        @foreach (var item in Menu.Items)
-        {
-            if (item.ShowItemList)
+    @if (Menu.Items.Count() != 0)
+    {
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="margin-top: 1.3rem">
+            @foreach (var item in Menu.Items)
             {
-                <li class="dropdown-item dropend menu-item @item.Name">
-                    <DropdownMenu Menu="@item"/>
-                </li>
-            }
-            else
-            {
-                if (item.Name != "")
+                if (item.ShowItemList)
                 {
-                    <li><a class="dropdown-item" href="@item.Url">@item.Name</a></li>
+                    <li class="dropdown-item dropend menu-item @item.Name">
+                        <DropdownMenu Menu="@item"/>
+                    </li>
+                }
+                else
+                {
+                    if (item.Name != "")
+                    {
+                        <li><a class="dropdown-item" href="@item.Url">@item.Name</a></li>
+                    }
                 }
             }
-        }
-    </ul>
+        </ul>
+    }
 }
 
 @code {

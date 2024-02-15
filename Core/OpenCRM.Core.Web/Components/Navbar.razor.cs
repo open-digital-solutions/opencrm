@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web;
 using OpenCRM.Core.Web.Components.DropdownMenu;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.IdentityService;
@@ -21,11 +20,21 @@ namespace OpenCRM.Core.Web.Components
 
         private static List<DropdownMenuModel> mainModulesLinks = new List<DropdownMenuModel>()
         {
-            new DropdownMenuModel("Management", "/Manage"),
-
             new DropdownMenuModel("Register", "/Identity/Register"),
 
             new DropdownMenuModel("Login", "/Identity/Login"),
+
+            new DropdownMenuModel()
+            {
+                Name = "Management",
+                Url = "/Manage",
+                Items = new List<DropdownMenuModel>()
+                {
+                    new DropdownMenuModel("Blocks", "/Manage/Block"),
+
+                    new DropdownMenuModel("Medias", "Manage/Media")
+                }
+            },
 
             new DropdownMenuModel()
             {
@@ -57,7 +66,6 @@ namespace OpenCRM.Core.Web.Components
         [Parameter]
         public DropdownMenuModel CurrentModuleLinks { get; set; } = saveCurrentModelLinks; //Active Main Module
 
-        
         static DropdownMenuModel saveCurrentModelLinks = new DropdownMenuModel();
         static string UserName = "";
         static string Name = "";
@@ -66,7 +74,9 @@ namespace OpenCRM.Core.Web.Components
         {
             string currentModuleUrl = "/" + Navigation.ToBaseRelativePath(Navigation.Uri);
             var usermodel = await IdentityService.GetLoggedUser();
-            if (usermodel != null) {
+
+            if (usermodel != null)
+            {
                 UserName = usermodel.UserName;
                 Name = $"{usermodel.Name} {usermodel.Lastname}";
             }
@@ -75,8 +85,8 @@ namespace OpenCRM.Core.Web.Components
             {
                 DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
 
-                if(result != null)
-                { 
+                if (result != null)
+                {
                     saveCurrentModelLinks = new DropdownMenuModel(result.Name, result.Url, result.Items);
                     CurrentModuleLinks = saveCurrentModelLinks;
                 }
