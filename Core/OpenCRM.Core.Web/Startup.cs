@@ -34,6 +34,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IBlockService, BlockService<TDBContext>>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IBlockService, BlockService<TDBContext>>();
             services.AddAntiforgery(options =>
             {
                 options.Cookie.Name = "OpenCRM.Antiforgery.Token";
@@ -42,7 +43,7 @@ namespace OpenCRM.Core.Web
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Login";
-                options.LogoautPath = "/Identity/Logout";
+                options.LogoutPath = "/Identity/Logout";
                 options.Cookie.Name = "OpenCRM.Identity.Token";
                 
             });
