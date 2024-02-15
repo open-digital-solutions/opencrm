@@ -42,7 +42,7 @@ namespace OpenCRM.Core.Web
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Login";
-                options.LogoautPath = "/Identity/Logout";
+                //options.LogoautPath = "/Identity/Logout";
                 options.Cookie.Name = "OpenCRM.Identity.Token";
                 
             });

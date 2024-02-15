@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Data;
@@ -6,6 +7,7 @@ using OpenCRM.Core.Web.Services.LanguageService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
+    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly ILanguageService _languageService;

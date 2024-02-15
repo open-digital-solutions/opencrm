@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
@@ -8,6 +9,7 @@ using OpenCRM.Core.Web.Table;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
+    [Authorize]
     public class IndexModel : CorePageModel
     {
         private readonly ILanguageService _languageService;
