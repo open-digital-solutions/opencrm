@@ -19,6 +19,6 @@ namespace OpenCRM.Core.Web.Services.BlockService
 		Task<List<DataBlockModel<BlockModel>>> GetBlocks();
 		Task RemoveBlock(Guid Id);
 
-		Task Seed();
-	}
+		BlockModel CreateBlockModel(string code, string title, string? subTitle, string? description, string? imageId);
+    }
 }

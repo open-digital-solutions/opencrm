@@ -12,9 +12,12 @@ namespace OpenCRM.Core.Web.Services.BlockService
 	{
 		public readonly IDataBlockService _dataBlockService;
 
-		public BlockService(IDataBlockService dataBlockService)
+		private readonly IMediaService _mediaService;
+
+		public BlockService(IDataBlockService dataBlockService, IMediaService mediaService)
 		{
 			_dataBlockService = dataBlockService;
+			_mediaService = mediaService;
 		}
 
 		public async Task<DataBlockModel<BlockModel>?> AddBlock(DataBlockModel<BlockModel> model)
@@ -52,9 +55,38 @@ namespace OpenCRM.Core.Web.Services.BlockService
 			await _dataBlockService.DeleteBlock<BlockModel>(Id);
 		}
 
-		public Task Seed()
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public BlockModel CreateBlockModel(string code, string title, string? subTitle, string? description, string? imageId)
+        {
+            if (!string.IsNullOrEmpty(imageId))
+            {
+                var imageGuiId = Guid.Parse(imageId);
+                var images = _mediaService.GetImageMedias();
+                var image = images.Find(img => img.Id == imageGuiId);
+
+                var blockModel = new BlockModel()
+                {
+                    Code = code,
+                    Title = title,
+                    SubTitle = subTitle,
+                    Type = BlockType.Card,
+                    ImageId = imageGuiId,
+                    ImageUrl = image?.ImageUrl,
+                };
+
+                return blockModel;
+            }
+            else
+            {
+                var blockModel = new BlockModel()
+                {
+                    Code = code,
+                    Title = title,
+                    SubTitle = subTitle,
+                    Type = BlockType.Text
+                };
+
+                return blockModel;
+            }
+        }
+    }
 }
