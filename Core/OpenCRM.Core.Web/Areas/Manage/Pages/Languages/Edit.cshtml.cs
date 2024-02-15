@@ -5,9 +5,11 @@ using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         TranslationModel newTranslationModel;

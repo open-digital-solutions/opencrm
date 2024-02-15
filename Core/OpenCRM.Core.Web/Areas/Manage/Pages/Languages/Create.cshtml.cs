@@ -4,9 +4,11 @@ using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
 
