@@ -21,6 +21,11 @@
                         <label asp-for="Language.Name" class="control-label"></label>
                         <span asp-validation-for="Language.Name" class="text-danger"></span>
                     </div>
+                    <label asp-for="Language.Translations" class="control-label"></label>
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="JsonData" class="form-control, text-danger " placeholder='{"KeyAccept" :  , "KeyCreate" : }' style="height: 15rem; width: 100%;"></textarea>
+                        <span asp-validation-for="JsonData" class="text-danger"></span>
+                    </div>
                     <div class="mt-4 mb-0">
                         <div class="d-grid">
                             <input type="submit" value="Create" class="btn btn-primary btn-block" />

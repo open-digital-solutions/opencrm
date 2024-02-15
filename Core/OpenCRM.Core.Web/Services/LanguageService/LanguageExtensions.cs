@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using OpenCRM.Core.Data;
+﻿using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
 using System.Text.Json;
 

@@ -1,4 +1,5 @@
 //using OpenDHS.Shared;
+using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
@@ -136,6 +137,7 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                 if (entity == null) return null;
                 entity.Code = model.Code;
                 entity.Name = model.Name;
+                entity.Translations = JsonSerializer.Serialize(model.Translations);
                 _dbContext.Languagess.Update(entity);
                 await _dbContext.SaveChangesAsync();
                 return entity.ToDataModel<TTranslationModel>();
@@ -147,7 +149,7 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             }
         }
 
-        public async Task addLanguageSeedAsync(String Code, String Name)
+        /*public async Task addLanguageSeedAsync(String Code, String Name)
         {
 
             var entity = _dbContext.Languagess.Where<LanguageEntity>(c => c.Code == Code);
@@ -161,6 +163,7 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                 await _dbContext.SaveChangesAsync();
             }
         }
+
         public async Task SeedAsync()
         {
             var english = LanguageModel<TranslationModel>.GetNewInstance("EN-gb", "English");
@@ -172,6 +175,27 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             espanol.Translations.KeyAccept = "Aceptar";
             espanol.Translations.KeyCreate = "Crear";
             await AddLanguage(espanol);
+        }*/
+
+        public async Task SeedAsync()
+        {
+            var existingEnglish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "EN-gb");
+            if (existingEnglish == null)
+            {
+                var english = LanguageModel<TranslationModel>.GetNewInstance("EN-gb", "English");
+                english.Translations = new TranslationModel();
+                await AddLanguage(english);
+            }
+
+            var existingSpanish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "ESes");
+            if (existingSpanish == null)
+            {
+                var espanol = LanguageModel<TranslationModel>.GetNewInstance("ESes", "Español");
+                espanol.Translations = new TranslationModel();
+                espanol.Translations.KeyAccept = "Aceptar";
+                espanol.Translations.KeyCreate = "Crear";
+                await AddLanguage(espanol);
+            }
         }
     }
 }
