@@ -16,7 +16,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-
         public DetailsModel(ILanguageService languageService)
         {
             _languageService = languageService;
@@ -38,7 +37,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                 Page = "Languages",
                 Url = "/Manage"
             });
-        }        
+        }
 
         public  async Task<IActionResult> OnGet(Guid id)
         {

@@ -9,8 +9,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
     public class CreateModel : PageModel
     {
-
-        TranslationModel newTranslationModel;
+        readonly TranslationModel newTranslationModel;
         private readonly ILanguageService _languageService;
 
         [BindProperty]
@@ -22,13 +21,13 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         [BindProperty]
         public string JsonData { get; set; } = "";
 
-
         public CreateModel(ILanguageService languageService)
         {
-            newTranslationModel = new TranslationModel();
-
-            newTranslationModel.KeyCreate = "";
-            newTranslationModel.KeyAccept = "";
+            newTranslationModel = new TranslationModel
+            {
+                KeyCreate = " ",
+                KeyAccept = " "
+            };
 
             JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
             _languageService = languageService;
@@ -81,9 +80,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         public async Task<IActionResult> OnPost()
         {
-            TranslationModel? newTranslationModel = new TranslationModel();
-            newTranslationModel.KeyAccept = "";
-            newTranslationModel.KeyCreate = "";
+            TranslationModel? newTranslationModel = new()
+            {
+                KeyAccept = " ",
+                KeyCreate = " "
+            };
 
             if (JsonData != null)
                 if (IsValid(JsonData))

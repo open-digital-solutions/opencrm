@@ -21,7 +21,7 @@ namespace OpenCRM.Core.Web.Models
 
         public override string ToString()
         {
-            return "{" + System.String.Format("KeyAccept:{0} , KeyCreate: {1}", KeyAccept, KeyCreate) + "}";
+            return/*"{" +*/System.String.Format("KeyAccept: {0}, KeyCreate: {1}", KeyAccept, KeyCreate)/*+ "}"*/;
         }
     }
 }
