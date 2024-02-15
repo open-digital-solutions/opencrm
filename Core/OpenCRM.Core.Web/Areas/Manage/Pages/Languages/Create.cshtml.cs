@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
@@ -20,7 +22,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         [BindProperty]
         public string JsonData { get; set; } = "";
 
-        
+
         public CreateModel(ILanguageService languageService)
         {
             newTranslationModel = new TranslationModel();
@@ -28,7 +30,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             newTranslationModel.KeyCreate = "";
             newTranslationModel.KeyAccept = "";
 
-            //JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
+            JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
             _languageService = languageService;
 
             Links.Add(new BreadCrumbLinkModel()
@@ -68,10 +70,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         {
             try
             {
-                //TODO: Validate JObject.Parse(jsonString);
+                JObject.Parse(jsonString);
                 return true;
             }
-            catch //TODO:  (JsonReaderException)
+            catch (JsonReaderException)
             {
                 return false;
             }
@@ -84,11 +86,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             newTranslationModel.KeyCreate = "";
 
             if (JsonData != null)
-             if( IsValid(JsonData) )
-                    //TODO: newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
+                if (IsValid(JsonData))
+                    newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
 
 
-                    if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var languageModel = new LanguageModel<TranslationModel>()
                 {

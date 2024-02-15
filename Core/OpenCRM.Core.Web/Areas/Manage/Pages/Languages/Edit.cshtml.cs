@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.LanguageService;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
     public class EditModel : PageModel
-    {        
+    {
         TranslationModel newTranslationModel;
 
         private readonly ILanguageService _languageService;
@@ -23,12 +25,13 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         public EditModel(ILanguageService languageService)
         {
-            newTranslationModel = new TranslationModel();
+            newTranslationModel = new TranslationModel
+            {
+                /* KeyCreate = "",
+                 KeyAccept = ""*/
+            };
 
-            newTranslationModel.KeyCreate = "";
-            newTranslationModel.KeyAccept = "";
-
-            //TODO:  JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
+            JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
             _languageService = languageService;
 
             Links.Add(new BreadCrumbLinkModel()
@@ -62,10 +65,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             Language = languageModel;
             if (Language != null)
             {
-                //TODO: string left = "{ \"KeyAccept\" : " + "\"" + Language.Translations.KeyAccept + "\"";
-                //TODO: string right = " , \"KeyCreate\" : " + "\"" + Language.Translations.KeyCreate + "\" }";
+                _ = " \"KeyAccept\" : " + "\"" + Language.Translations?.KeyAccept + "\"";
+                _ = " , \"KeyCreate\" : " + "\"" + Language.Translations?.KeyCreate + "\" ";
 
-                //TODO: JsonData = JsonConvert.SerializeObject(Language.Translations,Formatting.Indented); 
+                JsonData = JsonConvert.SerializeObject(Language.Translations, Formatting.Indented);
             }
             return Page();
         }
@@ -74,15 +77,14 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         {
             try
             {
-                //TODO:  JObject.Parse(jsonString);
+                JObject.Parse(jsonString);
                 return true;
             }
-            catch //TODO: (/*JsonReaderException*/)
+            catch (JsonReaderException)
             {
                 return false;
             }
         }
-
 
         public async Task<IActionResult> OnPost(Guid id)
         {
@@ -92,7 +94,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
             if (JsonData != null)
                 if (IsValid(JsonData))
-                    // newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
+                    newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
 
             if (ModelState.IsValid)
             {
@@ -111,7 +113,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                     Translations = newTranslationModel,
                 };
                 await _languageService.EditLanguage(languageModelEdit);
-                return RedirectToPage("./Index");                
+                return RedirectToPage("./Index");
             }
             return Page();
         }
