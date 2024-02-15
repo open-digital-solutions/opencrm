@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
+    [Authorize]
     public class DetailsModel : PageModel
     {
         private readonly ILanguageService _languageService;
