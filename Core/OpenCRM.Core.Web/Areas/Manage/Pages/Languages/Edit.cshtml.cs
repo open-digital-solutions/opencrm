@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
     public class EditModel : PageModel
-    {        
+    {
         TranslationModel newTranslationModel;
 
         private readonly ILanguageService _languageService;
@@ -25,10 +25,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         public EditModel(ILanguageService languageService)
         {
-            newTranslationModel = new TranslationModel();
-
-            newTranslationModel.KeyCreate = "";
-            newTranslationModel.KeyAccept = "";
+            newTranslationModel = new TranslationModel
+            {
+                /* KeyCreate = "",
+                 KeyAccept = ""*/
+            };
 
             JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
             _languageService = languageService;
@@ -64,10 +65,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             Language = languageModel;
             if (Language != null)
             {
-                string left = "{ \"KeyAccept\" : " + "\"" + Language.Translations.KeyAccept + "\"";
-                string right = " , \"KeyCreate\" : " + "\"" + Language.Translations.KeyCreate + "\" }";
+                _ = " \"KeyAccept\" : " + "\"" + Language.Translations?.KeyAccept + "\"";
+                _ = " , \"KeyCreate\" : " + "\"" + Language.Translations?.KeyCreate + "\" ";
 
-                JsonData = JsonConvert.SerializeObject(Language.Translations,Formatting.Indented); 
+                JsonData = JsonConvert.SerializeObject(Language.Translations, Formatting.Indented);
             }
             return Page();
         }
@@ -84,7 +85,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                 return false;
             }
         }
-
 
         public async Task<IActionResult> OnPost(Guid id)
         {
@@ -113,7 +113,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                     Translations = newTranslationModel,
                 };
                 await _languageService.EditLanguage(languageModelEdit);
-                return RedirectToPage("./Index");                
+                return RedirectToPage("./Index");
             }
             return Page();
         }

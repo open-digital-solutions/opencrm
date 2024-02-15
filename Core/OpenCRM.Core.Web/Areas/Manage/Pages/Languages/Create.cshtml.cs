@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
-using OpenCRM.Core.Web.Services.TranslationService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -24,7 +22,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         [BindProperty]
         public string JsonData { get; set; } = "";
 
-        
+
         public CreateModel(ILanguageService languageService)
         {
             newTranslationModel = new TranslationModel();
@@ -88,10 +86,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             newTranslationModel.KeyCreate = "";
 
             if (JsonData != null)
-             if( IsValid(JsonData) )
-               newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
-            
-            
+                if (IsValid(JsonData))
+                    newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
+
+
             if (ModelState.IsValid)
             {
                 var languageModel = new LanguageModel<TranslationModel>()

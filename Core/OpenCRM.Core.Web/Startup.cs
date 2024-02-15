@@ -12,6 +12,7 @@ using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.EmailService;
 using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
+using OpenCRM.Core.Web.Services.TranslationService;
 using OpenCRM.Core.Web.Services.RoleService;
 
 namespace OpenCRM.Core.Web
@@ -30,6 +31,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IDataBlockService, DataBlockService<TDBContext>>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
+            services.AddScoped<ITranslationService, TranslationService<TDBContext>>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddAntiforgery(options =>
@@ -79,6 +81,10 @@ namespace OpenCRM.Core.Web
 
                 dbContext.Database.EnsureCreated();
 
+                dbContext.Database.EnsureCreated();
+                var languageService = scope.ServiceProvider.GetRequiredService<ILanguageService>();
+                languageService.SeedAsync().Wait();
+
                 var emailService = scope.ServiceProvider
                   .GetRequiredService<IEmailService>();
                 emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");
@@ -87,9 +93,9 @@ namespace OpenCRM.Core.Web
                 .GetRequiredService<IRoleService>();
                 roleService.Seed().Wait();
 
-                var identityService = scope.ServiceProvider
+               /* var identityService = scope.ServiceProvider
                .GetRequiredService<IIdentityService>();
-                identityService.Seed().Wait();
+                identityService.Seed().Wait();*/
 
             }
             return app;
