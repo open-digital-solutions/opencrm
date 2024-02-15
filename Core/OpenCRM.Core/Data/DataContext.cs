@@ -1,4 +1,4 @@
-﻿    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OpenCRM.Core.Data;
@@ -90,6 +90,4 @@ namespace OpenCRM.Core
         public DbSet<UserSessionEntity> UserSessions { get; set; }
 
     }
-
 }
-

@@ -1,11 +1,4 @@
 ﻿using OpenCRM.Core.Data;
-using OpenCRM.Core.Web.Services.LanguageService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenCRM.Core.Web.Services.TranslationService;
 
 namespace OpenCRM.Core.Web.Services.TranslationService
 {
@@ -20,7 +13,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                 ID = entity.ID,
                 Key = entity.Key,
                 Translation = entity.Translation,
-                LanguageId= entity.LanguageId ,
+                LanguageId= entity.LanguageId,
             };
         }
     }
