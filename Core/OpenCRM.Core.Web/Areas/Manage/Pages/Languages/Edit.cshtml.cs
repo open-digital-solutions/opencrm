@@ -10,7 +10,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
     public class EditModel : PageModel
     {
-        TranslationModel newTranslationModel;
+        readonly TranslationModel newTranslationModel;
 
         private readonly ILanguageService _languageService;
 
@@ -21,14 +21,14 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [BindProperty]
-        public string JsonData { get; set; } = "";
+        public string JsonData { get; set; } = " ";
 
         public EditModel(ILanguageService languageService)
         {
             newTranslationModel = new TranslationModel
             {
-                /* KeyCreate = "",
-                 KeyAccept = ""*/
+                 KeyCreate = " ",
+                 KeyAccept = " "
             };
 
             JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
@@ -36,10 +36,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
             Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
+                Area = " ",
                 IsActive = true,
                 Name = "Home",
-                Page = "",
+                Page = " ",
                 Url = "/"
             });
 
@@ -65,8 +65,8 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             Language = languageModel;
             if (Language != null)
             {
-                _ = " \"KeyAccept\" : " + "\"" + Language.Translations?.KeyAccept + "\"";
-                _ = " , \"KeyCreate\" : " + "\"" + Language.Translations?.KeyCreate + "\" ";
+                _ = " \"KeyAccept\": " + "\"" + Language.Translations?.KeyAccept + "\"";
+                _ = ", \"KeyCreate\": " + "\"" + Language.Translations?.KeyCreate + "\"";
 
                 JsonData = JsonConvert.SerializeObject(Language.Translations, Formatting.Indented);
             }
@@ -88,9 +88,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         public async Task<IActionResult> OnPost(Guid id)
         {
-            TranslationModel? newTranslationModel = new TranslationModel();
-            newTranslationModel.KeyAccept = "";
-            newTranslationModel.KeyCreate = "";
+            TranslationModel? newTranslationModel = new()
+            {
+                KeyAccept = " ",
+                KeyCreate = " "
+            };
 
             if (JsonData != null)
                 if (IsValid(JsonData))

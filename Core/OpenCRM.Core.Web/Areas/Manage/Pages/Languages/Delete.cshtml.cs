@@ -16,7 +16,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-
         public DeleteModel(ILanguageService languageService)
         {
             _languageService = languageService;
