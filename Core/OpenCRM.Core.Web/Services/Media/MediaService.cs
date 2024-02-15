@@ -246,27 +246,31 @@ namespace OpenCRM.Core.Web.Services
             }
         }
 
-        public MediaType GetMediaType(string extension) {
+        public MediaType GetMediaType(string extension)
+        {
 
             switch (extension)
             {
-                case ".doc": {
-                        return MediaType.DOCX;    
-                }
-                case ".docx": {
+                case ".doc":
+                    {
                         return MediaType.DOCX;
-                }
-                case ".pdf": {
+                    }
+                case ".docx":
+                    {
+                        return MediaType.DOCX;
+                    }
+                case ".pdf":
+                    {
                         return MediaType.PDF;
-                }
+                    }
                 case ".png":
-                {
+                    {
                         return MediaType.IMAGE;
-                }
+                    }
                 case ".jpg":
-                {
-                    return MediaType.IMAGE;
-                }
+                    {
+                        return MediaType.IMAGE;
+                    }
                 case ".svg":
                 {
                     return MediaType.IMAGE;
