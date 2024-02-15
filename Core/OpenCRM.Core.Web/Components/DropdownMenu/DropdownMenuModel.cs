@@ -37,9 +37,9 @@ namespace OpenCRM.Core.Web.Components.DropdownMenu
 
         public bool ShowItemList { get { return _showItemList; } set { _showItemList = value; } }
 
-        public DropdownMenuModel FindItemByUrl(string url)
+        public DropdownMenuModel? FindItemByUrl(string url)
         {
-            DropdownMenuModel result = (Items.Count() != 0)? Items.Find(item => item.Url == url) : null;
+            var result = (Items.Count() != 0)? Items.Find(item => item.Url == url) : null;
             return result;
         }
     }

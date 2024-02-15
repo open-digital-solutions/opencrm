@@ -52,14 +52,11 @@ namespace OpenCRM.Core.Web.Table
 					var data = item.Data;
 					var propValue = data?.GetType().GetProperty(prop)?.GetValue(data)?.ToString();
 
-					if (propValue != null)
+					TRowData rowData = new TRowData()
 					{
-						TRowData rowData = new TRowData()
-						{
-							Label = propValue
-						};
-						row.Datas.Add(rowData);
-					}
+						Label = propValue
+					};
+					row.Datas.Add(rowData);
 				}
 
 				BuildButton(row, "Edit", "fas fa-pen");

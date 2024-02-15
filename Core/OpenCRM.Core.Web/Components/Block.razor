@@ -1,0 +1,26 @@
+﻿
+@if(BlockModel.Title != "")
+{
+    <h1>@BlockModel.Title</h1>
+    
+    @if (BlockModel.SubTitle != null && BlockModel.SubTitle != "")
+    {
+        <h2>@BlockModel.SubTitle</h2>
+    }
+
+    @if(BlockModel.Description != null)
+    {
+        <p>@BlockModel.Description</p>
+    }
+
+    @if(BlockModel.Type == BlockType.Card)
+    {
+        <img src="@BlockModel.ImageUrl"/>
+    }
+}
+
+
+@code {
+    [Parameter]
+    public BlockModel BlockModel { get; set; } = new BlockModel();
+}
