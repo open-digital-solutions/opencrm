@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Graph.CallRecords;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.BlockService;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 {
@@ -30,11 +25,18 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         public string ImageUrlSelected { get; set; } = string.Empty;
 
+        public string ImageUrlSelected { get; set; } = string.Empty;
+
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
 
         [BindProperty]
         public string? ImageIdSelected { get; set; }
+
+        [BindProperty]
+        public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
+        [BindProperty]
+        public string ImageIdSelected { get; set; } = string.Empty;
 
         [BindProperty]
         public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
@@ -110,6 +112,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 };
 
                 if (!string.IsNullOrEmpty(blockModel.ImageUrl))
+                {
+                    ImageUrlSelected = blockModel.ImageUrl;
+                }
+
+                if(!string.IsNullOrEmpty(blockModel.ImageUrl))
                 {
                     ImageUrlSelected = blockModel.ImageUrl;
                 }
