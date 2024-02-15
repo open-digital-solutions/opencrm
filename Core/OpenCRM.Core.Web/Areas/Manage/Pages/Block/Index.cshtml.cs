@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
@@ -9,7 +8,6 @@ using OpenCRM.Core.Web.Table;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 {
-   [Authorize]
     public class IndexModel : PageModel
     {
         private readonly IBlockService _blockService;
