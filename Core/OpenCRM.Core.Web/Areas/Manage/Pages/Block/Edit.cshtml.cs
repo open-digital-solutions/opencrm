@@ -20,7 +20,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         public string ImageUrlSelected { get; set; } = string.Empty;
 
         [BindProperty]
-        public string ImageIdSelected { get; set; } = string.Empty;
+        public string? ImageIdSelected { get; set; }
 
         [BindProperty]
         public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
@@ -102,6 +102,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
                 var dataBlockModelEdit = new DataBlockModel<BlockModel>()
                 {
+                    ID = id,
                     Name = blockModel.Title,
                     Description = blockModel.Title,
                     Type = typeof(BlockModel).Name,
