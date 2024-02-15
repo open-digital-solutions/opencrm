@@ -15,13 +15,15 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         private readonly IMediaService _mediaService;
 
-        public string MediaPublicDirPath { get; set; } = Path.Combine(OpenCRMEnv.GetWebRoot(), "media");
+        public string ValidateError { get; set; } = string.Empty;
+
+        public string ImageUrlSelected { get; set; } = string.Empty;
 
         [BindProperty]
-        public IFormFile FileData { get; set; } = default!;
+        public string ImageIdSelected { get; set; } = string.Empty;
 
         [BindProperty]
-        public bool IsPublic { get; set; } = false;
+        public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
@@ -60,6 +62,8 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 Page = "",
                 Url = "/Manage/Block"
             });
+
+            Images = _mediaService.GetImageMedias();
         }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
@@ -81,6 +85,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             };
 
             Model = showModel;
+
+            if(showModel.ImageUrl != null)
+            {
+                ImageUrlSelected = showModel.ImageUrl;
+            }
+
             return Page();
         }
 
@@ -88,40 +98,20 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         {
             if (ModelState.IsValid)
             {
-                Guid imageID = default!;
-                string imageUrl = "";
-                var modelType = BlockType.Text;
-
-                if (FileData != null)
-                {
-                    modelType = BlockType.Card;
-                    var file = await _mediaService.PostFileAsync(FileData, IsPublic);
-                    imageID = file.ID;
-
-                    if (IsPublic)
-                    {
-                        imageUrl = _mediaService.GetMediaUrl(imageID.ToString());
-                    }
-                }
-
-                var blockModel = new BlockModel()
-                {
-                    Code = Model.Code,
-                    Title = Model.Title,
-                    SubTitle = Model.SubTitle,
-                    Type = modelType,
-                    ImageId = imageID,
-                    ImageUrl = imageUrl
-                };
+                var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
 
                 var dataBlockModelEdit = new DataBlockModel<BlockModel>()
                 {
-                    ID = id,
-                    Name = Model.Title,
-                    Description = Model.Title,
+                    Name = blockModel.Title,
+                    Description = blockModel.Title,
                     Type = typeof(BlockModel).Name,
                     Data = blockModel
                 };
+
+                if (!string.IsNullOrEmpty(blockModel.ImageUrl))
+                {
+                    ImageUrlSelected = blockModel.ImageUrl;
+                }
 
                 await _blockService.EditBlock(dataBlockModelEdit);
                 return RedirectToPage("./Index");
