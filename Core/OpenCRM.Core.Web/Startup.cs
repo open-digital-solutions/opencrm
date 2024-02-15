@@ -24,7 +24,6 @@ namespace OpenCRM.Core.Web
             OpenCRMEnv.SetWebRoot();
 
             //TODO: Register all module services here
-            
             string connectionString = configuration.GetConnectionString("DBConnection") ?? throw new InvalidOperationException("OpenCRM DB Connection string 'DBConnection' not found.");
             services.AddDbContext<TDBContext>(options => options.UseNpgsql(connectionString));
             services.AddScoped<QRCodeService>();
@@ -35,17 +34,21 @@ namespace OpenCRM.Core.Web
             services.AddScoped<ITranslationService, TranslationService<TDBContext>>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRoleService, RoleService>();
-
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.Name = "OpenCRM.Antiforgery.Token";
+            });
             services.AddIdentity<UserEntity, RoleEntity>().AddEntityFrameworkStores<TDBContext>().AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Login";
-                options.LogoutPath = "/Identity/Logout";
+                options.LogoautPath = "/Identity/Logout";
+                options.Cookie.Name = "OpenCRM.Identity.Token";
+                
             });
             services.AddAuthentication();
             services.Configure<IdentityOptions>(options =>
             {
-                // Configure Customize password requirements, lockout settings, etc.
                 options.SignIn.RequireConfirmedEmail = true;
             });
             services.AddAuthorization();
