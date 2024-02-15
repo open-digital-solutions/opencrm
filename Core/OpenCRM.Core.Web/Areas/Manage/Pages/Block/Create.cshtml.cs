@@ -30,6 +30,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         [BindProperty]
         public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
+        [BindProperty]
+        public string ImageIdSelected { get; set; } = string.Empty;
+
+        [BindProperty]
+        public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -76,6 +81,8 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             });
 
             Images = _mediaService.GetImageMedias();
+
+            Images = _mediaService.GetImageMedias();
         }
 
         public IActionResult OnGet()
@@ -89,6 +96,8 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
              
+                var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
+             
                 var dataBlockModel = new DataBlockModel<BlockModel>()
                 {
                     Name = blockModel.Title,
@@ -98,6 +107,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 };
 
                 if (!string.IsNullOrEmpty(blockModel.ImageUrl))
+                {
+                    ImageUrlSelected = blockModel.ImageUrl;
+                }
+
+                if(!string.IsNullOrEmpty(blockModel.ImageUrl))
                 {
                     ImageUrlSelected = blockModel.ImageUrl;
                 }
