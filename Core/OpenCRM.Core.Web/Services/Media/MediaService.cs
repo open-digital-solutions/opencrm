@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.Models;
 using OpenCRM.Core.Web.Extensions;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Services
 {
-    public class MediaService<TDBContext> : IMediaService where TDBContext : DataContext
+    public class MediaService<TDBContext> :  IMediaService where TDBContext : DataContext
     {
         private readonly TDBContext dbContextClass;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -96,7 +97,7 @@ namespace OpenCRM.Core.Web.Services
                 {
                     var filename = file.FileDetails?.FileName ?? "UnknowFileName.generic";
                     var extension = Path.GetExtension(filename);
-                    
+
                     var fileDetails = new MediaEntity()
                     {
                         ID = Guid.NewGuid(),
@@ -230,34 +231,39 @@ namespace OpenCRM.Core.Web.Services
             }
         }
 
-        public MediaType GetMediaType(string extension) {
+        public MediaType GetMediaType(string extension)
+        {
 
             switch (extension)
             {
-                case ".doc": {
-                        return MediaType.DOCX;    
-                }
-                case ".docx": {
+                case ".doc":
+                    {
                         return MediaType.DOCX;
-                }
-                case ".pdf": {
+                    }
+                case ".docx":
+                    {
+                        return MediaType.DOCX;
+                    }
+                case ".pdf":
+                    {
                         return MediaType.PDF;
-                }
+                    }
                 case ".png":
-                {
+                    {
                         return MediaType.IMAGE;
-                }
+                    }
                 case ".jpg":
-                {
-                    return MediaType.IMAGE;
-                }
+                    {
+                        return MediaType.IMAGE;
+                    }
                 case ".svg":
-                {
-                    return MediaType.IMAGE;
-                }
-                default: {
-                    return MediaType.GENERIC; 
-                }
+                    {
+                        return MediaType.IMAGE;
+                    }
+                default:
+                    {
+                        return MediaType.GENERIC;
+                    }
             }
         }
 
@@ -275,5 +281,32 @@ namespace OpenCRM.Core.Web.Services
             return $"{baseUrl}/media/{media.ID.ToString() + extension}";
         }
 
+        public bool IsImage(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+            return (extension == ".png" || extension == ".jpg" || extension == ".jpeg" ||
+                    extension == ".gif" || extension == ".svg" || extension == ".webp");
+        }
+
+        public List<MediaBlockModel> GetImageMedias()
+        {
+            var medias = GetMedias();
+            var mediasUrl = new List<MediaBlockModel>();
+
+            foreach (var media in medias)
+            {
+                if (IsImage(media.FileName))
+                {
+                    mediasUrl.Add(new MediaBlockModel()
+                    {
+                        Id = media.ID,
+                        ImageName = media.FileName,
+                        ImageUrl = GetMediaUrl(media.ID.ToString())
+                    });
+                }
+            }
+            return mediasUrl;
+        }
     }
+
 }
