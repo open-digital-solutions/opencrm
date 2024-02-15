@@ -9,13 +9,11 @@ using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.QRCode;
 using OpenCRM.Core.Web.Services;
-using OpenCRM.Core.Web.Services.BlockService;
 using OpenCRM.Core.Web.Services.EmailService;
 using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Services.TranslationService;
 using OpenCRM.Core.Web.Services.RoleService;
-using OpenCRM.Core.Web.Services.UserSessionService;
 
 namespace OpenCRM.Core.Web
 {
@@ -36,8 +34,6 @@ namespace OpenCRM.Core.Web
             services.AddScoped<ITranslationService, TranslationService<TDBContext>>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IBlockService, BlockService<TDBContext>>();
-            services.AddScoped<IUserSessionService, UserSessionService>();
             services.AddAntiforgery(options =>
             {
                 options.Cookie.Name = "OpenCRM.Antiforgery.Token";
@@ -46,7 +42,7 @@ namespace OpenCRM.Core.Web
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Login";
-                options.LogoutPath = "/Identity/Logout";
+                options.LogoautPath = "/Identity/Logout";
                 options.Cookie.Name = "OpenCRM.Identity.Token";
                 
             });
