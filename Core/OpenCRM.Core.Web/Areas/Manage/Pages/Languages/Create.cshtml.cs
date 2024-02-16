@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
+using OpenCRM.Core.Web.Services.TranslationService;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
