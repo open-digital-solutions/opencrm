@@ -26,8 +26,6 @@ namespace OpenCRM.Core.Web.Models
 
         public string? Description { get; set; }
 
-        public Guid? ImageId { get; set; }
-
         public string? ImageUrl { get; set; }
     }
 }

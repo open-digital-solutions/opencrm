@@ -6,7 +6,7 @@
             @TableData.Title
         </div>
         <div>
-            <ButtonLink Label="Create new" Url="@(TableData.Page + "/Create")" Style="btn btn-success"/>
+            <ButtonLink Label="Create new" Url="@(TableData.Page + "/Create")"/>
         </div>
     </div>
     <div class="card-body">
@@ -37,6 +37,11 @@
                                     <ButtonLink Label="@item.Label" Url="@(TableData.Page + "/" + item.Label + "?id=" + row.ID)" Icon="@item.IconName" />
                                 </td>
                             }   
+                            else if(item.IsImage) {
+                                <td>
+                                    <img src="@item.Label" style="width:50px;"/>
+                                </td>
+                            }
                             else
                             {
                                 <td>

@@ -1,5 +1,6 @@
 ﻿using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Components.Table;
+using OpenCRM.Core.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,38 @@ namespace OpenCRM.Core.Web.Table
 			});
 		}
 
+        public bool IsImage(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+            return (extension == ".png" || extension == ".jpg" || extension == ".jpeg" ||
+                    extension == ".gif" || extension == ".svg" || extension == ".webp");
+        }
+        
+        private TRowData CreateRowData(TDataModel data, string prop)
+        {
+            var propValue = data?.GetType().GetProperty(prop)?.GetValue(data)?.ToString();
+
+            if (!string.IsNullOrEmpty(propValue) && IsImage(propValue))
+            {
+                TRowData rowData = new TRowData()
+                {
+                    Label = propValue,
+                    IsImage = true
+                };
+
+                return rowData;
+            }
+            else
+            {
+                TRowData rowData = new TRowData()
+                {
+                    Label = propValue
+                };
+
+                return rowData;
+            }
+        }
+
         /// <summary>
         /// Create a table
         /// </summary>
@@ -49,17 +82,21 @@ namespace OpenCRM.Core.Web.Table
 
 				foreach (var prop in tableHeaders)
 				{
-					var data = item.Data;
-					var propValue = data?.GetType().GetProperty(prop)?.GetValue(data)?.ToString();
+                    var rowData = CreateRowData(item.Data, prop);
+                    row.Datas.Add(rowData);
+                    //var data = item.Data;
+                    //var propValue = data?.GetType().GetProperty(prop)?.GetValue(data)?.ToString();
 
-					TRowData rowData = new TRowData()
-					{
-						Label = propValue
-					};
-					row.Datas.Add(rowData);
-				}
+                    //if(propValue )
 
-				BuildButton(row, "Edit", "fas fa-pen");
+                    //TRowData rowData = new TRowData()
+                    //{
+                    //	Label = propValue
+                    //};
+                    //row.Datas.Add(rowData);
+                }
+
+                BuildButton(row, "Edit", "fas fa-pen");
 				BuildButton(row, "Details", "fas fa-info-circle");
 				BuildButton(row, "Delete", "fas fa-trash");
 

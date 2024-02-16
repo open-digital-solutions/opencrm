@@ -68,8 +68,8 @@ namespace OpenCRM.Core.Web.Services.BlockService
                     Code = code,
                     Title = title,
                     SubTitle = subTitle,
+                    Description = description,
                     Type = BlockType.Card,
-                    ImageId = imageGuiId,
                     ImageUrl = image?.ImageUrl,
                 };
 
@@ -81,6 +81,7 @@ namespace OpenCRM.Core.Web.Services.BlockService
                 {
                     Code = code,
                     Title = title,
+					Description = description,
                     SubTitle = subTitle,
                     Type = BlockType.Text
                 };
