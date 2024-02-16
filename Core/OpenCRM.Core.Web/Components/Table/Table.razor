@@ -39,7 +39,9 @@
                             }   
                             else if(item.IsImage) {
                                 <td>
-                                    <img src="@item.Label" style="width:50px;"/>
+                                    <a href="@item.ImageUrl">
+                                        <img src="@item.ImageUrl" style="width:50px;" />
+                                    </a>
                                 </td>
                             }
                             else

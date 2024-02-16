@@ -48,7 +48,9 @@
                     @if (!string.IsNullOrEmpty(Model.ImageUrlSelected))
                     {
                         <div class="mb-3">
-                            <img src="@Model.ImageUrlSelected" style="width:100px;" />
+                            <a href="@Model.ImageUrlSelected">
+                                <img src="@Model.ImageUrlSelected" style="width:100px;" />
+                            </a>
                         </div>
                     }
                     <div class="mt-4 mb-0">

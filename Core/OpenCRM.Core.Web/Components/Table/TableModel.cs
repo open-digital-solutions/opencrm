@@ -20,6 +20,8 @@ namespace OpenCRM.Core.Web.Components.Table
 
         public bool IsImage { get; set; } = false;
 
+        public string? ImageUrl { get; set; }
+
     }
 
     public class TableRow<TRowData>

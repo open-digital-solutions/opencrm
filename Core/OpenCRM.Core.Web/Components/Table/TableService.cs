@@ -32,8 +32,8 @@ namespace OpenCRM.Core.Web.Table
         public bool IsImage(string fileName)
         {
             var extension = Path.GetExtension(fileName);
-            return (extension == ".png" || extension == ".jpg" || extension == ".jpeg" ||
-                    extension == ".gif" || extension == ".svg" || extension == ".webp");
+            return extension == ".png" || extension == ".jpg" || extension == ".jpeg" ||
+                    extension == ".gif" || extension == ".svg" || extension == ".webp";
         }
         
         private TRowData CreateRowData(TDataModel data, string prop)
@@ -45,7 +45,8 @@ namespace OpenCRM.Core.Web.Table
                 TRowData rowData = new TRowData()
                 {
                     Label = propValue,
-                    IsImage = true
+                    IsImage = true,
+                    ImageUrl = propValue
                 };
 
                 return rowData;
