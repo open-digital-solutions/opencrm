@@ -1,15 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Web.Components.DropdownMenu;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.IdentityService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenCRM.Core.Web.Components
 {
@@ -31,8 +23,8 @@ namespace OpenCRM.Core.Web.Components
                 Items = new List<DropdownMenuModel>()
                 {
                     new DropdownMenuModel("Blocks", "/Manage/Block"),
-
-                    new DropdownMenuModel("Medias", "Manage/Media")
+                    new DropdownMenuModel("Medias", "/Manage/Media"),
+                    new DropdownMenuModel("Languages", "/Manage/Languages")
                 }
             },
 
