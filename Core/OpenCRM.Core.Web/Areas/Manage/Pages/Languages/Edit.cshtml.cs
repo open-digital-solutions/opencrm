@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    [Authorize]
+    //[Authorize]
     public class EditModel : PageModel
     {
         readonly TranslationModel newTranslationModel;
