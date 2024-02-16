@@ -77,7 +77,7 @@ namespace OpenCRM.Core
             builder.Entity<TranslationEntity>((entity) =>
             {
                 entity.ToTable("Translations");
-                entity.HasIndex(e => e.Key).IsUnique();
+               // entity.HasIndex(e => e.Key).IsUnique();
             });
         }
         
