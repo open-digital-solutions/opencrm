@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
-using OpenCRM.Core.Web.Services.TranslationService;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
@@ -32,7 +28,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             newTranslationModel.KeyCreate = "";
             newTranslationModel.KeyAccept = "";
 
-            JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
+            //JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
             _languageService = languageService;
 
             Links.Add(new BreadCrumbLinkModel()
@@ -72,10 +68,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         {
             try
             {
-                JObject.Parse(jsonString);
+                //TODO: Validate JObject.Parse(jsonString);
                 return true;
             }
-            catch (JsonReaderException)
+            catch //TODO:  (JsonReaderException)
             {
                 return false;
             }
@@ -89,10 +85,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
             if (JsonData != null)
              if( IsValid(JsonData) )
-               newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
-            
-            
-            if (ModelState.IsValid)
+                    //TODO: newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
+
+
+                    if (ModelState.IsValid)
             {
                 var languageModel = new LanguageModel<TranslationModel>()
                 {
