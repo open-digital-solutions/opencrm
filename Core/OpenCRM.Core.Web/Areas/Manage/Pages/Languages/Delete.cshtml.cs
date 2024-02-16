@@ -7,7 +7,7 @@ using OpenCRM.Core.Web.Services.LanguageService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    //[Authorize]
+    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly ILanguageService _languageService;

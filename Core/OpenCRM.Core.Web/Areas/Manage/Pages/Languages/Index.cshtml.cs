@@ -9,7 +9,7 @@ using OpenCRM.Core.Web.Table;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    //[Authorize]
+    [Authorize]
     public class IndexModel : CorePageModel
     {
         private readonly ILanguageService _languageService;
