@@ -21,7 +21,7 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [BindProperty]
-        public TableModel Table { get; set; } = new TableModel("Accountings", "Accounting");
+        public TableModel Table { get; set; } = new TableModel("Accountings", "Accountings");
 
         public IndexModel(IAccountingService accountingDataService)
         {

@@ -178,7 +178,7 @@ namespace OpenCRM.Core.Web.Services.LanguageService
         }*/
 
         public async Task SeedAsync()
-        {
+        {            
             var existingEnglish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "EN-gb");
             if (existingEnglish == null)
             {
@@ -186,7 +186,7 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                 english.Translations = new TranslationModel();
                 await AddLanguage(english);
             }
-
+            
             var existingSpanish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "ESes");
             if (existingSpanish == null)
             {
