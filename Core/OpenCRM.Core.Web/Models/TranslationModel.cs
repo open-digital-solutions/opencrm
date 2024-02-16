@@ -12,14 +12,16 @@ namespace OpenCRM.Core.Web.Models
     public class TranslationModel
     {
         [Required]
+        [RegularExpression(@"^\{\s*""KeyAccept"":\s*""(.*?)""\s*,\s*""\}$")]
         public string KeyAccept { get; set; } = "Accept";
 
         [Required]
+        [RegularExpression(@"^\{\s*""KeyCreate"":\s*""(.*?)""\s*,\s*""\}$")]
         public string KeyCreate { get; set; } = "Create";
 
         public override string ToString()
         {
-            return System.String.Format("KeyAccept: {0}, KeyCreate: {1}", KeyAccept, KeyCreate);
+            return "{"+ System.String.Format("KeyAccept:{0} , KeyCreate: {1}", KeyAccept, KeyCreate) + "}" ;
         }
     }
 }

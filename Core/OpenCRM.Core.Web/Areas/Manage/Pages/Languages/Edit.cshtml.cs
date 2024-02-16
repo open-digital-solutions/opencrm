@@ -1,19 +1,16 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.LanguageService;
-using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    [Authorize]
     public class EditModel : PageModel
-    {
+    {        
         TranslationModel newTranslationModel;
-        JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
 
         private readonly ILanguageService _languageService;
 
@@ -33,8 +30,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             newTranslationModel.KeyCreate = "";
             newTranslationModel.KeyAccept = "";
 
-            JsonData = JsonSerializer.Serialize(newTranslationModel, options);
-
+            JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
             _languageService = languageService;
 
             Links.Add(new BreadCrumbLinkModel()
@@ -68,120 +64,46 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             Language = languageModel;
             if (Language != null)
             {
-                JsonData = JsonSerializer.Serialize(Language.Translations, options);
+                string left = "{ \"KeyAccept\" : " + "\"" + Language.Translations.KeyAccept + "\"";
+                string right = " , \"KeyCreate\" : " + "\"" + Language.Translations.KeyCreate + "\" }";
+
+                JsonData = JsonConvert.SerializeObject(Language.Translations,Formatting.Indented); 
             }
             return Page();
         }
 
-        public bool IsJsonValid(string jsonString)
+        public bool IsValid(string jsonString)
         {
             try
             {
-                JsonDocument document = JsonDocument.Parse(jsonString);
-
+                JObject.Parse(jsonString);
+                return true;
             }
-            catch (Exception ex)
+            catch (JsonReaderException)
             {
                 return false;
             }
-            return true;
         }
 
-        public bool IsKeyAcceptValid(string jsonString)
-        {
-            try
-            {
-                JsonDocument document = JsonDocument.Parse(jsonString);
-                document.RootElement.GetProperty("KeyAccept");
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool IsKeyCreateValid(string jsonString)
-        {
-            try
-            {
-                JsonDocument document = JsonDocument.Parse(jsonString);
-                document.RootElement.GetProperty("KeyCreate");
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public string getKeyCreate(string jsonString)
-        {
-            JsonDocument document = JsonDocument.Parse(jsonString);
-            var rootElement = document.RootElement;
-            return rootElement.GetProperty("KeyCreate").GetString();
-        }
-
-        public string getKeyAccept(string jsonString)
-        {
-            JsonDocument document = JsonDocument.Parse(jsonString);
-            var rootElement = document.RootElement;
-            return rootElement.GetProperty("KeyAccept").GetString();
-        }
-
-        public string getMissKey(string jsonString)
-        {
-            List<String> keys = new List<String>();
-            keys.Add("KeyAccept");
-            keys.Add("KeyCreate");
-
-            JsonDocument document = JsonDocument.Parse(jsonString);
-            var rootElement = document.RootElement;
-            var all = rootElement.EnumerateObject();
-            return rootElement.EnumerateObject().Where(x => !keys.Contains(x.Name)).First<JsonProperty>().Value.GetString();
-        }
-
-        public string getMissKeybyIndex(string jsonString, int index)
-        {
-            JsonDocument document = JsonDocument.Parse(jsonString);
-            var rootElement = document.RootElement;
-
-            return rootElement.EnumerateObject().ToList<JsonProperty>().ElementAt<JsonProperty>(index).Value.GetString();
-        }
 
         public async Task<IActionResult> OnPost(Guid id)
         {
             TranslationModel? newTranslationModel = new TranslationModel();
+            newTranslationModel.KeyAccept = "";
+            newTranslationModel.KeyCreate = "";
+
+            if (JsonData != null)
+                if (IsValid(JsonData))
+                    newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
+
             if (ModelState.IsValid)
             {
                 var languageModel = await _languageService.GetLanguageAsync<TranslationModel>(id);
+
                 if (languageModel == null)
                 {
                     return NotFound();
                 }
-                if (JsonData != null)
-                    if (IsJsonValid(JsonData))
-                        if (IsKeyAcceptValid(JsonData) && IsKeyCreateValid(JsonData))
-                        {
-                            newTranslationModel = JsonSerializer.Deserialize<TranslationModel>(JsonData);
-                        }
-                        else if (IsKeyAcceptValid(JsonData) && !IsKeyCreateValid(JsonData))
-                        {
-                            newTranslationModel.KeyAccept = getKeyAccept(JsonData);
-                            newTranslationModel.KeyCreate = getMissKey(JsonData);
-                        }
-                        else if (!IsKeyAcceptValid(JsonData) && IsKeyCreateValid(JsonData))
-                        {
-                            newTranslationModel.KeyAccept = getMissKey(JsonData);
-                            newTranslationModel.KeyCreate = getKeyCreate(JsonData);
-                        }
-                        else if (!IsKeyAcceptValid(JsonData) && !IsKeyCreateValid(JsonData))
-                        {
-                            newTranslationModel.KeyAccept = getMissKeybyIndex(JsonData, 0);
-                            newTranslationModel.KeyCreate = getMissKeybyIndex(JsonData, 1);
-                        }
-                        else
-                            newTranslationModel = languageModel.Translations;
 
                 var languageModelEdit = new LanguageModel<TranslationModel>()
                 {
@@ -191,7 +113,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                     Translations = newTranslationModel,
                 };
                 await _languageService.EditLanguage(languageModelEdit);
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Index");                
             }
             return Page();
         }
