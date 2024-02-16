@@ -58,7 +58,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Block",
+                Name = "Blocks",
                 Page = "",
                 Url = "/Manage/Block"
             });

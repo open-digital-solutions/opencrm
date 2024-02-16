@@ -47,7 +47,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
             {
                 Area = "SwissLDP",
                 IsActive = true,
-                Name = "Supplier",
+                Name = "Suppliers",
                 Page = "Supplier",
                 Url = "/SwissLDP/Supplier"
             });
