@@ -1,0 +1,40 @@
+﻿@page
+@model OpenCRM.Core.Web.Pages.Identity.Manage.IndexModel
+
+@{
+    Layout = "_CoreEmptyLayout";
+}
+
+@if (ViewData["StatusMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewData["StatusMessage"]
+    </div>
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card mt-5">
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Name" class="form-label"></label>
+                        <input asp-for="Input.Name" class="form-control" />
+                        <span asp-validation-for="Input.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Lastname" class="form-label"></label>
+                        <input asp-for="Input.Lastname" class="form-control" />
+                        <span asp-validation-for="Input.Lastname" class="text-danger"></span>
+                    </div>
+
+                 
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
