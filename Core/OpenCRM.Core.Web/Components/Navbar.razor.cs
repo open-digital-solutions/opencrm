@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using OpenCRM.Core.Web.Components.DropdownMenu;
@@ -18,6 +19,13 @@ namespace OpenCRM.Core.Web.Components
     {
         //TODO: Module informations as MenuLinks can be stored on the CRM database on the next future and this data cal be
         // loaded from there to load the current module dropdownModel.
+
+        private static List<SelectListItem> Countries { get; } = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "MX", Text = "Mexico" },
+        new SelectListItem { Value = "CA", Text = "Canada" },
+        new SelectListItem { Value = "US", Text = "USA"  },
+    };
 
         private static List<DropdownMenuModel> mainModulesLinks = new List<DropdownMenuModel>()
         {
