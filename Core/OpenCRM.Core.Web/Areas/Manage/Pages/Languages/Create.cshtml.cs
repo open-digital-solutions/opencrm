@@ -2,16 +2,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    [Authorize]
     public class CreateModel : PageModel
     {
-        readonly TranslationModel newTranslationModel;
+        JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
+
+        TranslationModel newTranslationModel;
         private readonly ILanguageService _languageService;
 
         [BindProperty]
@@ -25,13 +24,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         public CreateModel(ILanguageService languageService)
         {
-            newTranslationModel = new TranslationModel
-            {
-                KeyCreate = " ",
-                KeyAccept = " "
-            };
+            newTranslationModel = new TranslationModel();
 
-            JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
+            newTranslationModel.KeyCreate = "";
+            newTranslationModel.KeyAccept = "";
+
+            JsonData = JsonSerializer.Serialize(newTranslationModel, options);
             _languageService = languageService;
 
             Links.Add(new BreadCrumbLinkModel()
@@ -66,32 +64,31 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         {
             return Page();
         }
-
         public bool IsValid(string jsonString)
         {
             try
             {
-                JObject.Parse(jsonString);
-                return true;
+                JsonDocument document = JsonDocument.Parse(jsonString);
+                var rootElement = document.RootElement;
+                var JsonElement1 = rootElement.GetProperty("KeyAccept");
+                var JsonElement2 = rootElement.GetProperty("KeyCreate");
             }
-            catch (JsonReaderException)
+            catch (Exception ex)
             {
                 return false;
             }
+            return true;
         }
 
         public async Task<IActionResult> OnPost()
         {
-            TranslationModel? newTranslationModel = new()
-            {
-                KeyAccept = " ",
-                KeyCreate = " "
-            };
+            TranslationModel? newTranslationModel = new TranslationModel();
+            newTranslationModel.KeyAccept = "";
+            newTranslationModel.KeyCreate = "";
 
             if (JsonData != null)
                 if (IsValid(JsonData))
-                    newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
-
+                    newTranslationModel = JsonSerializer.Deserialize<TranslationModel>(JsonData);
 
             if (ModelState.IsValid)
             {

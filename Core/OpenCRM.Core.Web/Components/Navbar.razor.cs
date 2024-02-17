@@ -1,7 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
 using OpenCRM.Core.Web.Components.DropdownMenu;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.IdentityService;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace OpenCRM.Core.Web.Components
 {
@@ -10,23 +20,20 @@ namespace OpenCRM.Core.Web.Components
         //TODO: Module informations as MenuLinks can be stored on the CRM database on the next future and this data cal be
         // loaded from there to load the current module dropdownModel.
 
+        private static List<SelectListItem> Countries { get; } = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "MX", Text = "Mexico" },
+        new SelectListItem { Value = "CA", Text = "Canada" },
+        new SelectListItem { Value = "US", Text = "USA"  },
+    };
+
         private static List<DropdownMenuModel> mainModulesLinks = new List<DropdownMenuModel>()
         {
+            new DropdownMenuModel("Management", "/Manage"),
+
             new DropdownMenuModel("Register", "/Identity/Register"),
 
             new DropdownMenuModel("Login", "/Identity/Login"),
-
-            new DropdownMenuModel()
-            {
-                Name = "Management",
-                Url = "/Manage",
-                Items = new List<DropdownMenuModel>()
-                {
-                    new DropdownMenuModel("Blocks", "/Manage/Block"),
-                    new DropdownMenuModel("Medias", "/Manage/Media"),
-                    new DropdownMenuModel("Languages", "/Manage/Languages")
-                }
-            },
 
             new DropdownMenuModel()
             {
@@ -58,29 +65,26 @@ namespace OpenCRM.Core.Web.Components
         [Parameter]
         public DropdownMenuModel CurrentModuleLinks { get; set; } = saveCurrentModelLinks; //Active Main Module
 
+        
         static DropdownMenuModel saveCurrentModelLinks = new DropdownMenuModel();
         static string UserName = "";
         static string Name = "";
-        static byte[]? Avatar;
 
         protected override async void OnInitialized()
         {
             string currentModuleUrl = "/" + Navigation.ToBaseRelativePath(Navigation.Uri);
             var usermodel = await IdentityService.GetLoggedUser();
-
-            if (usermodel != null)
-            {
+            if (usermodel != null) {
                 UserName = usermodel.UserName;
                 Name = $"{usermodel.Name} {usermodel.Lastname}";
-                Avatar = usermodel.Avatar;
             }
 
             if (currentModuleUrl != "")
             {
                 DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
 
-                if (result != null)
-                {
+                if(result != null)
+                { 
                     saveCurrentModelLinks = new DropdownMenuModel(result.Name, result.Url, result.Items);
                     CurrentModuleLinks = saveCurrentModelLinks;
                 }
