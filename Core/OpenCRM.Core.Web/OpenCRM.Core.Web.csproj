@@ -4,7 +4,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-  </PropertyGroup>
+  </PropertyGroup> 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
@@ -22,5 +22,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenCRM.Core\OpenCRM.Core.csproj" />
-  </ItemGroup>
+  </ItemGroup>  
 </Project>
