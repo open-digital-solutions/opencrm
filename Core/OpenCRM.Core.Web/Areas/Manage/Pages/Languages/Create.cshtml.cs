@@ -2,15 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
-    [Authorize]
     public class CreateModel : PageModel
     {
+        JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
 
         TranslationModel newTranslationModel;
         private readonly ILanguageService _languageService;
@@ -24,7 +22,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         [BindProperty]
         public string JsonData { get; set; } = "";
 
-
         public CreateModel(ILanguageService languageService)
         {
             newTranslationModel = new TranslationModel();
@@ -32,7 +29,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             newTranslationModel.KeyCreate = "";
             newTranslationModel.KeyAccept = "";
 
-            JsonData = JsonConvert.SerializeObject(newTranslationModel, Formatting.Indented);
+            JsonData = JsonSerializer.Serialize(newTranslationModel, options);
             _languageService = languageService;
 
             Links.Add(new BreadCrumbLinkModel()
@@ -67,18 +64,20 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         {
             return Page();
         }
-
         public bool IsValid(string jsonString)
         {
             try
             {
-                JObject.Parse(jsonString);
-                return true;
+                JsonDocument document = JsonDocument.Parse(jsonString);
+                var rootElement = document.RootElement;
+                var JsonElement1 = rootElement.GetProperty("KeyAccept");
+                var JsonElement2 = rootElement.GetProperty("KeyCreate");
             }
-            catch (JsonReaderException)
+            catch (Exception ex)
             {
                 return false;
             }
+            return true;
         }
 
         public async Task<IActionResult> OnPost()
@@ -89,8 +88,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
             if (JsonData != null)
                 if (IsValid(JsonData))
-                    newTranslationModel = JsonConvert.DeserializeObject<TranslationModel>(JsonData);
-
+                    newTranslationModel = JsonSerializer.Deserialize<TranslationModel>(JsonData);
 
             if (ModelState.IsValid)
             {

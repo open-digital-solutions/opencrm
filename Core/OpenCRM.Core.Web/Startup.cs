@@ -97,9 +97,9 @@ namespace OpenCRM.Core.Web
                 .GetRequiredService<IRoleService>();
                 roleService.Seed().Wait();
 
-               /* var identityService = scope.ServiceProvider
+                var identityService = scope.ServiceProvider
                .GetRequiredService<IIdentityService>();
-                identityService.Seed().Wait();*/
+                identityService.Seed().Wait();
 
             }
             return app;
