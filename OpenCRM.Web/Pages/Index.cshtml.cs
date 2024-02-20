@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Pages;
+using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.BlockService;
 
 namespace OpenCRM.Web.Pages
@@ -11,6 +11,7 @@ namespace OpenCRM.Web.Pages
         private readonly ILogger<IndexModel> _logger;
 
         private readonly IBlockService _blockService;
+        private readonly IIdentityService _identityService;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -18,11 +19,14 @@ namespace OpenCRM.Web.Pages
         [BindProperty]
         public BlockModel Block { get; set; } = new BlockModel();
 
-        public IndexModel(ILogger<IndexModel> logger, IBlockService blockService)
+        public string? Lang { get; set; }
+
+        public IndexModel(ILogger<IndexModel> logger, IBlockService blockService, IIdentityService identityService)
         {
             _logger = logger;
             _blockService = blockService;
 
+            _identityService = identityService;
             var link = new BreadCrumbLinkModel()
             {
                 Area = "",
@@ -56,7 +60,9 @@ namespace OpenCRM.Web.Pages
 
             Block = blockModel;
 
-            return Page();
+            return Page();            var dataSesison = _identityService.GetSession();
+            if (dataSesison == null) Lang = "IT";
+            Lang = dataSesison != null ? dataSesison.Lang : "Default dal browser";
         }
     }
 }
