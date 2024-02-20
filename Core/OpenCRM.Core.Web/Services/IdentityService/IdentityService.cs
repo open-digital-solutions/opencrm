@@ -132,7 +132,8 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 Name = userEntity.Name,
                 Lastname = userEntity.Lastname,
                 Email = userEntity.Email ?? string.Empty,
-                UserName = userEntity.UserName ?? string.Empty
+                UserName = userEntity.UserName ?? string.Empty,
+                Avatar=userEntity.Avatar
             };
 
         }
