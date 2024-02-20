@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,26 +15,27 @@ namespace OpenCRM.Core.Web.Pages.Identity.Manage
         private readonly SignInManager<UserEntity> _signInManager;
 
         [BindProperty]
-        public UserModel Input { get; set; }
+        public UserEntity Input { get; set; }   
+        [BindProperty]
+        public IFormFile uploadAvatar { get; set; }
 
-        public IndexModel(IIdentityService identityService)
+        public IndexModel(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager)
         {
-            _identityService = identityService;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
-      
-        private async Task LoadAsync(UserEntity user)
+
+        public async Task<IActionResult> OnGet()
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-
-            Input = new UserModel
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
             {
+                Input=user;
+            }
 
-                Name = user.Name,
-                Lastname = user.Lastname
-            };
+            return Page();
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -42,21 +44,29 @@ namespace OpenCRM.Core.Web.Pages.Identity.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                await LoadAsync(user);
-                return Page();
+                user.Name = Input.Name;
+                user.Lastname = Input.Lastname;
+                if (uploadAvatar != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        uploadAvatar.CopyTo(memoryStream);
+                        user.Avatar = memoryStream.ToArray();
+                    }
+                }
+
+                await _userManager.UpdateAsync(user);
+                await _signInManager.RefreshSignInAsync(user);
+                //return RedirectToPage("/");
+                return RedirectToPage("/Index");
             }
 
-            user.Name = Input.Name;
-            user.Lastname = Input.Lastname;
-            await _userManager.UpdateAsync(user);
-
-            await _signInManager.RefreshSignInAsync(user);
-            string StatusMessage = "Your profile has been updated";
-            ViewData["StatusMessage"] = StatusMessage;
-
-            return RedirectToPage();
+            return Page();
         }
+
+      
+
     }
 }

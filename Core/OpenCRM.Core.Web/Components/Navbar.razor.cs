@@ -61,6 +61,7 @@ namespace OpenCRM.Core.Web.Components
         static DropdownMenuModel saveCurrentModelLinks = new DropdownMenuModel();
         static string UserName = "";
         static string Name = "";
+        static byte[]? Avatar;
 
         protected override async void OnInitialized()
         {
@@ -71,6 +72,7 @@ namespace OpenCRM.Core.Web.Components
             {
                 UserName = usermodel.UserName;
                 Name = $"{usermodel.Name} {usermodel.Lastname}";
+                Avatar = usermodel.Avatar;
             }
 
             if (currentModuleUrl == "/")
