@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using OpenCRM.Core.Crypto;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,7 +15,7 @@ namespace OpenCRM.Core.Data
 
         [Column(TypeName = "jsonb")]
         public string Data { get; set; } = "{}";
-
+        public byte[]? Avatar { get; set; }
         DateTime? IHasTimestamps.AddedAt { get; set;  } = DateTime.UtcNow;
         DateTime? IHasTimestamps.UpdatedAt { get; set; } = DateTime.UtcNow;
         DateTime? IHasTimestamps.DeletedAt { get; set; } = DateTime.UtcNow;
