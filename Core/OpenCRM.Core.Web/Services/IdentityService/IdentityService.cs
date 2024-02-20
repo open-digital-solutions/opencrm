@@ -14,15 +14,11 @@ using OpenCRM.Core.Web.Services.EmailService;
 using OpenCRM.Core.Web.Services.RoleService;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Text.Json;
 
 namespace OpenCRM.Core.Web.Services.IdentityService
 {
     public class IdentityService : IIdentityService
     {
-
-        const string CookieDataSession = "OpenCRM.Session";
-
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly UserManager<UserEntity> _userManager;
         private readonly IUserStore<UserEntity> _userStore;
@@ -35,7 +31,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             IUserStore<UserEntity> userStore,
         SignInManager<UserEntity> signInManager,
         ILogger<IdentityService> logger,
-        IEmailService emailSender,
+        IEmailService emailSender, 
         IHttpContextAccessor httpContextAccessor,
         IRoleService roleService)
         {
@@ -73,7 +69,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             }
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-
+          
             var result = await _userManager.CreateAsync(user, Input.Password);
             return new Tuple<IdentityResult, UserEntity>(result, user);
         }
@@ -84,7 +80,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var encodedCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
+     
             var callbackUrl = $"{page.Request.Scheme}://{page.Request.Host.Value}/Identity/ConfirmEmail?userId={userId}&code={encodedCode}";
 
             if (callbackUrl == null || string.IsNullOrEmpty(user.Email))
@@ -137,7 +133,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 Lastname = userEntity.Lastname,
                 Email = userEntity.Email ?? string.Empty,
                 UserName = userEntity.UserName ?? string.Empty,
-                Avatar = userEntity.Avatar
+                Avatar=userEntity.Avatar
             };
 
         }
@@ -151,48 +147,6 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }
-
-
-        /// <summary>
-        /// TODO: Refactor this method. Remove null return
-        /// </summary>
-        /// <returns></returns>
-        public DataSession? GetSession()
-        {
-            if (_signInManager == null) return null;
-            if (_signInManager.Context == null) return null;
-            if (_signInManager.Context.Request == null) return null;
-
-            var dataSessionJsonBytesBase64 = _signInManager.Context.Request.Cookies[CookieDataSession];
-            if (string.IsNullOrEmpty(dataSessionJsonBytesBase64)) return null;
-
-            var dataSessionJsonBytes = Convert.FromBase64String(dataSessionJsonBytesBase64);
-            if (dataSessionJsonBytes == null) return null;
-
-            var dataSessionJson = System.Text.Encoding.ASCII.GetString(dataSessionJsonBytes);
-            if (dataSessionJson == null) return null;
-
-            return JsonSerializer.Deserialize<DataSession>(dataSessionJson);
-        }
-
-        /// <summary>
-        /// TODO: refactor this method
-        /// </summary>
-        /// <param name="userSession"></param>
-        public void SetSession(DataSession userSession)
-        {
-            CookieOptions options = new();
-            options.Secure = true;
-            if (_signInManager == null) return;
-            if (_signInManager.Context.Response == null) return;
-
-            var dataSessionJson = JsonSerializer.Serialize(userSession);
-            var dataSessionJsonBytes = System.Text.Encoding.ASCII.GetBytes(dataSessionJson);
-            string dataSessionJsonBytesBase64 = Convert.ToBase64String(dataSessionJsonBytes);
-
-            _signInManager.Context.Response.Cookies.Append(CookieDataSession, dataSessionJsonBytesBase64, options);
-        }
-
 
         public async Task Seed()
         {
