@@ -27,6 +27,7 @@ namespace OpenCRM.Web.Pages
             _blockService = blockService;
             _identityService = identityService;
 
+            _identityService = identityService;
             var link = new BreadCrumbLinkModel()
             {
                 Area = "",
