@@ -142,7 +142,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         public async Task<IActionResult> OnPost()
         {
-            //Probando
+       
             TranslationModel? newTranslationModel = new TranslationModel();
             newTranslationModel.KeyAccept = "";
             newTranslationModel.KeyCreate = "";
