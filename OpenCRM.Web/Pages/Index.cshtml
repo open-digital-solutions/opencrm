@@ -1,6 +1,8 @@
 ﻿@page
 @model IndexModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@inject OpenCRM.Core.Web.Services.LanguageService.ILanguageService LanguageService
+@inject OpenCRM.Core.Web.Services.TranslationService.ITranslationService TranslationService
 
 @{
     ViewData["Title"] = @Localizer["Homepage"];
@@ -12,5 +14,6 @@
     <h1 class="display-4">@Localizer["Welcome"]</h1>
     <p> <a href="https://docs.microsoft.com/aspnet/core">@Localizer["Learnabout"]</a>.</p>
     <p>Selected Language: @Model.Lang</p>
+    <p>Traduccion a KeyAccept: @TranslationService.GetTranslationValue("KeyAccept")</p>
 </div>
 
