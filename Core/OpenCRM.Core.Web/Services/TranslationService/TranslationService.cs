@@ -1,9 +1,10 @@
-﻿using OpenCRM.Core.Data;
+﻿using Newtonsoft.Json;
+using OpenCRM.Core.Data;
 
 
 namespace OpenCRM.Core.Web.Services.TranslationService
 {
-   public class TranslationService<TDBContext> : ITranslationService where TDBContext : DataContext
+    public class TranslationService<TDBContext> : ITranslationService where TDBContext : DataContext
     {
         private readonly TDBContext _dbContext;
         public TranslationService(TDBContext dBContext)
@@ -30,6 +31,17 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                 return null;
             }
         }
+
+        public string? GetTranslationValue(string key)
+        {
+            var currentLangCode = "En"; //TODO debe de venir del language service que lo saca del usersession, datasssion, html document tag o uno por defecto del sistema
+            //var translation =  _dbContext.Translationss.Where(x => x.Key == key && x.Language.Code == currentLangCode).FirstOrDefault();
+            var currentLanguage = _dbContext.Languagess.Where(x => x.Code.ToUpper() == currentLangCode.ToUpper()).FirstOrDefault();
+            if (currentLanguage == null) { return key; }
+            var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(currentLanguage.Translations);
+            return values != null && values.ContainsKey(key) ? values.GetValueOrDefault(key) : key;
+        }
+
 
         public List<TranslationModel<TDataModel>> GetTranslationListAsync<TDataModel>()
         {
@@ -69,7 +81,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             try
             {
                 //TODO: Handle errors and exceptions
-                var entity = Activator.CreateInstance<TranslationEntity>();      
+                var entity = Activator.CreateInstance<TranslationEntity>();
                 //entity.ID = model.ID;
                 entity.Key = model.Key;
                 entity.Translation = model.Translation;
@@ -119,7 +131,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
 
         public Task Seed()
         {
-            throw new NotImplementedException();   
-        }   
-   }
+            throw new NotImplementedException();
+        }
+    }
 }
