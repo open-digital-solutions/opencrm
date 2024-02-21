@@ -87,6 +87,7 @@ namespace OpenCRM.Core
         public DbSet<LanguageEntity> Languagess { get; set; }
         public DbSet<TranslationEntity> Translationss { get; set; }
         public DbSet<DataContainerEntity> DataContainers { get; set; }
+        public DbSet<UserSessionEntity> UserSessions { get; set; }
 
     }
 
