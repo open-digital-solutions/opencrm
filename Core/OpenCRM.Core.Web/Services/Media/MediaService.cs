@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph.CallRecords;
@@ -328,33 +327,5 @@ namespace OpenCRM.Core.Web.Services
 
             return mediaUrl;
         }
-
-        public bool IsImage(string fileName)
-        {
-            var extension = Path.GetExtension(fileName);
-            return (extension == ".png" || extension == ".jpg" || extension == ".jpeg" ||
-                    extension == ".gif" || extension == ".svg" || extension == ".webp");
-        }
-
-        public List<MediaBlockModel> GetImageMedias()
-        {
-            var medias = GetMedias();
-            var mediasUrl = new List<MediaBlockModel>();
-
-            foreach (var media in medias)
-            {
-                if (IsImage(media.FileName))
-                {
-                    mediasUrl.Add(new MediaBlockModel()
-                    {
-                        Id = media.ID,
-                        ImageName = media.FileName,
-                        ImageUrl = GetMediaUrl(media.ID.ToString())
-                    });
-                }
-            }
-            return mediasUrl;
-        }
     }
-
 }

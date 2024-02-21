@@ -15,26 +15,13 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
         private readonly IMediaService _mediaService;
 
-        [Required]
-        [BindProperty]
-        public IFormFile FileData { get; set; } = default!;
-
-        private readonly IMediaService _mediaService;
-
         public string ValidateError { get; set; } = string.Empty;
-
-        public string ImageUrlSelected { get; set; } = string.Empty;
 
         public string ImageUrlSelected { get; set; } = string.Empty;
 
         [BindProperty]
         public BlockModel Model { get; set; } = default!;
 
-        [BindProperty]
-        public string? ImageIdSelected { get; set; }
-
-        [BindProperty]
-        public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
         [BindProperty]
         public string? ImageIdSelected { get; set; }
 
@@ -86,8 +73,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             });
 
             Images = _mediaService.GetImageMedias();
-
-            Images = _mediaService.GetImageMedias();
         }
 
         public IActionResult OnGet()
@@ -101,8 +86,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
              
-                var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
-             
                 var dataBlockModel = new DataBlockModel<BlockModel>()
                 {
                     Name = blockModel.Title,
@@ -110,11 +93,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     Type = typeof(BlockModel).Name,
                     Data = blockModel
                 };
-
-                if (!string.IsNullOrEmpty(blockModel.ImageUrl))
-                {
-                    ImageUrlSelected = blockModel.ImageUrl;
-                }
 
                 if (!string.IsNullOrEmpty(blockModel.ImageUrl))
                 {

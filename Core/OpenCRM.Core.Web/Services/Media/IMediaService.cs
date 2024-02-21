@@ -19,6 +19,5 @@ namespace OpenCRM.Core.Web.Services
         Task PostFileAsync(MediaModel model);
         Task PostMultiFileAsync(List<MediaUploadModel> fileData);
         Task RemoveMedia(Guid Id);
-        List<MediaBlockModel> GetImageMedias();
     }
 }
