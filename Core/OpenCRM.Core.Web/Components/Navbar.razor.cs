@@ -24,7 +24,8 @@ namespace OpenCRM.Core.Web.Components
                 {
                     new DropdownMenuModel("Blocks", "/Manage/Block"),
                     new DropdownMenuModel("Medias", "/Manage/Media"),
-                    new DropdownMenuModel("Languages", "/Manage/Languages")
+                    new DropdownMenuModel("Languages", "/Manage/Languages"),
+                    new DropdownMenuModel("Translations", "/Manage/Translations")
                 }
             },
 
