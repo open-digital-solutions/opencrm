@@ -14,7 +14,7 @@
             <div class="navbar-collapse collapse d-sm-inline-flex">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item dropdown" id="dropdown-submenu">
-                        @if(CurrentModuleLinks.Items.Count() > 0)
+                        @if (CurrentModuleLinks.Items.Count() > 0)
                         {
                             <DropdownMenu Menu="@CurrentModuleLinks" />
                         }
@@ -36,12 +36,11 @@
             <div class="navbar-collapse d-sm-inline-flex">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item dropdown p-1">
-                        <select asp-for="Country" asp-items="@Countries">
-                        </select>
                         <button class="btn btn-outline-light text-center ms-2" id="navbarDropdown" role="button"
-                            data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false" type="button">
+                                data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false" type="button">
                             <span class="navbar-toggler-icon"></span>
                         </button>
+
                         <ul class="dropdown-menu dropdown-menu-end p-2 mt-2" aria-labelledby="navbarDropdown">
                             <li class="d-flex justify-content-center m-2">
                                 <div class="d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; border: 1px solid gray; border-radius: 50px; background-color: transparent;">
