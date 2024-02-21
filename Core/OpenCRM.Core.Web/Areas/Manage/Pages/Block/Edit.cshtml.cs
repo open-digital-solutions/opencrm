@@ -65,8 +65,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             });
 
             Images = _mediaService.GetImageMedias();
-
-            Images = _mediaService.GetImageMedias();
         }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
@@ -109,17 +107,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
 
-                if(Model.ImageId != null)
-                {
-                    Code = Model.Code,
-                    Title = Model.Title,
-                    SubTitle = Model.SubTitle,
-                    Type = modelType,
-                    ImageId = imageID,
-                    ImageUrl = imageUrl
-                };
-                var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
-
                 var dataBlockModelEdit = new DataBlockModel<BlockModel>()
                 {
                     ID = id,
@@ -128,11 +115,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                     Type = typeof(BlockModel).Name,
                     Data = blockModel
                 };
-
-                if (!string.IsNullOrEmpty(blockModel.ImageUrl))
-                {
-                    ImageUrlSelected = blockModel.ImageUrl;
-                }
 
                 if (!string.IsNullOrEmpty(blockModel.ImageUrl))
                 {

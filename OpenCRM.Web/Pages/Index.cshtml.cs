@@ -13,8 +13,6 @@ namespace OpenCRM.Web.Pages
         private readonly IBlockService _blockService;
         private readonly IIdentityService _identityService;
 
-        private readonly IBlockService _blockService;
-
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
@@ -27,9 +25,7 @@ namespace OpenCRM.Web.Pages
         {
             _logger = logger;
             _blockService = blockService;
-
             _identityService = identityService;
-            _blockService = blockService;
 
             var link = new BreadCrumbLinkModel()
             {
@@ -64,9 +60,10 @@ namespace OpenCRM.Web.Pages
 
             Block = blockModel;
 
-            return Page();            var dataSesison = _identityService.GetSession();
+            var dataSesison = _identityService.GetSession();
             if (dataSesison == null) Lang = "IT";
             Lang = dataSesison != null ? dataSesison.Lang : "Default dal browser";
+            return Page();
         }
     }
 }
