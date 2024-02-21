@@ -21,12 +21,12 @@
                         <span asp-validation-for="Model.Title" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea asp-for="Model.SubTitle" class="form-control"></textarea>
+                        <textarea asp-for="Model.SubTitle" class="form-control" style="resize:none;"></textarea>
                         <label asp-for="Model.SubTitle" class="control-label"></label>
                         <span asp-validation-for="Model.SubTitle" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea asp-for="Model.Description" class="form-control" style="height:100px;"></textarea>
+                        <textarea asp-for="Model.Description" class="form-control" style="height:100px; resize:none;"></textarea>
                         <label asp-for="Model.Description" class="control-label"></label>
                         <span asp-validation-for="Model.Description" class="text-danger"></span>
                     </div>
