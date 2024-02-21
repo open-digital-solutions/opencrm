@@ -13,6 +13,8 @@ namespace OpenCRM.Web.Pages
         private readonly IBlockService _blockService;
         private readonly IIdentityService _identityService;
 
+        private readonly IBlockService _blockService;
+
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
@@ -27,6 +29,8 @@ namespace OpenCRM.Web.Pages
             _blockService = blockService;
 
             _identityService = identityService;
+            _blockService = blockService;
+
             var link = new BreadCrumbLinkModel()
             {
                 Area = "",
