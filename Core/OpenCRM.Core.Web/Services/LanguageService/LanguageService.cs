@@ -65,7 +65,7 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             List<LanguageModel<TTranslationModel>> result = new();
             try
             {
-                var languages = _dbContext.Languagess.ToList();
+                var languages = _dbContext.Languagess.OrderBy(lang => lang.AddedAt).ToList();
 
                 if (languages == null || languages.Count == 0) return result;
 
