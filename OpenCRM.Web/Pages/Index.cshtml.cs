@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.BlockService;
+using OpenCRM.Core.Web.Services.CardBlockService;
 using OpenCRM.Core.Web.Services.IdentityService;
 
 namespace OpenCRM.Web.Pages
@@ -47,7 +47,7 @@ namespace OpenCRM.Web.Pages
                 Description = "Description",
                 ImageUrl = "http://localhost:5005/media/02d40f99-619f-4dea-b640-6a44b5898eca.png"
             };
-            var dataBlockModel = new DataBlockModel<CardBlockModel> { Name = "sdcsdcsd", Description = "sdcsdcsdcsdc", Data = blockModel, Type = BlockType.Card.ToString() };
+            var dataBlockModel = new DataBlockModel<CardBlockModel> { Code = "sdcsdcsd", Description = "sdcsdcsdcsdc", Data = blockModel, Type = BlockType.Card.ToString() };
 
 
 
