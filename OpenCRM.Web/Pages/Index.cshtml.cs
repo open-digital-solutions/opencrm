@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
+using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.BlockService;
+using OpenCRM.Core.Web.Services.IdentityService;
 
 namespace OpenCRM.Web.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CorePageModel
     {
         private readonly ILogger<IndexModel> _logger;
 
@@ -14,13 +14,9 @@ namespace OpenCRM.Web.Pages
         private readonly IIdentityService _identityService;
 
         [BindProperty]
-        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
-
-        [BindProperty]
         public BlockModel Block { get; set; } = new BlockModel();
 
         public string? Lang { get; set; }
-
         public IndexModel(ILogger<IndexModel> logger, IBlockService blockService, IIdentityService identityService)
         {
             _logger = logger;
@@ -37,32 +33,33 @@ namespace OpenCRM.Web.Pages
 
             Links.Add(link);
         }
-
         public async Task<IActionResult> OnGetAsync()
         {
-            string id = "24c5d1e0-dc43-4dee-8790-cbf6d495e7f1";
-            var dataBlockModel = await _blockService.GetBlock(Guid.Parse(id));
-
-            if (dataBlockModel == null)
-            {
-                return NotFound();
-            }
+            //string id = "24c5d1e0-dc43-4dee-8790-cbf6d495e7f1";
+            //var dataBlockModel = await _blockService.
 
             var blockModel = new BlockModel
             {
-                Code = dataBlockModel.Data.Code,
-                Title = dataBlockModel.Data.Title,
-                SubTitle = dataBlockModel.Data.SubTitle,
-                Type = dataBlockModel.Data.Type,
-                Description = dataBlockModel.Data.Description,
-                ImageUrl = dataBlockModel.Data.ImageUrl,
+                Code = "KEY_BLOCKCARD_DEMO",
+                Title = "Title",
+                SubTitle = "Sub Title",
+                Type = BlockType.Card,
+                Description = "Description",
+                ImageUrl = "http://localhost:5005/media/02d40f99-619f-4dea-b640-6a44b5898eca.png"
             };
+            var dataBlockModel = new DataBlockModel<BlockModel> { Name = "sdcsdcsd", Description = "sdcsdcsdcsdc", Data = blockModel, Type = BlockType.Card.ToString() };
 
-            Block = blockModel;
+
+
+            var createdDataBLock = await _blockService.AddBlock(dataBlockModel);
+            if (createdDataBLock != null) {
+                Block = createdDataBLock.Data;
+            }
 
             var dataSesison = _identityService.GetSession();
             if (dataSesison == null) Lang = "IT";
             Lang = dataSesison != null ? dataSesison.Lang : "Default dal browser";
+
             return Page();
         }
     }

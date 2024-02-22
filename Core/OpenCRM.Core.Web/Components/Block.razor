@@ -30,4 +30,8 @@
     [Parameter]
     public BlockModel BlockItem { get; set; } = new BlockModel();
 
+    protected override void OnInitialized()
+    {
+        Console.WriteLine(BlockItem.Code);
+    }
 }
