@@ -30,15 +30,6 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
             return await _dataBlockService.AddBlock(model);
         }
 
-        public async Task<CardBlockModel?> EditBlock(CardBlockModel model)
-        {
-            var cardBlock = await _dataBlockService.GetDataBlockByCode<CardBlockModel>(model.Code);
-            if (cardBlock == null) return null;
-            cardBlock.Data = model;
-            var updatedCardBlock = await _dataBlockService.EditBlock(cardBlock);
-            return updatedCardBlock?.Data;
-        }
-
         //TODO: Trabajar directamente con el CardBlockModel
 
         public async Task<DataBlockModel<CardBlockModel>?> EditBlock(DataBlockModel<CardBlockModel> model)
@@ -96,36 +87,6 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
 
                 return blockModel;
             }
-        }
-
-        public async Task<DataBlockModel<CardBlockModel>?> GetBlockByCode(string code)
-        {
-            var result = await _dataBlockService.GetDataBlockByCode<CardBlockModel>(code);
-            return result;
-        }
-
-        public async Task<DataBlockModel<CardBlockModel>?> ShowCardBlock()
-        {
-            var blockModel = new CardBlockModel
-            {
-                Code = "KEY_BLOCKCARD_DEMO",
-                Title = "Galaxy",
-                SubTitle = "Puple Galaxy in Universe",
-                Type = BlockType.Card,
-                Description = "A galaxy is a collection of gases, dust and billions of stars and their solar systems. The galaxy is held together by the force of gravity.",
-                ImageUrl = "http://localhost:5005/media/e2a02caa-ff23-429f-86e7-d772c02a8840.jpg"
-            };
-
-            var dataBlockModel = new DataBlockModel<CardBlockModel>
-            {
-                Code = blockModel.Code,
-                Description = blockModel.Title,
-                Data = blockModel,
-                Type = BlockType.Card.ToString()
-            };
-
-            var block = await GetBlockByCode(blockModel.Code) ?? await AddBlock(dataBlockModel);
-            return block;
         }
     }
 }

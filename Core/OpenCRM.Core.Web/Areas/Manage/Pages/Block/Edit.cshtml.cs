@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
-using OpenCRM.Core.Extensions;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.CardBlockService;
