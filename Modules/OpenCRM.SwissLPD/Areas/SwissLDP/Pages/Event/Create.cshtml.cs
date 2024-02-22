@@ -69,7 +69,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
 
                 var dataBlockModel = new DataBlockModel<EventModel>()
                 {
-                    Name = eventModel.Description,
+                    Code = eventModel.Description,
                     Description = eventModel.Description,
                     Type = typeof(EventModel).Name,
                     Data = eventModel

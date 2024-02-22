@@ -12,7 +12,7 @@ namespace OpenCRM.Core.DataBlock
     public class DataBlockModel<TDataModel> 
     {
         public Guid ID { get; set; }
-        public required string Name { get; set; }
+        public required string Code { get; set; }
         public required string Description { get; set; }
         public required string Type { get; set; }
         public required TDataModel Data { get; set; }

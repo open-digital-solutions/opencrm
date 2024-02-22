@@ -67,7 +67,7 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
 
                 var dataBlockModel = new DataBlockModel<AccountingModel>()
                 {
-                    Name = dataModel.Description,
+                    Code = dataModel.Description,
                     Description = dataModel.Description,
                     Type = typeof(AccountingModel).Name,
                     Data = dataModel

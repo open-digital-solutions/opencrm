@@ -69,7 +69,7 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
                 {   
                     ID = id,
                     Type = typeof(AccountingModel).Name,
-                    Name = Model.Ammount.ToString(),
+                    Code = Model.Ammount.ToString(),
                     Description = Model.Description,                    
                     Data = Model
                 };

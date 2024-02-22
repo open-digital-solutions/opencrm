@@ -21,7 +21,7 @@ namespace OpenCRM.Core.DataBlock
             return new DataBlockModel<TDataModel>
             {
                 ID = entity.ID,
-                Name = entity.Name,
+                Code = entity.Code,
                 Description = entity.Description,
                 Type = entity.Type,
                 Data = data,

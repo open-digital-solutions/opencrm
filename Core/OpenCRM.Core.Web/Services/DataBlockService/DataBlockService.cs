@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace OpenCRM.Core.DataBlock
 {
-    public class DataBlockService<TDBContext> :  IDataBlockService where TDBContext : DataContext
+    public class DataBlockService<TDBContext> : IDataBlockService where TDBContext : DataContext
     {
         private readonly TDBContext _dbContext;
         public DataBlockService(TDBContext dBContext)
@@ -17,6 +17,26 @@ namespace OpenCRM.Core.DataBlock
             try
             {
                 var dataBlock = await _dbContext.DataBlocks.FindAsync(id);
+                if (dataBlock == null || string.IsNullOrWhiteSpace(dataBlock.Data))
+                {
+                    //TODO: Handle this error
+                    return null;
+                }
+                return dataBlock.ToDataModel<TDataModel>();
+            }
+            catch (Exception ex)
+            {
+                //TODO: Handle this error
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+        public async Task<DataBlockModel<TDataModel>?> GetDataBlockByCode<TDataModel>(string code)
+        {
+
+            try
+            {
+                var dataBlock = await _dbContext.DataBlocks.Where(block => block.Code == code).FirstOrDefaultAsync();
                 if (dataBlock == null || string.IsNullOrWhiteSpace(dataBlock.Data))
                 {
                     //TODO: Handle this error
@@ -73,7 +93,7 @@ namespace OpenCRM.Core.DataBlock
             {
                 //TODO: Handle errors and exceptions
                 var entity = Activator.CreateInstance<DataBlockEntity>();
-                entity.Name = model.Name;
+                entity.Code = model.Code;
                 entity.Description = model.Description;
                 entity.Type = typeof(TDataModel).Name;
                 entity.Data = JsonSerializer.Serialize(model.Data);
@@ -95,6 +115,15 @@ namespace OpenCRM.Core.DataBlock
             _dbContext.Remove(entity);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteBlockByCode<TDataModel>(string code)
+        {
+            //TODO: Handle errors and exceptions
+            var entity = await GetDataBlockByCode<TDataModel>(code);
+            if (entity == null) return;
+            _dbContext.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+        }
         public async Task<DataBlockModel<TDataModel>?> EditBlock<TDataModel>(DataBlockModel<TDataModel> model)
         {
             try
@@ -103,7 +132,7 @@ namespace OpenCRM.Core.DataBlock
                 var entity = await _dbContext.DataBlocks.FindAsync(model.ID);
                 if (entity == null) return null;
                 if (entity.Type != typeof(TDataModel).Name) return null;
-                entity.Name = model.Name;
+                entity.Code = model.Code;
                 entity.Description = model.Description;
                 entity.Type = typeof(TDataModel).Name;
                 entity.Data = JsonSerializer.Serialize(model.Data);

@@ -88,7 +88,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
              
                 var dataBlockModel = new DataBlockModel<CardBlockModel>()
                 {
-                    Name = blockModel.Title,
+                    Code = blockModel.Title,
                     Description = blockModel.Title,
                     Type = typeof(CardBlockModel).Name,
                     Data = blockModel
