@@ -2,17 +2,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
-using OpenCRM.Core.Extensions;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services;
-using OpenCRM.Core.Web.Services.BlockService;
+using OpenCRM.Core.Web.Services.CardBlockService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 {
     [Authorize]
     public class EditModel : PageModel
     {
-        private readonly IBlockService _blockService;
+        private readonly ICardBlockService _blockService;
 
         private readonly IMediaService _mediaService;
 
@@ -27,12 +26,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         public List<MediaBlockModel> Images { get; set; } = new List<MediaBlockModel>();
 
         [BindProperty]
-        public BlockModel Model { get; set; } = default!;
+        public CardBlockModel Model { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public EditModel(IBlockService blockService, IMediaService mediaService)
+        public EditModel(ICardBlockService blockService, IMediaService mediaService)
         {
             _blockService = blockService;
             _mediaService = mediaService;
@@ -76,7 +75,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 return NotFound();
             }
 
-            var showModel = new BlockModel
+            var showModel = new CardBlockModel
             {
                 Code = dataBlockModel.Data.Code,
                 Title = dataBlockModel.Data.Title,
@@ -107,12 +106,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
 
-                var dataBlockModelEdit = new DataBlockModel<BlockModel>()
+                var dataBlockModelEdit = new DataBlockModel<CardBlockModel>()
                 {
                     ID = id,
                     Name = blockModel.Title,
                     Description = blockModel.Title,
-                    Type = typeof(BlockModel).Name,
+                    Type = typeof(CardBlockModel).Name,
                     Data = blockModel
                 };
 

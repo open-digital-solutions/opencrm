@@ -4,23 +4,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.BlockService;
+using OpenCRM.Core.Web.Services.CardBlockService;
 using OpenCRM.Core.Web.Table;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 {
-   [Authorize]
+    [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly IBlockService _blockService;
+        private readonly ICardBlockService _blockService;
 
-        private readonly TableService<BlockModel> _tableService = new TableService<BlockModel>();
+        private readonly TableService<CardBlockModel> _tableService = new TableService<CardBlockModel>();
 
         [BindProperty]
-        public List<DataBlockModel<BlockModel>> BlocksList { get; set; } = new List<DataBlockModel<BlockModel>>();
+        public List<DataBlockModel<CardBlockModel>> BlocksList { get; set; } = new List<DataBlockModel<CardBlockModel>>();
  
         [BindProperty]
-        public DataBlockModel<BlockModel> Model { get; set; } = default!;
+        public DataBlockModel<CardBlockModel> Model { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -28,7 +28,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         [BindProperty]
         public TableModel Table { get; set; } = new TableModel("Blocks", "Block");
 
-        public IndexModel(IBlockService blockService) 
+        public IndexModel(ICardBlockService blockService) 
         {
             _blockService = blockService;
 

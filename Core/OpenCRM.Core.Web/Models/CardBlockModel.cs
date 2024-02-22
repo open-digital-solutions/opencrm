@@ -12,7 +12,7 @@ namespace OpenCRM.Core.Web.Models
         Card
     }
 
-    public class BlockModel
+    public class CardBlockModel
     {
         [Required] 
         public string Code { get; set; } = string.Empty;

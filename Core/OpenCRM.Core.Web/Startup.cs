@@ -9,12 +9,12 @@ using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.QRCode;
 using OpenCRM.Core.Web.Services;
-using OpenCRM.Core.Web.Services.BlockService;
+using OpenCRM.Core.Web.Services.CardBlockService;
 using OpenCRM.Core.Web.Services.EmailService;
 using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
-using OpenCRM.Core.Web.Services.TranslationService;
 using OpenCRM.Core.Web.Services.RoleService;
+using OpenCRM.Core.Web.Services.TranslationService;
 using OpenCRM.Core.Web.Services.UserSessionService;
 
 namespace OpenCRM.Core.Web
@@ -36,7 +36,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<ITranslationService, TranslationService<TDBContext>>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IBlockService, BlockService<TDBContext>>();
+            services.AddScoped<ICardBlockService, CardBlockService>();
             services.AddScoped<IUserSessionService, UserSessionService>();
             services.AddAntiforgery(options =>
             {

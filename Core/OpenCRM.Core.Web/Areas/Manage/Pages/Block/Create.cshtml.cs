@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services;
-using OpenCRM.Core.Web.Services.BlockService;
+using OpenCRM.Core.Web.Services.CardBlockService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 {
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly IBlockService _blockService;
+        private readonly ICardBlockService _blockService;
 
         private readonly IMediaService _mediaService;
 
@@ -20,7 +20,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         public string ImageUrlSelected { get; set; } = string.Empty;
 
         [BindProperty]
-        public BlockModel Model { get; set; } = default!;
+        public CardBlockModel Model { get; set; } = default!;
 
         [BindProperty]
         public string? ImageIdSelected { get; set; }
@@ -31,7 +31,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public CreateModel(IBlockService blockService, IMediaService mediaService)
+        public CreateModel(ICardBlockService blockService, IMediaService mediaService)
         {
             _blockService = blockService;
             _mediaService = mediaService;
@@ -86,11 +86,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
              
-                var dataBlockModel = new DataBlockModel<BlockModel>()
+                var dataBlockModel = new DataBlockModel<CardBlockModel>()
                 {
                     Name = blockModel.Title,
                     Description = blockModel.Title,
-                    Type = typeof(BlockModel).Name,
+                    Type = typeof(CardBlockModel).Name,
                     Data = blockModel
                 };
 

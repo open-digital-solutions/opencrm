@@ -3,25 +3,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.BlockService;
+using OpenCRM.Core.Web.Services.CardBlockService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 {
     [Authorize]
     public class DetailsModel : PageModel
     {
-        private readonly IBlockService _blockService;
+        private readonly ICardBlockService _blockService;
 
         [BindProperty]
         public string ImageName { get; set; } = string.Empty;
 
         [BindProperty]
-        public DataBlockModel<BlockModel> Model { get; set; } = default!;
+        public DataBlockModel<CardBlockModel> Model { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public DetailsModel(IBlockService blockService)
+        public DetailsModel(ICardBlockService blockService)
         {
             _blockService = blockService;
 

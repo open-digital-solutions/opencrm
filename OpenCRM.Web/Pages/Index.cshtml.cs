@@ -10,14 +10,14 @@ namespace OpenCRM.Web.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        private readonly IBlockService _blockService;
+        private readonly ICardBlockService _blockService;
         private readonly IIdentityService _identityService;
 
         [BindProperty]
-        public BlockModel Block { get; set; } = new BlockModel();
+        public CardBlockModel Block { get; set; } = new CardBlockModel();
 
         public string? Lang { get; set; }
-        public IndexModel(ILogger<IndexModel> logger, IBlockService blockService, IIdentityService identityService)
+        public IndexModel(ILogger<IndexModel> logger, ICardBlockService blockService, IIdentityService identityService)
         {
             _logger = logger;
             _blockService = blockService;
@@ -38,7 +38,7 @@ namespace OpenCRM.Web.Pages
             //string id = "24c5d1e0-dc43-4dee-8790-cbf6d495e7f1";
             //var dataBlockModel = await _blockService.
 
-            var blockModel = new BlockModel
+            var blockModel = new CardBlockModel
             {
                 Code = "KEY_BLOCKCARD_DEMO",
                 Title = "Title",
@@ -47,7 +47,7 @@ namespace OpenCRM.Web.Pages
                 Description = "Description",
                 ImageUrl = "http://localhost:5005/media/02d40f99-619f-4dea-b640-6a44b5898eca.png"
             };
-            var dataBlockModel = new DataBlockModel<BlockModel> { Name = "sdcsdcsd", Description = "sdcsdcsdcsdc", Data = blockModel, Type = BlockType.Card.ToString() };
+            var dataBlockModel = new DataBlockModel<CardBlockModel> { Name = "sdcsdcsd", Description = "sdcsdcsdcsdc", Data = blockModel, Type = BlockType.Card.ToString() };
 
 
 
