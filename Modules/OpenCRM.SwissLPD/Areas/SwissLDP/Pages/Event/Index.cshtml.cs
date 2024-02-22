@@ -37,7 +37,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             {
                 Area = "",
                 IsActive = true,
-                Name = "Home ...",
+                Name = "Home",
                 Page = "",
                 Url = "/"
             });
@@ -46,7 +46,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             {
                 Area = "SwissLDP",
                 IsActive = true,
-                Name = "Event List",
+                Name = "Events",
                 Page = "Event",
                 Url = "/SwissLDP"
             });

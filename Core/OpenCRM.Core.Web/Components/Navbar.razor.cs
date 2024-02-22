@@ -24,8 +24,7 @@ namespace OpenCRM.Core.Web.Components
                 {
                     new DropdownMenuModel("Blocks", "/Manage/Block"),
                     new DropdownMenuModel("Medias", "/Manage/Media"),
-                    new DropdownMenuModel("Languages", "/Manage/Languages"),
-                    new DropdownMenuModel("Translations", "/Manage/Translations")
+                    new DropdownMenuModel("Languages", "/Manage/Languages")
                 }
             },
 
@@ -76,9 +75,14 @@ namespace OpenCRM.Core.Web.Components
                 Avatar = usermodel.Avatar;
             }
 
-            if (currentModuleUrl != "")
+            if (currentModuleUrl == "/")
             {
-                DropdownMenuModel result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
+                saveCurrentModelLinks = new DropdownMenuModel();
+                CurrentModuleLinks = saveCurrentModelLinks;
+            }
+            else if (currentModuleUrl != "")
+            {
+                var result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
 
                 if (result != null)
                 {

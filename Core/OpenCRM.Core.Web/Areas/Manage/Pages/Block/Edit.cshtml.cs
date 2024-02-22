@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Extensions;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.BlockService;
@@ -58,7 +59,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Block",
+                Name = "Blocks",
                 Page = "",
                 Url = "/Manage/Block"
             });
@@ -85,6 +86,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             };
 
             Model = showModel;
+
+            if(showModel.ImageUrl != null)
+            {
+                ImageUrlSelected = showModel.ImageUrl;
+            }
+
 
             if(showModel.ImageUrl != null)
             {
