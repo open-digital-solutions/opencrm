@@ -17,56 +17,57 @@ namespace OpenCRM.Core.Web.Pages.Identity.Manage
         [BindProperty]
         public UserEntity Input { get; set; }   
         [BindProperty]
-        public IFormFile uploadAvatar { get; set; }
-
+        public IFormFile? uploadAvatar { get; set; }
+        public string ReturnUrl { get; set; }
+        
         public IndexModel(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGet(string returnUrl = null)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
                 Input=user;
             }
-
+            ReturnUrl = returnUrl;
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        { 
+      
+            returnUrl ??= Url.Content("~/");
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            if (uploadAvatar != null)
+            {
+                using (var memoryStream = new MemoryStream())
+            {
+                    uploadAvatar.CopyTo(memoryStream);
+                    user.Avatar = memoryStream.ToArray();
+                    await _userManager.UpdateAsync(user);
+                    await _signInManager.RefreshSignInAsync(user);
+                }
+            }
             if (ModelState.IsValid)
             {
-                user.Name = Input.Name;
-                user.Lastname = Input.Lastname;
-                if (uploadAvatar != null)
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        uploadAvatar.CopyTo(memoryStream);
-                        user.Avatar = memoryStream.ToArray();
-                    }
-                }
+            user.Name = Input.Name;
+            user.Lastname = Input.Lastname;
 
-                await _userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
                 await _signInManager.RefreshSignInAsync(user);
-                //return RedirectToPage("/");
-                return RedirectToPage("/Index");
+                return Redirect(returnUrl);
             }
-
+            Input.Avatar=user.Avatar; //if the model is not valid, then return the view with the current avatar.
             return Page();
         }
-
-      
 
     }
 }
