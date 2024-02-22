@@ -16,7 +16,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         public string ImageName { get; set; } = string.Empty;
 
         [BindProperty]
-        public DataBlockModel<CardBlockModel> Model { get; set; } = default!;
+        public DataBlockModel<BlockModel> Model { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
