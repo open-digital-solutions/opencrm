@@ -13,6 +13,8 @@
     <p> <a href="https://docs.microsoft.com/aspnet/core">@Localizer["Learnabout"]</a>.</p>
     <p>Selected Language: @Model.Lang</p>
     <p>Traduccion a KeyAccept: @TranslationService.GetTranslationValue("KeyAccept")</p>
+    <component type="typeof(OpenCRM.Core.Web.Components.Block)" render-mode="ServerPrerendered" param-blockItem="Model.Block" />
+</div>
 
     
     @if (Model.Block != null && Model.Block.Title != "")
