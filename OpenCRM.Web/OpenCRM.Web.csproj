@@ -44,6 +44,7 @@
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Properties\ServiceDependencies\" />
+    <Folder Include="wwwroot\media\" />
   </ItemGroup>
 
   <ItemGroup>
