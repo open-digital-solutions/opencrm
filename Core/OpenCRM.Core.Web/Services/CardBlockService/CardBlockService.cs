@@ -30,6 +30,15 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
             return await _dataBlockService.AddBlock(model);
         }
 
+        public async Task<CardBlockModel?> EditBlock(CardBlockModel model)
+        {
+            var cardBlock = await _dataBlockService.GetDataBlockByCode<CardBlockModel>(model.Code);
+            if (cardBlock == null) return null;
+            cardBlock.Data = model;
+            var updatedCardBlock = await _dataBlockService.EditBlock(cardBlock);
+            return updatedCardBlock?.Data;
+        }
+
         //TODO: Trabajar directamente con el CardBlockModel
 
         public async Task<DataBlockModel<CardBlockModel>?> EditBlock(DataBlockModel<CardBlockModel> model)
