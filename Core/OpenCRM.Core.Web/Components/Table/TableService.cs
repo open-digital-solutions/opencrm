@@ -67,14 +67,19 @@ namespace OpenCRM.Core.Web.Table
         /// </summary>
         /// <param name="datas">Data used to create the table</param>
 		/// <returns>A tuple where the first element is the table headers and the second element is the table rows</returns>
-        public Tuple<List<string>, List<TableRow<TRowData>>> BuildTable(List<DataBlockModel<TDataModel>> datas)
+        public Tuple<List<string>, List<TableRow<TRowData>>> BuildTable(List<DataBlockModel<TDataModel>> datas, string NameEntity = "")
 		{
 			var properties = typeof(TDataModel).GetProperties();
 			List<string> tableHeaders = new List<string>();
 			List< TableRow <TRowData>> tableRows = new List<TableRow<TRowData>>();
 
             foreach (var prop in properties)
-				tableHeaders.Add(prop.Name);
+            {
+                if ((prop.Name.Equals("ID") || prop.Name.Equals("Translations")) && NameEntity.Equals("Language"))
+					continue;
+                tableHeaders.Add(prop.Name);
+            }
+				
 
 			foreach (var item in datas)
 			{
@@ -83,6 +88,8 @@ namespace OpenCRM.Core.Web.Table
 
 				foreach (var prop in tableHeaders)
 				{
+                    if ((prop.Equals("ID") || prop.Equals("Translations")) && NameEntity.Equals("Language"))
+                        continue;
                     var rowData = CreateRowData(item.Data, prop);
                     row.Datas.Add(rowData);
                     //var data = item.Data;
