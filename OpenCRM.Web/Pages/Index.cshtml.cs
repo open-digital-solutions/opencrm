@@ -14,7 +14,7 @@ namespace OpenCRM.Web.Pages
         private readonly IIdentityService _identityService;
 
         [BindProperty]
-        public CardBlockModel Block { get; set; } = new CardBlockModel();
+        public CardBlockModel? Block { get; set; }
 
         public string? Lang { get; set; }
         public IndexModel(ILogger<IndexModel> logger, ICardBlockService blockService, IIdentityService identityService)
@@ -22,38 +22,14 @@ namespace OpenCRM.Web.Pages
             _logger = logger;
             _blockService = blockService;
             _identityService = identityService;
-
-            var link = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = ""
-            };
-
-            Links.Add(link);
         }
         public async Task<IActionResult> OnGetAsync()
         {
-            //string id = "24c5d1e0-dc43-4dee-8790-cbf6d495e7f1";
-            //var dataBlockModel = await _blockService.
+            var block = await _blockService.ShowCardBlock();
 
-            var blockModel = new CardBlockModel
+            if (block != null)
             {
-                Code = "KEY_BLOCKCARD_DEMO",
-                Title = "Title",
-                SubTitle = "Sub Title",
-                Type = BlockType.Card,
-                Description = "Description",
-                ImageUrl = "http://localhost:5005/media/02d40f99-619f-4dea-b640-6a44b5898eca.png"
-            };
-            var dataBlockModel = new DataBlockModel<CardBlockModel> { Code = "sdcsdcsd", Description = "sdcsdcsdcsdc", Data = blockModel, Type = BlockType.Card.ToString() };
-
-
-
-            var createdDataBLock = await _blockService.AddBlock(dataBlockModel);
-            if (createdDataBLock != null) {
-                Block = createdDataBLock.Data;
+                Block = block.Data;
             }
 
             var dataSesison = _identityService.GetSession();

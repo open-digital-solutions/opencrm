@@ -86,13 +86,13 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
             Model = showModel;
 
-            if(showModel.ImageUrl != null)
+            if (showModel.ImageUrl != null)
             {
                 ImageUrlSelected = showModel.ImageUrl;
             }
 
 
-            if(showModel.ImageUrl != null)
+            if (showModel.ImageUrl != null)
             {
                 ImageUrlSelected = showModel.ImageUrl;
             }
@@ -109,7 +109,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 var dataBlockModelEdit = new DataBlockModel<CardBlockModel>()
                 {
                     ID = id,
-                    Code = blockModel.Title,
+                    Code = blockModel.Code,
                     Description = blockModel.Title,
                     Type = typeof(CardBlockModel).Name,
                     Data = blockModel

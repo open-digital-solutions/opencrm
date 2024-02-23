@@ -22,7 +22,7 @@ namespace OpenCRM.Core.Web.Models
 
         public string? SubTitle { get; set; }
 
-        public BlockType Type { get; set; } = BlockType.Text;
+        public BlockType Type { get; set; } = BlockType.Card;
 
         public string? Description { get; set; }
 
