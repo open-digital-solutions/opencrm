@@ -1,0 +1,36 @@
+﻿@page
+@model OpenCRM.Core.Web.Areas.Identity.Pages.RegisterConfirmation.IndexModel
+@{
+}
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Register Confirmation</h3></div>
+                            <div class="card-body text-center">
+                                @{
+                                    if (@Model.DisplayConfirmAccountLink)
+                                    {
+                                        <p>
+                                            This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
+                                            Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            Please check your email to confirm your account.
+                                        </p>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

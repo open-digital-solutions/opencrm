@@ -1,0 +1,12 @@
+.idea
+.vscode
+.vs
+obj
+bin
+*.db
+*.db-shm
+*.db-wal
+*.csproj.user
+/OpenCRM.Web/wwwroot/media
+launchSettings.json
+appsettings.json

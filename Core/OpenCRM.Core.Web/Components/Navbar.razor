@@ -1,0 +1,83 @@
+﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-white border-bottom box-shadow mb-3z">
+    <div class="container-fluid d-flex align-items-center">
+        <div class="d-flex align-items-center text-center">
+            <a class="navbar-brand" href="/Index">
+                <img src="_content/OpenCRM.Core.Web/images/logo.png" alt="OpenDHS" width="64" height="32">
+            </a>
+            <div class="navbar-collapse collapse d-sm-inline-flex me-2">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown">
+                        <DropdownMenu Menu="@DropdownMenuModules" />
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-collapse collapse d-sm-inline-flex">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown" id="dropdown-submenu">
+                        @if (CurrentModuleLinks.Items.Count() > 0)
+                        {
+                            <DropdownMenu Menu="@CurrentModuleLinks" />
+                        }
+                        else
+                        {
+                            <a class="dropdown-item" href="@CurrentModuleLinks.Url">@CurrentModuleLinks.Name</a>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <BreadCrumb Links="@Links" />
+
+        <div class="d-flex align-items-center text-center">
+            <div class="navbar-collapse collapse d-sm-inline-flex">
+                @UserName
+            </div>
+            <div class="navbar-collapse d-sm-inline-flex">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown p-1">
+                        <button class="btn btn-outline-light text-center ms-2" id="navbarDropdown" role="button"
+                                data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false" type="button">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end p-2 mt-2" aria-labelledby="navbarDropdown">
+                            <li class="d-flex justify-content-center m-2">
+                                <div class="d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; border: 1px solid gray; border-radius: 50px; background-color: transparent;">
+                                    @if (Avatar != null && Avatar.Length > 0)
+                                    {
+                                        <img id="userAvatar" src="data:image/jpeg;base64,@Convert.ToBase64String(Avatar)" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+                                    }
+                                    else
+                                    {
+                                        <img id="userAvatar" src="/_content/OpenCRM.Core.Web/images/defaultuser.png" alt="Default User Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+                                    }
+                                </div>
+                            </li>
+
+                            <li class="dropdown-item">@Name</li>
+                            <li class="dropdown-item">@UserName</li>
+
+                            <li class="dropstart">
+                                <DropdownMenu Menu="@DropdownMenuModules" />
+                            </li>
+                            @if (!string.IsNullOrEmpty(Name))
+                            {
+                                <li>
+                                    <a class="dropdown-item" id="editProfileLink" href="/Identity/Manage/Index">
+                                        Edit Profile
+                                    </a>
+                                </li>
+                                <li><a class="dropdown-item" href="/Identity/Logout">Logout</a></li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    document.getElementById('editProfileLink').href += '?returnUrl=' + encodeURIComponent(window.location.href);
+</script>

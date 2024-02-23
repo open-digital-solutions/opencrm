@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OpenCRM.Web</title>
+
+    <link rel="icon" type="image/x-icon" href="~/_content/OpenCRM.Core.Web/favicon.ico" asp-append-version="true">
+    <link rel="stylesheet" href="~/_content/OpenCRM.Core.Web/lib/bootstrap/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/_content/OpenCRM.Core.Web/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/OpenCRM.Core.Web/css/styles.css" asp-append-version="true" />
+
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous" asp-append-version="true"></script>
+</head>
+<body>
+  
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/_content/OpenCRM.Core.Web/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/_content/OpenCRM.Core.Web/lib/bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/_content/OpenCRM.Core.Web/js/site.js" asp-append-version="true"></script>
+    <script src="~/_content/OpenCRM.Core.Web/js/scripts.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

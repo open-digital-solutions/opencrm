@@ -1,0 +1,23 @@
+﻿<nav class="opc-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        @foreach (var Link in Links)
+        {
+            @if (Link.IsActive)
+            {
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a class="breadcrumb-item" href="@Link.Url" data-toggle="tooltip" data-placement="top">
+                        @Link.Name
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="breadcrumb-item">
+                    <a class="breadcrumb-item" href="@Link.Url" data-toggle="tooltip" data-placement="top">
+                        @Link.Name
+                    </a>
+                </li>
+            }
+        }
+    </ol>
+</nav>
