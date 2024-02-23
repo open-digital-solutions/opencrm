@@ -1,0 +1,38 @@
+﻿@page
+@model OpenCRM.Core.Web.Areas.Manage.Pages.Languages.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="card border-1 rounded-lg p-0">
+            <div class="card-header"><h3 class="text-center font-weight-light my-4">Edit</h3></div>
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Language.Code" class="form-control" />
+                        <label asp-for="Language.Code" class="control-label"></label>
+                        <span asp-validation-for="Language.Code" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Language.Name" class="form-control" />
+                        <label asp-for="Language.Name" class="control-label"></label>
+                        <span asp-validation-for="Language.Name" class="text-danger"></span>
+                    </div>
+                    <label asp-for="Language.Translations" class="control-label"></label>
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="JsonData" class="form-control, text-danger " placeholder='{"KeyAccept" :  , "KeyCreate" : }' style="height: 15rem; width: 100%;"></textarea>
+                        <span asp-validation-for="JsonData" class="text-danger"></span>
+                    </div>
+                    <div class="mt-4 mb-0">
+                        <div class="d-grid">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

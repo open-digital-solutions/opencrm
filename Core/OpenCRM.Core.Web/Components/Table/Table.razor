@@ -1,0 +1,65 @@
+﻿
+<div class="card mt-3">
+    <div class="card-header d-flex justify-content-between">
+        <div>
+            <i class="fas fa-table me-1"></i>
+            @TableData.Title
+        </div>
+        <div>
+            <ButtonLink Label="Create new" Url="@(TableData.Page + "/Create")" Style="btn btn-primary"/>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive" style="height: 550px; overflow-y: scroll;">
+            <table id="datatablesSimple" class="table">
+             <thead>
+                <tr>
+                    @foreach (var item in TableData.Headers)
+                    {
+                        <th> 
+                            @item
+                        </th>
+                    }
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+             </thead>
+            <tbody>
+                @foreach (var row in TableData.Rows)
+                {
+                    <tr>
+                        @foreach(var item in row.Datas)
+                        {
+                            @if (item.IsButton)
+                            {
+                                <td>
+                                    <ButtonLink Label="@item.Label" Url="@(TableData.Page + "/" + item.Label + "?id=" + row.ID)" Icon="@item.IconName" />
+                                </td>
+                            }   
+                            else if(item.IsImage) {
+                                <td>
+                                    <a href="@item.ImageUrl">
+                                        <img src="@item.ImageUrl" style="width:50px;" />
+                                    </a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @item.Label
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+          </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public TableModel TableData { get; set; } = new TableModel();
+}

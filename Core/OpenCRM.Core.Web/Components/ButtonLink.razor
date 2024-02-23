@@ -1,0 +1,25 @@
+﻿
+<a class="@Style" data-toggle="tooltip" data-placement="top" title="@Label" href="@Url">
+	@if (Icon != null)
+	{
+		<i class="@Icon"></i>
+	}
+	else
+	{
+		@Label
+	}
+</a>
+
+@code {
+	[Parameter]
+	public string Label { get; set; } = string.Empty;
+
+	[Parameter]
+	public string Url { get; set; } = string.Empty;
+
+	[Parameter]
+	public string Style { get; set; } = "btn btn-primary";
+
+	[Parameter]
+	public string? Icon { get; set; }
+}

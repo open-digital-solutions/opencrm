@@ -1,0 +1,36 @@
+﻿
+@if (Menu.Name != "")
+{
+    <a class="dropdown-item dropdown-toggle" id="navbarDropdown" role="button" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+        @Menu.Name
+    </a>
+
+    @if (Menu.Items.Count() != 0)
+    {
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="margin-top: 1.3rem">
+            @foreach (var item in Menu.Items)
+            {
+                if (item.ShowItemList)
+                {
+                    <li class="dropdown-item dropend menu-item @item.Name">
+                        <DropdownMenu Menu="@item"/>
+                    </li>
+                }
+                else
+                {
+                    if (item.Name != "")
+                    {
+                        <li><a class="dropdown-item" href="@item.Url">@item.Name</a></li>
+                    }
+                }
+            }
+        </ul>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public DropdownMenuModel Menu { get; set; } = new DropdownMenuModel();
+
+}
