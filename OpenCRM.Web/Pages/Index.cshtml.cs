@@ -22,38 +22,32 @@ namespace OpenCRM.Web.Pages
             _logger = logger;
             _blockService = blockService;
             _identityService = identityService;
-
-            var link = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = ""
-            };
-
-            Links.Add(link);
         }
         public async Task<IActionResult> OnGetAsync()
         {
-            //string id = "24c5d1e0-dc43-4dee-8790-cbf6d495e7f1";
-            //var dataBlockModel = await _blockService.
-
             var blockModel = new CardBlockModel
             {
                 Code = "KEY_BLOCKCARD_DEMO",
-                Title = "Title",
-                SubTitle = "Sub Title",
+                Title = "Galaxy",
+                SubTitle = "Puple Galaxy in Universe",
                 Type = BlockType.Card,
-                Description = "Description",
-                ImageUrl = "http://localhost:5005/media/02d40f99-619f-4dea-b640-6a44b5898eca.png"
+                Description = "A galaxy is a collection of gases, dust and billions of stars and their solar systems. The galaxy is held together by the force of gravity.",
+                ImageUrl = "http://localhost:5005/media/21e7b1d0-1008-495d-825a-11cd5b417b2d.jpg"
             };
-            var dataBlockModel = new DataBlockModel<CardBlockModel> { Code = "sdcsdcsd", Description = "sdcsdcsdcsdc", Data = blockModel, Type = BlockType.Card.ToString() };
 
+            var dataBlockModel = new DataBlockModel<CardBlockModel>
+            {
+                Code = blockModel.Code,
+                Description = blockModel.Title,
+                Data = blockModel,
+                Type = BlockType.Card.ToString()
+            };
 
-
-            var createdDataBLock = await _blockService.AddBlock(dataBlockModel);
-            if (createdDataBLock != null) {
-                Block = createdDataBLock.Data;
+            var block  = await _blockService.GetBlockByCode(blockModel.Code) ?? await _blockService.AddBlock(dataBlockModel);
+            
+            if(block != null)
+            {
+                Block = block.Data;
             }
 
             var dataSesison = _identityService.GetSession();

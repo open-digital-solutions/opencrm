@@ -88,5 +88,11 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
                 return blockModel;
             }
         }
+
+        public async Task<DataBlockModel<CardBlockModel>?> GetBlockByCode(string code)
+        {
+            var result = await _dataBlockService.GetDataBlockByCode<CardBlockModel>(code);
+            return result;
+        }
     }
 }
