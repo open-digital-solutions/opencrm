@@ -5,9 +5,11 @@ using OpenCRM.Core.Web.Services.TranslationService;
 using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Pages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 {
+    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly ITranslationService _translationService;

@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Web.Services.TranslationService;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly ITranslationService _translationService;

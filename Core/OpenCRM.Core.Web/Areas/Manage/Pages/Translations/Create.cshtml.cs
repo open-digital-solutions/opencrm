@@ -5,9 +5,11 @@ using OpenCRM.Core.Web.Services.TranslationService;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly ITranslationService _translationService;
