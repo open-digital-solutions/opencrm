@@ -1,0 +1,58 @@
+﻿@page
+@model OpenCRM.Core.Web.Areas.Manage.Pages.Media.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="card border-1 rounded-lg p-0">
+            <div class="card-header">
+                <h3 class="text-center font-weight-light my-4">Media Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                         
+                <dl class="row">
+                    <dt class="col-sm-3">File Name</dt>
+                    <dd class="col-sm-9">@Model.Model.FileName</dd>
+
+                    <dt class="col-sm-3">Is Public</dt>
+                              
+                    @if (Model.Model.IsPublic) 
+                    {
+                        <dd class="col-sm-9">Yes</dd>
+                    }
+                    else
+                    {
+                     <dd class="col-sm-9">No</dd>
+                    }
+
+                    <dt class="col-sm-3">Date Added</dt>
+                                <dd class="col-sm-9">@Model.Model.AddedAt.ToShortDateString()</dd>
+                           
+                    <dt class="col-sm-3">File Type</dt>
+                                <dd class="col-sm-9">@Model.Model.FileType.ToString()</dd>
+
+                    <dt class="col-sm-3">Date Updated</dt>
+                                <dd class="col-sm-9">@Model.Model.UpdatedAt.ToShortDateString()</dd>
+                </dl>
+                            <div class="form-group mt-4">
+                                <a href="/Manage/Media" class="btn btn-primary">Back to List</a>
+                                @if (Model.Model.IsPublic)
+                                {
+                                    <a asp-page-handler="Download" asp-route-id="@Model.Model.ID" class="btn btn-success">Download</a>
+       
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+

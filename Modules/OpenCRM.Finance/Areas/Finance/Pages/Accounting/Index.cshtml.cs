@@ -12,7 +12,7 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
     {
         private readonly IAccountingService _accountingDataService;
 
-        private TableService<AccountingModel> _tableService { get; set; } = new TableService<AccountingModel>();
+        private TableService<AccountingModel> _tableService;
 
         [BindProperty]
         public List<DataBlockModel<AccountingModel>> AccountingList { get; set; } = new List<DataBlockModel<AccountingModel>>();
@@ -21,11 +21,12 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [BindProperty]
-        public TableModel Table { get; set; } = new TableModel("Accountings", "Accounting");
+        public TableModel Table { get; set; } = new TableModel("Accountings", "Accountings");
 
         public IndexModel(IAccountingService accountingDataService)
         {
             _accountingDataService = accountingDataService;
+            _tableService = new TableService<AccountingModel>();
 
             Links.Add(new BreadCrumbLinkModel()
             {
@@ -41,14 +42,14 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
                 Area = "Finance",
                 IsActive = true,
                 Name = "Accounting List",
-                Page = "",
+                Page = "Accounting",
                 Url = "/Finance"
             });
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            var acountings = _accountingDataService.GetAccountings();
+            var acountings = await _accountingDataService.GetAccountings();
             if (acountings != null)
             {
                 AccountingList = acountings;

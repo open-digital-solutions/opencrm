@@ -2,9 +2,6 @@
 @model OpenCRM.Finance.Areas.Finance.Pages.Accounting.IndexModel
 @{
     ViewData["Title"] = "Index";
-    Layout = "_CoreLayout";
 }
 
-<component type="typeof(OpenCRM.Core.Web.Components.BreadCrumb)" render-mode="ServerPrerendered" param-links="Model.Links" />
-
-<component type="typeof(OpenCRM.Core.Web.Components.Table.Table)" render-mode="ServerPrerendered" param-tableData="Model.Table"/>
+<component type="typeof(OpenCRM.Core.Web.Components.Table.Table)" render-mode="ServerPrerendered" param-tableData="Model.Table" />

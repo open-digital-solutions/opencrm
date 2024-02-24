@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
@@ -8,14 +9,18 @@ using OpenCRM.Core.Web.Table;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
+    [Authorize]
     public class IndexModel : CorePageModel
     {
         private readonly ILanguageService _languageService;
         
-        private TableService<LanguageModel<LanguageEntity>> _tableService { get; set; } = new TableService<LanguageModel<LanguageEntity>>();
+        private TableService<LanguageModel<TranslationModel>> _tableService;
 
         [BindProperty]
-        public List<LanguageModel<LanguageEntity>> LanguageList { get; set; } = new List<LanguageModel<LanguageEntity>>();
+        public List<LanguageModel<TranslationModel>> LanguageList { get; set; } = new List<LanguageModel<TranslationModel>>();
+
+        [BindProperty]
+        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         [BindProperty]
         public TableModel Table { get; set; } = new TableModel("Languages", "Languages");
@@ -24,48 +29,33 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         { 
         
             _languageService = languageService;
+            _tableService = new TableService<LanguageModel<TranslationModel>>();
 
-            var link = new BreadCrumbLinkModel()
+            Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "",
                 IsActive = true,
-                Name = "Home",
+                Name = "Home ...",
                 Page = "",
                 Url = "/"
-            };
+            });
 
-            Links.Add(link);
-
-            var link2 = new BreadCrumbLinkModel()
+            Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
+                Area = "Manage",
                 IsActive = true,
-                Name = "Languages",
-                Page = "",
-                Url = "/Manage/Languages"
-            };
-
-            Links.Add(link2);
-
-           /* var link3 = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Translations",
-                Page = "",
-                Url = "/Manage/Translations/Index"
-            };
-
-            Links.Add(link3);*/
+                Name = "Languages List",
+                Page = "Languages",
+                Url = "/Manage"
+            });            
         }
 
-        public  void OnGet()
-        {
+        public void OnGet()
+        {            
+            var result = _languageService.GetLanguageListAsync<TranslationModel>();
+            var response = result.Select(f => new DataBlockModel<LanguageModel<TranslationModel>> { Data = f, ID = f.ID , Description = f.Name, Code = f.Code , Type = "" }).ToList();
             
-            var result = _languageService.GetLanguageListAsync<LanguageEntity>();
-            var response = result.Select(f => new DataBlockModel<LanguageModel<LanguageEntity>> { Data = f, ID = f.ID , Description = f.Name, Name = f.Code , Type = "" }).ToList();
-            
-            var tableResult = _tableService.BuildTable(response);
+            var tableResult = _tableService.BuildTable(response, "Language");
             Table.Headers = tableResult.Item1;
             Table.Rows = tableResult.Item2;
         }

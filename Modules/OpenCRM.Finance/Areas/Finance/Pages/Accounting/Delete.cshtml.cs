@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Finance.Services;
 using OpenCRM.Core.Data;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
 {
@@ -11,17 +12,37 @@ namespace OpenCRM.Finance.Areas.Finance.Pages.Accounting
     {
         private readonly IAccountingService _accountingService;
 
-        public DeleteModel(IAccountingService accountingService)
-        {
-            _accountingService = accountingService;
-        }
-
         [BindProperty]
         public DataBlockModel<AccountingModel> Model { get; set; } = default!;
 
-        public IActionResult OnGet(Guid id)
+        [BindProperty]
+        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
+
+        public DeleteModel(IAccountingService accountingService)
         {
-            var dataBlockModel = _accountingService.GetAccounting(id);
+            _accountingService = accountingService;
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "",
+                IsActive = true,
+                Name = "Home",
+                Page = "",
+                Url = "/"
+            });
+
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "Finance",
+                IsActive = true,
+                Name = "Accounting List",
+                Page = "Accounting",
+                Url = "/Finance"
+            });
+        }        
+
+        public async Task<IActionResult> OnGetAsync(Guid id)
+        {
+            var dataBlockModel = await _accountingService.GetAccounting(id);
 
             if (dataBlockModel == null)
             {

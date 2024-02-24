@@ -1,12 +1,12 @@
 ﻿
-<div class="card">
+<div class="card mt-3">
     <div class="card-header d-flex justify-content-between">
         <div>
             <i class="fas fa-table me-1"></i>
             @TableData.Title
         </div>
         <div>
-            <ButtonLink Label="Create new" Url="@(TableData.Page + "/Create")" Style="btn btn-success"/>
+            <ButtonLink Label="Create new" Url="@(TableData.Page + "/Create")" Style="btn btn-primary"/>
         </div>
     </div>
     <div class="card-body">
@@ -37,6 +37,13 @@
                                     <ButtonLink Label="@item.Label" Url="@(TableData.Page + "/" + item.Label + "?id=" + row.ID)" Icon="@item.IconName" />
                                 </td>
                             }   
+                            else if(item.IsImage) {
+                                <td>
+                                    <a href="@item.ImageUrl">
+                                        <img src="@item.ImageUrl" style="width:50px;" />
+                                    </a>
+                                </td>
+                            }
                             else
                             {
                                 <td>

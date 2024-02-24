@@ -43,6 +43,15 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages
             };
 
             Links.Add(linkTranslations);
+            var linkMedia = new BreadCrumbLinkModel()
+            {
+                Area = "",
+                IsActive = true,
+                Name = "Media",
+                Page = "",
+                Url = "/Manage/Media"
+            };
+            Links.Add(linkMedia);
         }
     }
 }

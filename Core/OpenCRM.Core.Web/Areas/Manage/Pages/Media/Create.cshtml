@@ -1,0 +1,49 @@
+﻿@page
+@model OpenCRM.Core.Web.Areas.Manage.Pages.Media.CreateModel
+@{
+    ViewData["Title"] = "Create";
+
+}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="card border-1 rounded-lg p-0">
+            <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Media</h3></div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row justify-content-between">
+                      
+                            <div class="col-6">
+                                <input asp-for="Model.FileData" type="file" class="form-control" id="fileData" data-msg-invalid-file="Select File" />
+                                <span asp-validation-for="Model.FileData" class="text-danger"></span>
+                            </div>
+                        <div class="col-4">
+                            <input asp-for="Model.FileName" id="FileName" class="form-control" placeholder="File Name" />
+                            <span asp-validation-for="Model.FileName" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <input asp-for="Model.IsPublic" class="form-check-input" />
+                            <label asp-for="Model.IsPublic" class="form-check-label"></label>
+                            <span asp-validation-for="Model.IsPublic" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("fileData").addEventListener("change", function() {
+            var fileName = this.files[0].name;
+            // console.log("File Data", fileName);
+            document.getElementById("FileName").value = fileName;
+        });
+    </script>
+}

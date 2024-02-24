@@ -36,7 +36,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
             {
                 Area = "SwissLDP",
                 IsActive = true,
-                Name = "Event List",
+                Name = "Events",
                 Page = "Event",
                 Url = "/SwissLDP"
             });
@@ -58,26 +58,26 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
 
         public IActionResult OnPost()
 		{
-			if (ModelState.IsValid)
-			{
-				var eventModel = new EventModel()
-				{
-					Description = Model.Description,
-					StartDate = Model.StartDate,
-					EndDate = Model.EndDate,
-				};
+            if (ModelState.IsValid)
+            {
+                var eventModel = new EventModel()
+                {
+                    Description = Model.Description,
+                    StartDate = Model.StartDate,
+                    EndDate = Model.EndDate,
+                };
 
-				var dataBlockModel = new DataBlockModel<EventModel>()
-				{
-					Name = eventModel.Description,
-					Description = eventModel.Description,
-					Type = typeof(EventModel).Name,
-					Data = eventModel
-				};
+                var dataBlockModel = new DataBlockModel<EventModel>()
+                {
+                    Code = eventModel.Description,
+                    Description = eventModel.Description,
+                    Type = typeof(EventModel).Name,
+                    Data = eventModel
+                };
 
-				_eventService.AddEvent(dataBlockModel);
-				return RedirectToPage("./Index");
-			}
+                _eventService.AddEvent(dataBlockModel);
+                return RedirectToPage("./Index");
+            }
 
             return Page();
         }

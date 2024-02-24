@@ -1,34 +1,42 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
+using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Pages;
+using OpenCRM.Core.Web.Services.CardBlockService;
+using OpenCRM.Core.Web.Services.IdentityService;
 
 namespace OpenCRM.Web.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CorePageModel
     {
         private readonly ILogger<IndexModel> _logger;
 
-        [BindProperty]
-        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
+        private readonly ICardBlockService _blockService;
+        private readonly IIdentityService _identityService;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        [BindProperty]
+        public CardBlockModel? Block { get; set; }
+
+        public string? Lang { get; set; }
+        public IndexModel(ILogger<IndexModel> logger, ICardBlockService blockService, IIdentityService identityService)
         {
             _logger = logger;
-            var link = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = ""
-            };
-
-            Links.Add(link);
+            _blockService = blockService;
+            _identityService = identityService;
         }
-
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            var block = await _blockService.ShowCardBlock();
 
+            if (block != null)
+            {
+                Block = block.Data;
+            }
+
+            var dataSesison = _identityService.GetSession();
+            if (dataSesison == null) Lang = "IT";
+            Lang = dataSesison != null ? dataSesison.Lang : "Default dal browser";
+
+            return Page();
         }
     }
 }

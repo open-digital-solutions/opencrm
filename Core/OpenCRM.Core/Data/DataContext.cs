@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OpenCRM.Core.Data;
@@ -18,10 +18,14 @@ namespace OpenCRM.Core
             ChangeTracker.Tracked += ChangeTracker_StateChanged;
         }
         
-
         public DataContext(DbSet<LanguageEntity> languagess)
         {
             Languagess = languagess;
+        }
+
+        public DataContext(DbSet<TranslationEntity> translationss)
+        {
+            Translationss = translationss;
         }
 
         private void ChangeTracker_StateChanged(object? sender, EntityEntryEventArgs e)
@@ -60,7 +64,8 @@ namespace OpenCRM.Core
             builder.Entity<UserLoginEntity>().ToTable("UserLogins");
             builder.Entity<UserRoleEntity>().ToTable("UserRoles");
             builder.Entity<UserTokenEntity>().ToTable("UserTokens");
-            
+            builder.Entity<UserSessionEntity>().ToTable("UserSessions");
+
             builder.Entity<RoleEntity>().ToTable("Roles");
             builder.Entity<RoleClaimEntity>().ToTable("RoleClaims");
 
@@ -72,7 +77,7 @@ namespace OpenCRM.Core
             builder.Entity<TranslationEntity>((entity) =>
             {
                 entity.ToTable("Translations");
-                entity.HasIndex(e => e.Key).IsUnique();
+               // entity.HasIndex(e => e.Key).IsUnique();
             });
         }
         
@@ -80,9 +85,9 @@ namespace OpenCRM.Core
         public DbSet<HistoryEntity> History { get; set; }
         public DbSet<DataBlockEntity> DataBlocks { get; set; }
         public DbSet<LanguageEntity> Languagess { get; set; }
+        public DbSet<TranslationEntity> Translationss { get; set; }
         public DbSet<DataContainerEntity> DataContainers { get; set; }
+        public DbSet<UserSessionEntity> UserSessions { get; set; }
 
     }
-
 }
-

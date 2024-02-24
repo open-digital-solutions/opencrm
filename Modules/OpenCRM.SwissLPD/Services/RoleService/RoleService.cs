@@ -25,7 +25,7 @@ namespace OpenCRM.SwissLPD.Services.SupplierService
 
                 foreach (var item in users)
                 {
-                    var userExtras = JsonSerializer.Deserialize<RoleData>(item.UserExtras);
+                    var userExtras = JsonSerializer.Deserialize<RoleData>(item.Data);
                     if(userExtras?.CHECode == inputExtras?.CHECode)
                     {
                         return new Tuple<bool, string>(false, "Supplier with CHE code " + userExtras?.CHECode + " already exists");
