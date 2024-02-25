@@ -30,10 +30,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         {
             newTranslationModel = new TranslationModel();
 
-            newTranslationModel.KeyCreate = "";
-            newTranslationModel.KeyAccept = "";
-
-            JsonData = JsonSerializer.Serialize(newTranslationModel, options);
+            JsonData = JsonSerializer.Serialize(newTranslationModel.Translations, options);
 
             _languageService = languageService;
 
@@ -68,7 +65,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             Language = languageModel;
             if (Language != null)
             {
-                JsonData = JsonSerializer.Serialize(Language.Translations, options);
+                JsonData = JsonSerializer.Serialize(Language.Translations.Translations, options);
             }
             return Page();
         }
@@ -87,68 +84,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             return true;
         }
 
-        public bool IsKeyAcceptValid(string jsonString)
-        {
-            try
-            {
-                JsonDocument document = JsonDocument.Parse(jsonString);
-                document.RootElement.GetProperty("KeyAccept");
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool IsKeyCreateValid(string jsonString)
-        {
-            try
-            {
-                JsonDocument document = JsonDocument.Parse(jsonString);
-                document.RootElement.GetProperty("KeyCreate");
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public string getKeyCreate(string jsonString)
-        {
-            JsonDocument document = JsonDocument.Parse(jsonString);
-            var rootElement = document.RootElement;
-            return rootElement.GetProperty("KeyCreate").GetString();
-        }
-
-        public string getKeyAccept(string jsonString)
-        {
-            JsonDocument document = JsonDocument.Parse(jsonString);
-            var rootElement = document.RootElement;
-            return rootElement.GetProperty("KeyAccept").GetString();
-        }
-
-        public string getMissKey(string jsonString)
-        {
-            List<String> keys = new List<String>();
-            keys.Add("KeyAccept");
-            keys.Add("KeyCreate");
-
-            JsonDocument document = JsonDocument.Parse(jsonString);
-            var rootElement = document.RootElement;
-            var all = rootElement.EnumerateObject();
-            return rootElement.EnumerateObject().Where(x => !keys.Contains(x.Name)).First<JsonProperty>().Value.GetString();
-        }
-
-        public string getMissKeybyIndex(string jsonString, int index)
-        {
-            JsonDocument document = JsonDocument.Parse(jsonString);
-            var rootElement = document.RootElement;
-
-            return rootElement.EnumerateObject().ToList<JsonProperty>().ElementAt<JsonProperty>(index).Value.GetString();
-        }
-
+       
         public async Task<IActionResult> OnPost(Guid id)
         {
             TranslationModel? newTranslationModel = new TranslationModel();
@@ -161,27 +97,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                 }
                 if (JsonData != null)
                     if (IsJsonValid(JsonData))
-                        if (IsKeyAcceptValid(JsonData) && IsKeyCreateValid(JsonData))
-                        {
-                            newTranslationModel = JsonSerializer.Deserialize<TranslationModel>(JsonData);
-                        }
-                        else if (IsKeyAcceptValid(JsonData) && !IsKeyCreateValid(JsonData))
-                        {
-                            newTranslationModel.KeyAccept = getKeyAccept(JsonData);
-                            newTranslationModel.KeyCreate = getMissKey(JsonData);
-                        }
-                        else if (!IsKeyAcceptValid(JsonData) && IsKeyCreateValid(JsonData))
-                        {
-                            newTranslationModel.KeyAccept = getMissKey(JsonData);
-                            newTranslationModel.KeyCreate = getKeyCreate(JsonData);
-                        }
-                        else if (!IsKeyAcceptValid(JsonData) && !IsKeyCreateValid(JsonData))
-                        {
-                            newTranslationModel.KeyAccept = getMissKeybyIndex(JsonData, 0);
-                            newTranslationModel.KeyCreate = getMissKeybyIndex(JsonData, 1);
-                        }
-                        else
-                            newTranslationModel = languageModel.Translations;
+                        newTranslationModel.Translations = JsonSerializer.Deserialize < Dictionary<String,String>>(JsonData);
+                      else
+                         newTranslationModel = languageModel.Translations;
 
                 var languageModelEdit = new LanguageModel<TranslationModel>()
                 {

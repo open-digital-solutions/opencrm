@@ -184,6 +184,8 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             {
                 var english = LanguageModel<TranslationModel>.GetNewInstance("EN-gb", "English");
                 english.Translations = new TranslationModel();
+                Dictionary<String, String> translations = new Dictionary<String, String>();
+                english.Translations.Translations = translations;
                 await AddLanguage(english);
             }
 
@@ -192,9 +194,9 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             {
                 var espanol = LanguageModel<TranslationModel>.GetNewInstance("ESes", "Español");
                 espanol.Translations = new TranslationModel();
-                espanol.Translations.KeyAccept = "Aceptar";
-                espanol.Translations.KeyCreate = "Crear";
-                await AddLanguage(espanol);
+                Dictionary<String, String> translations = new Dictionary<String, String>();
+                espanol.Translations.Translations = translations;
+               await AddLanguage(espanol);
             }
         }
     }

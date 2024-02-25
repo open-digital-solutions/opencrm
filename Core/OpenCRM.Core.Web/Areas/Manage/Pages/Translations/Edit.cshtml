@@ -21,6 +21,27 @@
                         <label asp-for="Translation.Translation" class="control-label"></label>
                         <span asp-validation-for="Translation.Translation" class="text-danger"></span>
                     </div>
+
+
+                    @if (Model.Languages.Count != 0)
+                    {
+                        for (int index = 0; index < Model.Languages.Count; index++)
+                        {
+                            <div class="form-floating mb-3">
+                                <p>Lenguage: @Model.Languages[index].Text</p>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="TranslationValues[index]" class="form-control" />
+                                <label asp-for="TranslationValues[index]" class="control-label"></label>
+                                <span asp-validation-for=" TranslationValues[index]" class="text-danger"></span>
+                            </div>
+                           
+                        }
+                    }
+
+
+
+
                     <div class="mt-4 mb-0">
                         <div class="d-grid">
                             <input type="submit" value="Save" class="btn btn-primary" />
