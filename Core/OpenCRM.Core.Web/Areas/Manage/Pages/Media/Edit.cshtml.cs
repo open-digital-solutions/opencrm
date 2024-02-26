@@ -62,6 +62,8 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
 
          public async Task<IActionResult> OnPost(Guid id)
             {
+            string temp = "entre";
+            var model = Model;
                 if (ModelState.IsValid)
                 {
                    if (UploadedFile != null)
