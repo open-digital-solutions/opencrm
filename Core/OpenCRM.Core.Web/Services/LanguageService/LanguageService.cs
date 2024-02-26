@@ -4,9 +4,8 @@ using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.TranslationService;
+using OpenCRM.Core.Web.Services.LanguageService;
 using System.Text.Json;
-using System.Xml.Linq;
-//using OpenDHS.Shared.Data;
 
 namespace OpenCRM.Core.Web.Services.LanguageService
 {
@@ -59,6 +58,33 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                 return null;
             }
         }
+       
+
+        public string? GetLanguageValue(string key)
+         {
+            //var currentLangCode = _languageService.GetBrowserLanguage();
+            var langCode = _dbContext.Languagess.Where(x => x.Code.ToUpper() == key.ToUpper()).FirstOrDefault();
+
+             if(langCode == null) { return key;}
+             var dataModel = langCode.ToDataModel<TranslationModel>();
+
+             if(dataModel == null) { return key;}
+             var values = dataModel.Translations.Translations;
+
+             return values != null && values.ContainsKey(key) ? values.GetValueOrDefault(key) : key;
+         }
+
+       /* public string? GetLanguageValue(string key)
+        {
+            // Inyectar el servicio de idiomas
+            var languageService = new LanguageService();
+
+            // Obtener el idioma del navegador
+            var currentLangCode = languageService.GetBrowserLanguage();
+
+            // ... resto del código de la función ...
+        }*/
+
 
         public List<LanguageModel<TTranslationModel>> GetLanguageListAsync<TTranslationModel>() where TTranslationModel : TranslationModel, new()
         {

@@ -1,5 +1,8 @@
-﻿using Newtonsoft.Json;
-using OpenCRM.Core.Data;
+﻿using OpenCRM.Core.Data;
+using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services.LanguageService;
+using OpenCRM.Core.Web.Services.TranslationService;
+using System.Text.Json;
 
 
 namespace OpenCRM.Core.Web.Services.TranslationService
@@ -34,11 +37,16 @@ namespace OpenCRM.Core.Web.Services.TranslationService
 
         public string? GetTranslationValue(string key)
         {
-            var currentLangCode = "En"; //TODO debe de venir del language service que lo saca del usersession, datasssion, html document tag o uno por defecto del sistema
+            var currentLangCode = "ESes"; //TODO debe de venir del language service que lo saca del usersession, datasssion, html document tag o uno por defecto del sistema
             //var translation =  _dbContext.Translationss.Where(x => x.Key == key && x.Language.Code == currentLangCode).FirstOrDefault();
             var currentLanguage = _dbContext.Languagess.Where(x => x.Code.ToUpper() == currentLangCode.ToUpper()).FirstOrDefault();
+            
             if (currentLanguage == null) { return key; }
-            var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(currentLanguage.Translations);
+             var dataModel = currentLanguage.ToDataModel<TranslationModel>();
+            
+            if (dataModel == null) { return key; }
+             var values = dataModel.Translations.Translations;
+            
             return values != null && values.ContainsKey(key) ? values.GetValueOrDefault(key) : key;
         }
 
