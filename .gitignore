@@ -8,5 +8,5 @@ bin
 *.db-wal
 *.csproj.user
 /OpenCRM.Web/wwwroot/media
-launchSettings.json
-appsettings.json
+/OpenCRM.Web/Properties
+/OpenCRM.Web/appsettings.json
