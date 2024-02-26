@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
+using OpenCRM.Core.Web.Services.TranslationService;
 using System.Text.Json;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
@@ -12,8 +14,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
     {
         JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
 
-        TranslationModel newTranslationModel;
+         TranslationModel newTranslationModel;
+
         private readonly ILanguageService _languageService;
+        private readonly ITranslationService _translationService;
 
         [BindProperty]
         public LanguageModel<TranslationModel> Language { get; set; } = default!;
@@ -24,8 +28,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         [BindProperty]
         public string JsonData { get; set; } = "";
 
-        public CreateModel(ILanguageService languageService)
+        public CreateModel(ILanguageService languageService , ITranslationService translationService)
         {
+            _translationService = translationService;
             newTranslationModel = new TranslationModel();
 
             JsonData = JsonSerializer.Serialize(newTranslationModel.Translations, options);
@@ -76,7 +81,16 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
             return true;
         }
 
-        
+
+        public void addNewKeyToTranslationInLanguages(LanguageModel<TranslationModel> language, String key, String value = "")
+        {
+            Dictionary<string, string> keys = language.Translations.Translations;
+            if (!keys.ContainsKey(key))
+            {
+                keys[key] = value;
+            }
+        }
+
 
         public async Task<IActionResult> OnPost()
         {
@@ -98,7 +112,17 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                     Name = Language.Name,
                     Translations = newTranslationModel,
                 };
+                
+                var translationDB = _translationService.GetTranslationListAsync<TranslationEntity>();
+                foreach (var translation in translationDB)
+                {
+                    addNewKeyToTranslationInLanguages(languageModel, translation.Key, "");
+                }
+                
                 await _languageService.AddLanguage(languageModel);
+
+                
+
                 return RedirectToPage("./Index");
             }
             return Page();
