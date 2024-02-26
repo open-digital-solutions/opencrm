@@ -9,4 +9,3 @@ bin
 *.csproj.user
 /OpenCRM.Web/wwwroot/media
 /OpenCRM.Web/Properties/launchSettings.json
-/OpenCRM.Web/appsettings.json
