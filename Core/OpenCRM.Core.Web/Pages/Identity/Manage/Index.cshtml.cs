@@ -56,15 +56,16 @@ namespace OpenCRM.Core.Web.Pages.Identity.Manage
                     await _signInManager.RefreshSignInAsync(user);
                 }
             }
-            if (ModelState.IsValid)
-            {
-            user.Name = Input.Name;
-            user.Lastname = Input.Lastname;
+                if (ModelState.IsValid)
+                {
+                user.Name = Input.Name;
+                user.Lastname = Input.Lastname;
 
-            await _userManager.UpdateAsync(user);
-                await _signInManager.RefreshSignInAsync(user);
-                return Redirect(returnUrl);
-            }
+                     await _userManager.UpdateAsync(user);
+                    await _signInManager.RefreshSignInAsync(user);
+                    return Redirect(returnUrl);
+
+                }
             Input.Avatar=user.Avatar; //if the model is not valid, then return the view with the current avatar.
             return Page();
         }

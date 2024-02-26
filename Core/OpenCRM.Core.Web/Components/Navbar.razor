@@ -42,6 +42,8 @@
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-end p-2 mt-2" aria-labelledby="navbarDropdown">
+                            @if (!string.IsNullOrEmpty(Name))
+                            {
                             <li class="d-flex justify-content-center m-2">
                                 <div class="d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; border: 1px solid gray; border-radius: 50px; background-color: transparent;">
                                     @if (Avatar != null && Avatar.Length > 0)
@@ -61,8 +63,7 @@
                             <li class="dropstart">
                                 <DropdownMenu Menu="@DropdownMenuModules" />
                             </li>
-                            @if (!string.IsNullOrEmpty(Name))
-                            {
+                           
                                 <li>
                                     <a class="dropdown-item" id="editProfileLink" href="/Identity/Manage/Index">
                                         Edit Profile
@@ -70,6 +71,7 @@
                                 </li>
                                 <li><a class="dropdown-item" href="/Identity/Logout">Logout</a></li>
                             }
+                            <li><a class="dropdown-item">About</a></li>
                         </ul>
                     </li>
                 </ul>
