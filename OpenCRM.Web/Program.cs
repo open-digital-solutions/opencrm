@@ -8,7 +8,7 @@ using OpenCRM.Web.Data;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddOpenCRM<OpenCRMDataContext>(builder.Configuration);
+      builder.Services.AddOpenCRM<OpenCRMDataContext>(builder.Configuration);
         builder.Services.AddOpenCRMSwissLPD<OpenCRMDataContext>();
 
         // Add services to the container.
@@ -58,5 +58,4 @@ app.UseOpenCRM<OpenCRMDataContext>();
 app.UseOpenCRMSwissLPDAsync<OpenCRMDataContext>();
 
 app.MapRazorPages();
-
-        app.Run();
+app.Run();

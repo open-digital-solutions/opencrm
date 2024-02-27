@@ -13,7 +13,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         private readonly ILanguageService _languageService;
 
         [BindProperty]
-        public LanguageModel<TranslationModel> Language { get; set; } = default!;
+        public LanguageModel Language { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -24,32 +24,26 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
             Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Languages List",
+                Name = "Languages",
                 Page = "Languages",
-                Url = "/Manage"
+                Url = "/Manage/Languages"
             });
         }
 
         public  async Task<IActionResult> OnGet(Guid id)
         {
-            var lanModel = await _languageService.GetLanguageAsync<LanguageEntity>(id);
+            var lanModel = await _languageService.GetLanguage(id);
+            
             if (lanModel == null)
             {
                 return NotFound();
             }
+
             Language = lanModel;
-            await _languageService.GetLanguageAsync<LanguageEntity>(id);             
+
+            await _languageService.GetLanguage(id);             
             return Page();
         }
     }

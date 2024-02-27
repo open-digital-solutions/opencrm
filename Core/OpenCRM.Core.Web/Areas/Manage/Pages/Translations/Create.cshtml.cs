@@ -24,7 +24,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         {
             _translationService = translationService;
             _languageService = languageService;
-            var LanguagesDB = _languageService.GetLanguageListAsync<TranslationModel>();
+            var LanguagesDB = _languageService.GetLanguageListAsync();
             Languages = LanguagesDB.Select(f => new SelectListItem { Text = f.Name, Value = f.ID.ToString() }).ToList();
 
             Links.Add(new BreadCrumbLinkModel()

@@ -14,37 +14,24 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
     {
         private readonly ILanguageService _languageService;
         
-        private TableService<LanguageModel<TranslationModel>> _tableService;
+        private TableService<LanguageModel> _tableService;
 
         [BindProperty]
-        public List<LanguageModel<TranslationModel>> LanguageList { get; set; } = new List<LanguageModel<TranslationModel>>();
-
-        [BindProperty]
-        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
+        public List<LanguageModel> LanguageList { get; set; } = new List<LanguageModel>();
 
         [BindProperty]
         public TableModel Table { get; set; } = new TableModel("Languages", "Languages");
 
         public IndexModel(ILanguageService languageService)
         { 
-        
             _languageService = languageService;
-            _tableService = new TableService<LanguageModel<TranslationModel>>();
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Home ...",
-                Page = "",
-                Url = "/"
-            });
+            _tableService = new TableService<LanguageModel>();
 
             Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Languages List",
+                Name = "Languages",
                 Page = "Languages",
                 Url = "/Manage"
             });            
@@ -52,12 +39,16 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         public void OnGet()
         {            
-            var result = _languageService.GetLanguageListAsync<TranslationModel>();
-            var response = result.Select(f => new DataBlockModel<LanguageModel<TranslationModel>> { Data = f, ID = f.ID , Description = f.Name, Code = f.Code , Type = "" }).ToList();
-            
-            var tableResult = _tableService.BuildTable(response, "Language");
-            Table.Headers = tableResult.Item1;
-            Table.Rows = tableResult.Item2;
+            var result = _languageService.GetLanguageListAsync();
+
+            if (result != null)
+            {
+                var response = result.Select(f => new DataBlockModel<LanguageModel> { Data = f, ID = f.ID, Description = f.Name, Code = f.Code, Type = "" }).ToList();
+
+                var tableResult = _tableService.BuildTable(response, "Language");
+                Table.Headers = tableResult.Item1;
+                Table.Rows = tableResult.Item2;
+            }
         }
     }
 }

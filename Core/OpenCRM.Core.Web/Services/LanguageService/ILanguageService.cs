@@ -5,13 +5,11 @@ namespace OpenCRM.Core.Web.Services.LanguageService
 {
     public interface ILanguageService
     {
-        Task<LanguageModel<TTranslationModel>?> AddLanguage<TTranslationModel>(LanguageModel<TTranslationModel> model) where TTranslationModel : TranslationModel, new();
-        //Task addLanguageSeedAsync(string Code, string Name);
-        Task DeleteLanguage<TDataModel>(Guid Id);
-        Task<LanguageModel<TTranslationModel>?> EditLanguage<TTranslationModel>(LanguageModel<TTranslationModel> model) where TTranslationModel : TranslationModel, new();
-        Task<LanguageModel<TTranslationModel>?> GetLanguage<TTranslationModel>(Guid id) where TTranslationModel : TranslationModel, new();
-        Task<LanguageModel<TranslationModel>?> GetLanguageAsync<LanguageEntity>(Guid id);
-        List<LanguageModel<TTranslationModel>> GetLanguageListAsync<TTranslationModel>() where TTranslationModel : TranslationModel, new();
+        Task<LanguageModel?> AddLanguage(LanguageModel model);
+        Task<LanguageModel?> EditLanguage(LanguageModel model);
+        Task DeleteLanguage(Guid Id);
+        Task<LanguageModel?> GetLanguage(Guid id);
+        List<LanguageModel>? GetLanguageListAsync();
         Task SeedAsync();
     }
 }

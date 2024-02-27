@@ -13,7 +13,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         private readonly ILanguageService _languageService;
 
         [BindProperty]
-        public LanguageModel<TranslationModel> Language { get; set; } = default!;
+        public LanguageModel Language { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -24,42 +24,37 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
             Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Language List",
-                Page = "Language",
-                Url = "/Manage"
+                Name = "Languages",
+                Page = "Languages",
+                Url = "/Manage/Languages"
             });
-        }       
+        }
 
         public async Task<IActionResult> OnGet(Guid id)
         {            
-            var languageModel = await _languageService.GetLanguageAsync<LanguageEntity>(id);
+            var languageModel = await _languageService.GetLanguage(id);
+
             if (languageModel == null) 
             {
                 return NotFound();
             }
+
             Language = languageModel;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid id)
         {
-            var language = await _languageService.GetLanguageAsync<LanguageEntity>(id);
+            var language = await _languageService.GetLanguage(id);
+            
             if (language == null)
             {
                 return NotFound();
             }
-            await _languageService.DeleteLanguage<LanguageEntity>(id);
+
+            await _languageService.DeleteLanguage(id);
             return RedirectToPage("./Index");
         }
     }

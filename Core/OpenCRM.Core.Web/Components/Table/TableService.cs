@@ -79,7 +79,6 @@ namespace OpenCRM.Core.Web.Table
 					continue;
                 tableHeaders.Add(prop.Name);
             }
-				
 
 			foreach (var item in datas)
 			{
@@ -92,16 +91,6 @@ namespace OpenCRM.Core.Web.Table
                         continue;
                     var rowData = CreateRowData(item.Data, prop);
                     row.Datas.Add(rowData);
-                    //var data = item.Data;
-                    //var propValue = data?.GetType().GetProperty(prop)?.GetValue(data)?.ToString();
-
-                    //if(propValue )
-
-                    //TRowData rowData = new TRowData()
-                    //{
-                    //	Label = propValue
-                    //};
-                    //row.Datas.Add(rowData);
                 }
 
                 BuildButton(row, "Edit", "fas fa-pen");

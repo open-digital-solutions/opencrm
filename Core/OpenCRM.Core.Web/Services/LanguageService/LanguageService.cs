@@ -13,14 +13,82 @@ namespace OpenCRM.Core.Web.Services.LanguageService
     public class LanguageService<TDBContext> : ILanguageService where TDBContext : DataContext
     {
         private readonly TDBContext _dbContext;
+
         public LanguageService(TDBContext dBContext)
         {
             _dbContext = dBContext;
         }
 
-        public async Task<LanguageModel<TTranslationModel>?> GetLanguage<TTranslationModel>(Guid id) where TTranslationModel : TranslationModel, new()
+        public async Task<LanguageModel?> AddLanguage(LanguageModel model)
         {
+            try
+            {
+                //TODO: Handle errors and exceptions
+                var entity = Activator.CreateInstance<LanguageEntity>();
+                entity.Code = model.Code;
+                entity.Name = model.Name;
+                _dbContext.Languagess.Add(entity);
+                await _dbContext.SaveChangesAsync();
 
+                return new LanguageModel()
+                {
+                    ID = entity.ID,
+                    Code = entity.Code,
+                    Name = entity.Name
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        public async Task<LanguageModel?> EditLanguage(LanguageModel model)
+        {
+            try
+            {
+                //TODO: Handle errors and exceptions
+                var entity = await _dbContext.Languagess.FindAsync(model.ID);
+                if (entity == null) return null;
+
+                entity.Code = model.Code;
+                entity.Name = model.Name;
+                _dbContext.Languagess.Update(entity);
+                await _dbContext.SaveChangesAsync();
+                return new LanguageModel() 
+                { 
+                    ID = entity.ID,
+                    Code = entity.Code,
+                    Name = entity.Name
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public async Task DeleteLanguage(Guid Id)
+        {
+            try
+            {
+                var entity = await _dbContext.Languagess.FindAsync(Id);
+                if (entity != null)
+                {
+                    _dbContext.Remove(entity);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public async Task<LanguageModel?> GetLanguage(Guid id)
+        {
             try
             {
                 var language = await _dbContext.Languagess.FindAsync(id);
@@ -30,27 +98,12 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                     return null;
                 }
 
-                return language.ToDataModel<TTranslationModel>();
-            }
-            catch (Exception ex)
-            {
-                //TODO: Handle this error
-                Console.WriteLine(ex.ToString());
-                return null;
-            }
-        }
-
-        public async Task<LanguageModel<TranslationModel>?> GetLanguageAsync<LanguageEntity>(Guid id)
-        {
-            try
-            {
-                var language = await _dbContext.Languagess.FindAsync(id);
-                if (language == null || string.IsNullOrWhiteSpace(language.Code))
+                return new LanguageModel
                 {
-                    //TODO: Handle this error
-                    return null;
-                }
-                return language.ToDataModel<TranslationModel>();
+                    ID = id,
+                    Code = language.Code,
+                    Name = language.Name,
+                };
             }
             catch (Exception ex)
             {
@@ -60,140 +113,67 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             }
         }
 
-        public List<LanguageModel<TTranslationModel>> GetLanguageListAsync<TTranslationModel>() where TTranslationModel : TranslationModel, new()
+        public List<LanguageModel>? GetLanguageListAsync()
         {
-            List<LanguageModel<TTranslationModel>> result = new();
             try
             {
+                var result = new List<LanguageModel>();
                 var languages = _dbContext.Languagess.OrderBy(lang => lang.AddedAt).ToList();
 
                 if (languages == null || languages.Count == 0) return result;
 
                 foreach (var language in languages)
                 {
-
-                    if (language == null || string.IsNullOrWhiteSpace(language.ID.ToString()))
+                    if (language != null && !string.IsNullOrWhiteSpace(language.ID.ToString()))
                     {
+                        var dataModel = new LanguageModel()
+                        {
+                            ID = language.ID,
+                            Code = language.Code,
+                            Name = language.Name
+                        };
 
-                        //TODO Handle this error
-                        continue;
+                        if (dataModel != null)
+                        {
+                            result.Add(dataModel);
+                        }
                     }
-                    var dataModel = language.ToDataModel<TTranslationModel>();
-
-                    if (dataModel == null) continue;
-
-                    result.Add(dataModel);
                 }
+                return result;
             }
             catch (Exception ex)
             {
-
                 //TODO Handle this error
                 Console.WriteLine(ex.ToString());
-                return new List<LanguageModel<TTranslationModel>>();
-            }
-            return result;
-        }
-
-        public async Task<LanguageModel<TTranslationModel>?> AddLanguage<TTranslationModel>(LanguageModel<TTranslationModel> model) where TTranslationModel : TranslationModel, new()
-        {
-            try
-            {
-                //TODO: Handle errors and exceptions
-                var entity = Activator.CreateInstance<LanguageEntity>();
-                entity.Code = model.Code;
-                entity.Name = model.Name;
-                entity.Translations = JsonSerializer.Serialize(model.Translations);
-                _dbContext.Languagess.Add(entity);
-                await _dbContext.SaveChangesAsync();
-
-                return entity.ToDataModel<TTranslationModel>();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
                 return null;
             }
         }
-
-        public async Task DeleteLanguage<TDataModel>(Guid Id)
-        {
-            //TODO: Handle errors and exceptions
-            var entity = await _dbContext.Languagess.FindAsync(Id);
-            if (entity == null)
-            {
-                return;
-            }
-            _dbContext.Remove(entity);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task<LanguageModel<TTranslationModel>?> EditLanguage<TTranslationModel>(LanguageModel<TTranslationModel> model) where TTranslationModel : TranslationModel, new()
-        {
-            try
-            {
-                //TODO: Handle errors and exceptions
-                var entity = await _dbContext.Languagess.FindAsync(model.ID);
-                if (entity == null) return null;
-                entity.Code = model.Code;
-                entity.Name = model.Name;
-                entity.Translations = JsonSerializer.Serialize(model.Translations);
-                _dbContext.Languagess.Update(entity);
-                await _dbContext.SaveChangesAsync();
-                return entity.ToDataModel<TTranslationModel>();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return null;
-            }
-        }
-
-        /*public async Task addLanguageSeedAsync(String Code, String Name)
-        {
-
-            var entity = _dbContext.Languagess.Where<LanguageEntity>(c => c.Code == Code);
-
-            if (entity.Count<LanguageEntity>() == 0)
-            {
-                var entityEN = Activator.CreateInstance<LanguageEntity>();
-                entityEN.Code = Code;
-                entityEN.Name = Name;
-                _dbContext.Languagess.Add(entityEN);
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-
-        public async Task SeedAsync()
-        {
-            var english = LanguageModel<TranslationModel>.GetNewInstance("EN-gb", "English");
-            english.Translations = new TranslationModel();
-            await AddLanguage(english);
-
-            var espanol = LanguageModel<TranslationModel>.GetNewInstance("ESes", "Espanol");
-            espanol.Translations = new TranslationModel();
-            espanol.Translations.KeyAccept = "Aceptar";
-            espanol.Translations.KeyCreate = "Crear";
-            await AddLanguage(espanol);
-        }*/
 
         public async Task SeedAsync()
         {
             var existingEnglish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "EN-gb");
             if (existingEnglish == null)
             {
-                var english = LanguageModel<TranslationModel>.GetNewInstance("EN-gb", "English");
-                english.Translations = new TranslationModel();
+                var english = new LanguageModel()
+                {
+                    ID = Guid.Empty,
+                    Code = "EN-gb",
+                    Name = "English"
+                };
+                
                 await AddLanguage(english);
             }
 
             var existingSpanish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "ESes");
             if (existingSpanish == null)
             {
-                var espanol = LanguageModel<TranslationModel>.GetNewInstance("ESes", "Español");
-                espanol.Translations = new TranslationModel();
-                espanol.Translations.KeyAccept = "Aceptar";
-                espanol.Translations.KeyCreate = "Crear";
+                var espanol = new LanguageModel() 
+                { 
+                    ID = Guid.Empty,
+                    Code = "ES-es",
+                    Name = "Español"
+                };
+   
                 await AddLanguage(espanol);
             }
         }

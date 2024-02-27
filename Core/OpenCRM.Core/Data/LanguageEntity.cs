@@ -13,6 +13,6 @@ namespace OpenCRM.Core.Data
         public required string Name { get; set; }
 
         [Column(TypeName = "jsonb")]
-        public required string Translations { get; set; }
+        public required string Translations { get; set; } = "{}";
     }
 }

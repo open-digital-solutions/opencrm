@@ -32,9 +32,9 @@ namespace OpenCRM.Web.Pages
                 Block = block.Data;
             }
 
-            var dataSesison = _identityService.GetSession();
-            if (dataSesison == null) Lang = "IT";
-            Lang = dataSesison != null ? dataSesison.Lang : "Default dal browser";
+            //var dataSesison = _identityService.GetSession();
+            //if (dataSesison == null) Lang = "IT";
+            //Lang = dataSesison != null ? dataSesison.Lang : "Default dal browser";
 
             return Page();
         }
