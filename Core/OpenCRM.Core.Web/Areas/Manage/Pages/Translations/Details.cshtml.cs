@@ -22,31 +22,25 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
             Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Translation List",
+                Name = "Translations",
                 Page = "Translations",
-                Url = "/Manage"
+                Url = "/Manage/Translations"
             });
         }
 
         public async Task<IActionResult> OnGet(Guid id)
         {
             var translationModel = await _translationService.GetTranslationAsync<TranslationEntity>(id);
+            
             if (translationModel == null)
             {
                 return NotFound();
             }
+            
             Translation = translationModel;
+            
             await _translationService.GetTranslationAsync<TranslationEntity>(id);
             return Page();
         }         

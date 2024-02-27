@@ -11,11 +11,13 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
     public class CreateModel : PageModel
     {
         private readonly ITranslationService _translationService;
+
         private readonly ILanguageService _languageService;
 
         [BindProperty]
         public TranslationModel<TranslationEntity> Translation { get; set; } = default!;
-        public List<SelectListItem> Languages { set; get; }
+
+        public List<SelectListItem> Languages { set; get; } = new List<SelectListItem>();
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -24,32 +26,28 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         {
             _translationService = translationService;
             _languageService = languageService;
-            var LanguagesDB = _languageService.GetLanguageListAsync();
-            Languages = LanguagesDB.Select(f => new SelectListItem { Text = f.Name, Value = f.ID.ToString() }).ToList();
 
-            Links.Add(new BreadCrumbLinkModel()
+            var LanguagesDB = _languageService.GetLanguageListAsync();
+
+            if (LanguagesDB != null)
             {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
+                Languages = LanguagesDB.Select(f => new SelectListItem { Text = f.Name, Value = f.ID.ToString() }).ToList();
+            }
 
             Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Translations List",
+                Name = "Translation List",
                 Page = "Translations",
-                Url = "/Manage"
+                Url = "/Manage/Translations"
             });
         }
 
         public IActionResult OnGet()
         {
             return Page();
-        }        
+        }
 
         public async Task<IActionResult> OnPost()
         {
@@ -60,8 +58,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
                     ID = Translation.ID,
                     Key = Translation.Key,
                     Translation = Translation.Translation,
-                    LanguageId = Translation.LanguageId,                 
+                    LanguageId = Translation.LanguageId               
                 };                
+
                 await _translationService.AddTranslation(translationModel);
                 return RedirectToPage("./Index");
             }

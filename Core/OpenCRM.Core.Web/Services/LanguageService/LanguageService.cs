@@ -164,7 +164,7 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                 await AddLanguage(english);
             }
 
-            var existingSpanish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "ESes");
+            var existingSpanish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "ES-es");
             if (existingSpanish == null)
             {
                 var espanol = new LanguageModel() 

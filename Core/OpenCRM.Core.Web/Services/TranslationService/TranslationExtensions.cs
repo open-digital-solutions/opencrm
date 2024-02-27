@@ -8,6 +8,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
         {
             if (entity == null || string.IsNullOrWhiteSpace(entity.ID.ToString()))
                 return null;
+
             return new TranslationModel<TDataModel>
             {
                 ID = entity.ID,

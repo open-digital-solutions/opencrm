@@ -26,37 +26,31 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public IndexModel(ITranslationService translationService)
         {
-
             _translationService = translationService;
             _tableService = new TableService<TranslationModel<TranslationEntity>>();
 
             Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
+                Area = "Manage",
                 IsActive = true,
-                Name = "Home ...",
-                Page = "",
-                Url = "/"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "/Manage",
-                IsActive = true,
-                Name = "Translation List",
+                Name = "Translations",
                 Page = "Translations",
-                Url = "/Manage"
+                Url = "/Manage/Translations"
             });
         }
 
         public void OnGet()
         {
             var result = _translationService.GetTranslationListAsync<TranslationEntity>();
-            var response = result.Select(f => new DataBlockModel<TranslationModel<TranslationEntity>> { Data = f, Description = f.Translation, Code = f.Key, Type = "", ID=f.ID}).ToList();
 
-            var tableResult = _tableService.BuildTable(response);
-            Table.Headers = tableResult.Item1;
-            Table.Rows = tableResult.Item2;
+            if (result != null)
+            {
+                var response = result.Select(f => new DataBlockModel<TranslationModel<TranslationEntity>> { Data = f, Description = f.Translation, Code = f.Key, Type = "", ID = f.ID }).ToList();
+
+                var tableResult = _tableService.BuildTable(response);
+                Table.Headers = tableResult.Item1;
+                Table.Rows = tableResult.Item2;
+            }
         }
     }
 }

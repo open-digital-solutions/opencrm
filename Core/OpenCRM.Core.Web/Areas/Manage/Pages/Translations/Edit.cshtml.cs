@@ -22,20 +22,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
             Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Translation List",
-                Page = "Translation",
-                Url = "/Manage"
+                Name = "Translations",
+                Page = "Translations",
+                Url = "/Manage/Translations"
             });
         }
 
@@ -47,6 +38,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
             {
                 return NotFound();
             }
+
             Translation = transModel;
             return Page();
         }
@@ -55,13 +47,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         {
             if (ModelState.IsValid)
             {
-                var transModel = await _translationService.GetTranslationAsync<TranslationEntity>(id);
-
-                if (transModel == null)
-                {
-                    return NotFound();
-                }
-
                 var transModelEdit = new TranslationModel<TranslationEntity>()
                 {
                     ID = id,
@@ -69,6 +54,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
                     LanguageId = Translation.LanguageId,
                     Translation = Translation.Translation                    
                 };
+
                 await _translationService.EditTranslation(transModelEdit);
                 return RedirectToPage("./Index");
             }

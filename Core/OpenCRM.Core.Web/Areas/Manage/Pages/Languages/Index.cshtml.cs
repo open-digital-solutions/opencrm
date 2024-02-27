@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Components.Table;
@@ -10,7 +11,7 @@ using OpenCRM.Core.Web.Table;
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
     [Authorize]
-    public class IndexModel : CorePageModel
+    public class IndexModel : PageModel
     {
         private readonly ILanguageService _languageService;
         
@@ -21,6 +22,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         [BindProperty]
         public TableModel Table { get; set; } = new TableModel("Languages", "Languages");
+
+        [BindProperty]
+        public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         public IndexModel(ILanguageService languageService)
         { 

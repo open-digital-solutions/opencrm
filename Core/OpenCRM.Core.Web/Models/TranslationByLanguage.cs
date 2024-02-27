@@ -8,7 +8,7 @@ namespace OpenCRM.Core.Web.Models
 {
     public class TranslationByLanguage
     {
-        public string Language { get; set; } = string.Empty;
+        public string LanguageCode { get; set; } = string.Empty;
 
         public string Translation { get;set; } = string.Empty;
     }
