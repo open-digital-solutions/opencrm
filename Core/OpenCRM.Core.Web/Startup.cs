@@ -33,6 +33,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
             services.AddScoped<ITranslationService, TranslationService<TDBContext>>();
+            services.AddScoped<ICookiesSessionService, CookiesSessionService>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ICardBlockService, CardBlockService>();

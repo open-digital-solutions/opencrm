@@ -14,14 +14,11 @@ using OpenCRM.Core.Web.Services.EmailService;
 using OpenCRM.Core.Web.Services.RoleService;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Text.Json;
 
 namespace OpenCRM.Core.Web.Services.IdentityService
 {
     public class IdentityService : IIdentityService
     {
-
-        const string CookieDataSession = "OpenCRM.Session";
 
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly UserManager<UserEntity> _userManager;
@@ -30,6 +27,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         private readonly IEmailService _emailSender;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRoleService _roleService;
+        private readonly ICookiesSessionService _cookiesSessionService;
 
         public IdentityService(UserManager<UserEntity> userManager,
             IUserStore<UserEntity> userStore,
@@ -37,7 +35,8 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         ILogger<IdentityService> logger,
         IEmailService emailSender,
         IHttpContextAccessor httpContextAccessor,
-        IRoleService roleService)
+        IRoleService roleService,
+        ICookiesSessionService cookiesSessionService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -46,6 +45,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
             _emailSender = emailSender;
             _httpContextAccessor = httpContextAccessor;
             _roleService = roleService;
+            _cookiesSessionService = cookiesSessionService;
         }
 
 
@@ -152,48 +152,6 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }
-
-
-        /// <summary>
-        /// TODO: Refactor this method. Remove null return
-        /// </summary>
-        /// <returns></returns>
-        public DataSession? GetSession()
-        {
-            if (_signInManager == null) return null;
-            if (_signInManager.Context == null) return null;
-            if (_signInManager.Context.Request == null) return null;
-
-            var dataSessionJsonBytesBase64 = _signInManager.Context.Request.Cookies[CookieDataSession];
-            if (string.IsNullOrEmpty(dataSessionJsonBytesBase64)) return null;
-
-            var dataSessionJsonBytes = Convert.FromBase64String(dataSessionJsonBytesBase64);
-            if (dataSessionJsonBytes == null) return null;
-
-            var dataSessionJson = System.Text.Encoding.ASCII.GetString(dataSessionJsonBytes);
-            if (dataSessionJson == null) return null;
-
-            return JsonSerializer.Deserialize<DataSession>(dataSessionJson);
-        }
-
-        /// <summary>
-        /// TODO: refactor this method
-        /// </summary>
-        /// <param name="userSession"></param>
-        public void SetSession(DataSession userSession)
-        {
-            CookieOptions options = new();
-            options.Secure = true;
-            if (_signInManager == null) return;
-            if (_signInManager.Context.Response == null) return;
-
-            var dataSessionJson = JsonSerializer.Serialize(userSession);
-            var dataSessionJsonBytes = System.Text.Encoding.ASCII.GetBytes(dataSessionJson);
-            string dataSessionJsonBytesBase64 = Convert.ToBase64String(dataSessionJsonBytes);
-
-            _signInManager.Context.Response.Cookies.Append(CookieDataSession, dataSessionJsonBytesBase64, options);
-        }
-
 
         public async Task Seed()
         {
