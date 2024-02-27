@@ -1,10 +1,10 @@
-﻿using OpenCRM.Core.Web.Models;
+﻿using OpenCRM.Core.Data;
 
-namespace OpenCRM.Core.Web.Services.UserSessionService
+namespace OpenCRM.Core.Web.Services
 {
     public interface IUserSessionService
     {
         void GetUserSession(string UserId);
-        void SetUserSession(UserSessionModel userSessionModel);
+        Task SetUserSessionAsync(UserEntity user);
     }
 }

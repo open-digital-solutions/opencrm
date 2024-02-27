@@ -15,7 +15,6 @@ using OpenCRM.Core.Web.Services.IdentityService;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Services.RoleService;
 using OpenCRM.Core.Web.Services.TranslationService;
-using OpenCRM.Core.Web.Services.UserSessionService;
 
 namespace OpenCRM.Core.Web
 {
@@ -37,7 +36,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ICardBlockService, CardBlockService>();
-            services.AddScoped<IUserSessionService, UserSessionService>();
+            services.AddScoped<IUserSessionService, UserSessionService<TDBContext>>();
             services.AddAntiforgery(options =>
             {
                 options.Cookie.Name = "OpenCRM.Antiforgery.Token";

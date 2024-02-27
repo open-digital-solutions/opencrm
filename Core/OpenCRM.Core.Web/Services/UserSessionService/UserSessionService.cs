@@ -1,31 +1,33 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OpenCRM.Core.Web.Services.UserSessionService
+namespace OpenCRM.Core.Web.Services
 {
-    public class UserSessionService : IUserSessionService
+    public class UserSessionService<TDBContext> : IUserSessionService where TDBContext : DataContext
     {
-        private readonly UserManager<UserEntity> _userManager;
-        private readonly ILogger<UserSessionService> _logger;
-        public UserSessionService(UserManager<UserEntity> userManager, ILogger<UserSessionService> logger)
+
+        private readonly TDBContext _dbContext;
+        public UserSessionService(TDBContext dBContext)
         {
-            _userManager = userManager;
-            _logger = logger;
+            _dbContext = dBContext;
         }
 
         public void GetUserSession(string UserId)
         {
 
         }
-        public void SetUserSession(UserSessionModel userSessionModel)
+        public async Task SetUserSessionAsync(UserEntity user)
         {
+            if (user == null) return;
+            var instance = Activator.CreateInstance<UserSessionEntity>();
+            instance.UserId = user.Id;
+            instance.UserName = user.UserName ?? string.Empty;
+            instance.IssuedDate = DateTime.UtcNow;
+            instance.ExpirationDate = instance.IssuedDate.AddHours(1);
+            //TODO: Setup CypherKey from user rsa
+            instance.CypherToken = "";
+            await _dbContext.UserSessions.AddAsync(instance);
         }
     }
 }

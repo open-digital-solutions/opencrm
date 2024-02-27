@@ -14,12 +14,15 @@ namespace OpenCRM.Core.Services
             rsaCryptoServiceProvider.FromXmlString(publicXmlKey);
         }
 
-        public static RSAKeyPairsModel GetKeyPairs() {
+        public static RSADataModel GetCypherDataModel() {
 
-            var rsaKeyPairs = new RSAKeyPairsModel();
+            var rsaKeyPairs = new RSADataModel();
             var rsaCryptoServiceProvider = new RSACryptoServiceProvider(2048);
             rsaKeyPairs.PublicKey = rsaCryptoServiceProvider.ExportParameters(false);
             rsaKeyPairs.PrivateKey = rsaCryptoServiceProvider.ExportParameters(true);
+
+            rsaKeyPairs.UserKey = Encrypt(GetRandomString(), rsaKeyPairs.PublicKey);
+
             return rsaKeyPairs;
          }
 
@@ -32,6 +35,7 @@ namespace OpenCRM.Core.Services
 
             var encryptedData = rsaCryptoServiceProvider.Encrypt(bytesToEncrypt, true);
             var base64Encrypted = Convert.ToBase64String(encryptedData);
+
             return base64Encrypted;
         }
 
@@ -45,6 +49,14 @@ namespace OpenCRM.Core.Services
             var decryptedData = rsaCryptoServiceProvider.Decrypt(base64Encrypted, true);
 
             return  Encoding.UTF8.GetString(decryptedData);
+        }
+
+        public static string GetRandomString()
+        {
+            byte[] random = new byte[64];
+            var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(random);
+            return Convert.ToBase64String(random);
         }
 
     }

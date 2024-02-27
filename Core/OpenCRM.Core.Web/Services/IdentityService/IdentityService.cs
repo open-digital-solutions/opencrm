@@ -65,11 +65,12 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                 user.Email = Input.Email;
             }
 
-            var userCryptoData = RSACryptoService.GetKeyPairs();
+            var userCryptoData = RSACryptoService.GetCypherDataModel();
             if (userCryptoData != null)
             {
                 user.RSAPublic = userCryptoData.GetStringPublicKey();
                 user.RSAPrivate = userCryptoData.GetStringPrivateKey();
+                user.RSAKey = userCryptoData.UserKey;
             }
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

@@ -9,14 +9,14 @@ namespace OpenCRM.Core.Test.Services
         [TestMethod]
         public void GenerateKeys()
         {
-            var rsaKeyPairs = RSACryptoService.GetKeyPairs();
+            var rsaKeyPairs = RSACryptoService.GetCypherDataModel();
             if (rsaKeyPairs == null) Assert.Fail("RSAKeyPair is null");
         }
 
         [TestMethod]
         public void EncryptionDecryption()
         {
-            var rsaKeyPairs = RSACryptoService.GetKeyPairs();
+            var rsaKeyPairs = RSACryptoService.GetCypherDataModel();
             var textToEncrypt = "I will be encrypted!";
             var encryptedText = RSACryptoService.Encrypt(textToEncrypt, rsaKeyPairs.PublicKey);
             var decryptedText = RSACryptoService.Decrypt(encryptedText, rsaKeyPairs.PrivateKey);
