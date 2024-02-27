@@ -113,15 +113,15 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
                     ID = id,
                     Key = Translation.Key,
                     LanguageId = Translation.LanguageId,
-                    Translation = Translation.Translation
+                    Translation = Translation.Translation,
                 };
                 await _translationService.EditTranslation(transModelEdit);
                 var LanguagesDB = _languageService.GetLanguageListAsync<TranslationModel>();
-                
-                int index = 0;
+
+                // int index = 0; , TranslationValues.ElementAt<string>(index++)
                 foreach (var language in LanguagesDB)
                 {
-                    editValueKeyToTranslationInLanguages(language, Translation.Key, TranslationValues.ElementAt<string>(index++));
+                    editValueKeyToTranslationInLanguages(language, Translation.Key);
                     await _languageService.EditLanguage(language);
                 }
 

@@ -94,10 +94,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
                 await _translationService.AddTranslation(translationModel);
 
                 var LanguagesDB = _languageService.GetLanguageListAsync<TranslationModel>();
-                int index = 0;
+                //int index = 0; , TranslationValues.ElementAt<string>(index++)
                 foreach (var language in LanguagesDB)
                 {
-                    addNewKeyToTranslationInLanguages(language, Translation.Key, TranslationValues.ElementAt<string>(index++));
+                    addNewKeyToTranslationInLanguages(language, Translation.Key);
                     await _languageService.EditLanguage(language);
                 }
 

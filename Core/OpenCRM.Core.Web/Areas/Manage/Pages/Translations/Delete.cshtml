@@ -19,11 +19,11 @@
                         <label asp-for="Translation.Key" class="control-label"></label>
                         <span asp-validation-for="Translation.Key" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
+                    @*<div class="form-floating mb-3">
                         <input asp-for="Translation.Translation" class="form-control" readonly />
                         <label asp-for="Translation.Translation" class="control-label"></label>
                         <span asp-validation-for="Translation.Translation" class="text-danger"></span>
-                    </div>
+                    </div>*@
                 </form>
                 <form method="post">
                     <input type="hidden" asp-for="Translation.LanguageId" />

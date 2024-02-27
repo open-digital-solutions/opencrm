@@ -53,10 +53,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         public void OnGet()
         {            
             var result = _languageService.GetLanguageListAsync<TranslationModel>();
-            var response = result.Select(f => new DataBlockModel<LanguageModel<TranslationModel>> { Data = f, ID = f.ID , Description = f.Name, Code = f.Code , Type = "" }).ToList();
+            var response = result.Select(f => new DataBlockModel<LanguageModel<TranslationModel>> { Data = f, ID = f.ID, Description = f.Name, Code = f.Code , Type = "" }).ToList();
 
-           //   var tableResult = _tableService.BuildTable(response, "Language");
-             var tableResult = _tableService.BuildTable(response);
+             var tableResult = _tableService.BuildTable(response, "Language");
+             //var tableResult = _tableService.BuildTable(response);
 
             Table.Headers = tableResult.Item1;
             Table.Rows = tableResult.Item2;

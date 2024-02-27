@@ -120,9 +120,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
                 }
                 
                 await _languageService.AddLanguage(languageModel);
-
-                
-
                 return RedirectToPage("./Index");
             }
             return Page();
