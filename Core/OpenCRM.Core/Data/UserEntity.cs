@@ -12,6 +12,7 @@ namespace OpenCRM.Core.Data
 
         public string RSAPublic { get; set; } = string.Empty;
         public string RSAPrivate { get; set; } = string.Empty;
+        public string RSAKey { get; set; } = string.Empty;
 
         [Column(TypeName = "jsonb")]
         public string Data { get; set; } = "{}";
