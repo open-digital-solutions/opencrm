@@ -11,6 +11,6 @@ namespace OpenCRM.Core.Web.Services.LanguageService
         Task<LanguageEntity?> GetCurrentLanguage();
         Task<LanguageService.LanguageModel?> GetLanguage(Guid id);
         List<LanguageService.LanguageModel>? GetLanguageListAsync();
-        Task SeedAsync();
+        Task Seed();
     }
 }

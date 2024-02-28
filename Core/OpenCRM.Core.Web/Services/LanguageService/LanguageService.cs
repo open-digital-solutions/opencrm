@@ -154,32 +154,41 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             }
         }
 
-        public async Task SeedAsync()
+        public async Task Seed()
         {
-            var existingEnglish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "EN-gb");
+            var existingEnglish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "EN");
             if (existingEnglish == null)
             {
-                var english = new LanguageModel()
+                var languageModel = new LanguageModel()
                 {
                     ID = Guid.Empty,
-                    Code = "EN-gb",
+                    Code = "EN",
                     Name = "English"
                 };
 
-                await AddLanguage(english);
+                await AddLanguage(languageModel);
             }
-
-            var existingSpanish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "ES-es");
-            if (existingSpanish == null)
+            var existingItaliano = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "IT");
+            if (existingItaliano == null)
             {
-                var espanol = new LanguageModel()
+                var languageModel = new LanguageModel()
                 {
                     ID = Guid.Empty,
-                    Code = "ES-es",
-                    Name = "Español"
+                    Code = "IT",
+                    Name = "Italiano"
                 };
-
-                await AddLanguage(espanol);
+                await AddLanguage(languageModel);
+            }
+            var existingGerman = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "DE");
+            if (existingGerman == null)
+            {
+                var languageModel = new LanguageModel()
+                {
+                    ID = Guid.Empty,
+                    Code = "DE",
+                    Name = "Deutsch"
+                };
+                await AddLanguage(languageModel);
             }
         }
     }
