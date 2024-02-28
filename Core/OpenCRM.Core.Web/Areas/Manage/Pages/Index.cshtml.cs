@@ -11,47 +11,14 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages
 
         public void OnGet()
         {
-            var linkManageHome = new BreadCrumbLinkModel()
+            Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "",
                 IsActive = true,
                 Name = "Manage",
                 Page = "",
                 Url = "/Manage/Index"
-            };
-
-            Links.Add(linkManageHome);
-
-            var linkLanguages = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Languages",
-                Page = "",
-                Url = "/Manage/Languages"
-            };
-
-            Links.Add(linkLanguages);
-
-            var linkTranslations = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Translations",
-                Page = "",
-                Url = "/Manage/Translations"
-            };
-
-            Links.Add(linkTranslations);
-            var linkMedia = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Media",
-                Page = "",
-                Url = "/Manage/Media"
-            };
-            Links.Add(linkMedia);
+            });
         }
     }
 }
