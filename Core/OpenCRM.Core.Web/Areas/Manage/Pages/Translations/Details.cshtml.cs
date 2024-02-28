@@ -11,8 +11,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
     {        
         private readonly ITranslationService  _translationService;
 
-        private readonly ILanguageService _languageService;
-
         [BindProperty]
         public string Key { get; set; } = string.Empty;
 
@@ -22,10 +20,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public DetailsModel(ITranslationService translationService, ILanguageService languageService)
+        public DetailsModel(ITranslationService translationService)
         {
             _translationService = translationService;
-            _languageService = languageService;
 
             Links.Add(new BreadCrumbLinkModel()
             {

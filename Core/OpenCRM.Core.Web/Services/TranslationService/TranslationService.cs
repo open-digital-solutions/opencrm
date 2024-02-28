@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Graph;
-using Microsoft.Graph.ExternalConnectors;
-using Newtonsoft.Json;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
@@ -61,14 +58,31 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                 return null;
             }
         }
+        
+        public async Task DeleteTranslation<TDataModel>(Guid Id)
+        {
+            try
+            {
+                var entity = await _dbContext.Translationss.FindAsync(Id);
+                if (entity != null)
+                {
+                    _dbContext.Remove(entity);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
 
-        public async Task EditKeysTranslations<TDataModel>(string key, List<TranslationLanguageCodeModel> keyTranslations)
+        public async Task AddKeysTranslations<TDataModel>(string key, List<TranslationLanguageCodeModel> keyTranslations)
         {
             try
             {
                 foreach (var translation in keyTranslations)
                 {
-                    await EditTranslation(new TranslationModel<TDataModel>()
+                    await AddTranslation(new TranslationModel<TDataModel>()
                     {
                         ID = translation.ID,
                         Key = key,
@@ -83,15 +97,19 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             }
         }
 
-        public async Task DeleteTranslation<TDataModel>(Guid Id)
+        public async Task EditKeysTranslations<TDataModel>(string key, List<TranslationLanguageCodeModel> keyTranslations)
         {
             try
             {
-                var entity = await _dbContext.Translationss.FindAsync(Id);
-                if (entity != null)
+                foreach (var translation in keyTranslations)
                 {
-                    _dbContext.Remove(entity);
-                    await _dbContext.SaveChangesAsync();
+                    await EditTranslation(new TranslationModel<TDataModel>()
+                    {
+                        ID = translation.ID,
+                        Key = key,
+                        LanguageId = translation.LanguageId,
+                        Translation = translation.Translation,
+                    });
                 }
             }
             catch (Exception e)

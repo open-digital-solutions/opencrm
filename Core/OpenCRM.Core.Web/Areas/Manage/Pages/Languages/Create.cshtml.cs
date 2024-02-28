@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
-using OpenCRM.Core.Web.Services.TranslationService;
-using System.Text.Json;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 {
@@ -14,24 +11,15 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
     {
         private readonly ILanguageService _languageService;
 
-        private readonly ITranslationService _translationService;
-
         [BindProperty]
         public LanguageModel Language { get; set; } = default!;
 
         [BindProperty]
-        public Dictionary<string, List<TranslationLanguageCodeModel>> KeyTranslations { get; set; } = new Dictionary<string, List<TranslationLanguageCodeModel>>();
-
-        [BindProperty]
-        public Dictionary<string, string> KeyTranslationsValueString { get; set; } = new Dictionary<string, string>();
-
-        [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public CreateModel(ILanguageService languageService, ITranslationService translationService)
+        public CreateModel(ILanguageService languageService)
         {
             _languageService = languageService;
-            _translationService = translationService;
 
             Links.Add(new BreadCrumbLinkModel()
             {
@@ -45,14 +33,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         public IActionResult OnGet()
         {
-            var keyTranslations = _translationService.GetKeysTranslations<TranslationModel<TranslationEntity>>();
-
-            if(keyTranslations != null)
-            {
-                KeyTranslations = keyTranslations;
-                KeyTranslationsValueString = _translationService.KeyTranslationsValueToString(keyTranslations);
-            }
-
             return Page();
         }
        

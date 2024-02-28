@@ -12,21 +12,21 @@
                 <form method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Translation.Key" class="form-control" placeholder="Key" />
-                        <label asp-for="Translation.Key" class="control-label"></label>
-                        <span asp-validation-for="Translation.Key" class="text-danger"></span>
+                        <input asp-for="Key" class="form-control" placeholder="Key" />
+                        <label asp-for="Key" class="control-label"></label>
+                        <span asp-validation-for="Key" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Translation.Translation" class="form-control" placeholder="Translation"/>
-                        <label asp-for="Translation.Translation" class="control-label"></label>
-                        <span asp-validation-for="Translation.Translation" class="text-danger"></span>
-                    </div>
-                    
-                    <select asp-for="Translation.LanguageId" asp-items="Model.Languages" class="form-select mb-3">
-                        <option selected>Select a Language</option>                            
-                    </select>
-                    <span asp-validation-for="Translation.LanguageId" class="text-danger"></span>
-                    
+
+                    @for (int i = 0; i < Model.Translations.Count(); i++)
+                    {
+                        <div class="form-floating mb-3">
+                            <input asp-for="@Model.Translations[i].Translation" class="form-control" placeholder="@Model.Translations[i].LanguageCode" />
+                            <label asp-for="@Model.Translations[i].Translation" class="control-label">@Model.Translations[i].LanguageCode</label>
+                            <input asp-for="@Model.Translations[i].ID" class="form-control" hidden />
+                            <input asp-for="@Model.Translations[i].LanguageId" class="form-control" hidden />
+                            <span asp-validation-for="@Model.Translations[i].Translation" class="text-danger"></span>
+                        </div>
+                    }
                     <div class="mt-4 mb-0">
                         <div class="d-grid">
                             <input type="submit" value="Create" class="btn btn-primary btn-block" />

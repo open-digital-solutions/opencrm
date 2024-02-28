@@ -22,7 +22,7 @@
                         <div class="form-floating mb-3">
                             <input asp-for="@Model.Translations[i].ID" class="form-control" hidden />
                             <input asp-for="@Model.Translations[i].LanguageId" class="form-control" hidden/>
-                            <input asp-for="@Model.Translations[i].Translation" class="form-control" />
+                            <input asp-for="@Model.Translations[i].Translation" class="form-control"/>
                             <label asp-for="@Model.Translations[i].Translation" class="control-label">@Model.Translations[i].LanguageCode</label>
                             <span asp-validation-for="@Model.Translations[i].Translation" class="text-danger"></span>
                         </div>

@@ -21,18 +21,6 @@
                         <label asp-for="Language.Name" class="control-label"></label>
                         <span asp-validation-for="Language.Name" class="text-danger"></span>
                     </div>
-                    <div class="mb-5">
-                        <label class="control-label mb-2">Translations</label>
-                        <div class="list-group">
-                            @foreach (var key in Model.KeyTranslationsValueString.Keys)
-                            {
-                                
-                                <a href="/Manage/Translations/Edit?id=@Model.KeyTranslations[key][0].ID" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@Model.KeyTranslationsValueString[key]">
-                                    @key
-                                </a>
-                            }
-                        </div>
-                    </div>
                     <div class="mt-4 mb-0">
                         <div class="d-grid">
                             <input type="submit" value="Create" class="btn btn-primary btn-block"/>

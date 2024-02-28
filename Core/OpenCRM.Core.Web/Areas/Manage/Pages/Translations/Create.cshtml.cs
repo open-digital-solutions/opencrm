@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Data;
-using OpenCRM.Core.Web.Services.TranslationService;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services.LanguageService;
+using OpenCRM.Core.Web.Services.TranslationService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 {
@@ -15,24 +14,19 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         private readonly ILanguageService _languageService;
 
         [BindProperty]
-        public TranslationModel<TranslationEntity> Translation { get; set; } = default!;
+        public string Key { get; set; } = string.Empty;
 
-        public List<SelectListItem> Languages { set; get; } = new List<SelectListItem>();
+        [BindProperty]
+        public List<TranslationLanguageCodeModel> Translations { get; set; } = new List<TranslationLanguageCodeModel>();
+
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public CreateModel(ITranslationService translationService , ILanguageService languageService)
+        public CreateModel(ITranslationService translationService, ILanguageService languageService)
         {
             _translationService = translationService;
             _languageService = languageService;
-
-            var LanguagesDB = _languageService.GetLanguageListAsync();
-
-            if (LanguagesDB != null)
-            {
-                Languages = LanguagesDB.Select(f => new SelectListItem { Text = f.Name, Value = f.ID.ToString() }).ToList();
-            }
 
             Links.Add(new BreadCrumbLinkModel()
             {
@@ -42,10 +36,30 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
                 Page = "Translations",
                 Url = "/Manage/Translations"
             });
+            _languageService = languageService;
         }
 
         public IActionResult OnGet()
         {
+            var languages = _languageService.GetLanguageListAsync();
+
+            if(languages == null)
+            {
+                return NotFound();
+            }
+
+            var translations = new List<TranslationLanguageCodeModel>();
+
+            foreach(var language in languages)
+            {
+                translations.Add(new TranslationLanguageCodeModel()
+                {
+                    LanguageCode = language.Code,
+                    LanguageId = language.ID
+                });
+            }
+
+            Translations = translations;
             return Page();
         }
 
@@ -53,15 +67,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         {
             if (ModelState.IsValid)
             {
-                var translationModel = new TranslationModel<TranslationEntity>()
-                {
-                    ID = Translation.ID,
-                    Key = Translation.Key,
-                    Translation = Translation.Translation,
-                    LanguageId = Translation.LanguageId               
-                };                
-
-                await _translationService.AddTranslation(translationModel);
+                await _translationService.AddKeysTranslations<TranslationEntity>(Key, Translations);
                 return RedirectToPage("./Index");
             }
             return Page();
