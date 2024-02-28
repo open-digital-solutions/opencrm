@@ -38,7 +38,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Translation List",
+                Name = "Translations",
                 Page = "Translations",
                 Url = "/Manage/Translations"
             });
