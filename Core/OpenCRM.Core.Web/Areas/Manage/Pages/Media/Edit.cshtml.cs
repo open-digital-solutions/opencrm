@@ -62,21 +62,23 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
 
          public async Task<IActionResult> OnPost(Guid id)
             {
-            string temp = "entre";
-            var model = Model;
+          
                 if (ModelState.IsValid)
                 {
                    if (UploadedFile != null)
                    {
-                        using (var memoryStream = new MemoryStream())
+                    
+                    using (var memoryStream = new MemoryStream())
                          {
                             UploadedFile.CopyTo(memoryStream);
                             Model.FileData = memoryStream.ToArray();
                         }
-                        string extension = Path.GetExtension(UploadedFile.FileName).ToLower();
-                        Model.FileType = extension == ".pdf" ? MediaType.PDF : extension == ".docx" ? MediaType.DOCX : MediaType.GENERIC;
-                    
-                    }
+                    var filename = UploadedFile.FileName ?? "UnknowFileName.generic";
+                    var extension = Path.GetExtension(filename);
+                    Model.FileType = _mediaService.GetMediaType(extension);
+                    Model.Extension= extension; 
+
+                }
                 await _mediaService.EditFileAsync(id, Model);
                 return RedirectToPage("./Index");
             }

@@ -4,28 +4,31 @@
 @{
     ViewData["Title"] = "Edit";
 }
+
+
 <div class="container">
     <div class="card border-1 rounded-lg p-0">
         <div class="card-header">
             <h3 class="text-center font-weight-light my-4">Edit Media</h3>
         </div>
         <div class="card-body">
-            <form method="post" enctype="multipart/form-data">
+            <form id="editForm" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row justify-content-center">
                     <div class="col-md-4 mb-3">
-                        <input asp-for="UploadedFile" type="file" class="form-control" />
+                        <input asp-for="UploadedFile" type="file" class="form-control" id="uploadedFile" />
                     </div>
                     <div class="col-md-4 mb-3">
-                        <input asp-for="Model.FileName" class="form-control" placeholder="File Name" />
+                        <input asp-for="Model.FileName" class="form-control" id="fileName" placeholder="File Name" />
                         <span asp-validation-for="Model.FileName" class="text-danger"></span>
                     </div>
                     <div class="col-md-2 mb-3">
                         <input asp-for="Model.IsPublic" class="form-check-input" />
                         <label asp-for="Model.IsPublic" class="form-check-label"></label>
-                        @* <span asp-validation-for="Model.IsPublic" class="text-danger"></span> *@
                     </div>
                 </div>
+                <input asp-for="Model.Extension" type="hidden" />
+                <input asp-for="Model.FileData" type="hidden" />
 
                 <div class="row justify-content-center">
                     <div class="col-md-4 mb-3">
@@ -39,3 +42,12 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('uploadedFile').addEventListener('change', function () {
+            var fileName = this.files[0].name;
+            document.getElementById('fileName').value = fileName;
+        });
+    </script>
+}

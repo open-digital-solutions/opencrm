@@ -35,13 +35,20 @@
                             {
                                 <td>
                                     <ButtonLink Label="@item.Label" Url="@(TableData.Page + "/" + item.Label + "?id=" + row.ID)" Icon="@item.IconName" />
-                                </td>
-                            }   
-                            else if(item.IsImage) {
-                                <td>
-                                    <a href="@item.ImageUrl">
-                                        <img src="@item.ImageUrl" style="width:50px;" />
-                                    </a>
+                                    </td>
+                                }   
+                                else if(item.IsImage) {
+                                    <td>
+                                        @if (item.Url == null || item.ImageUrl == null)
+                                        {
+                                            @item.Label
+                                        }
+                                        else
+                                        {
+                                        <a href="@item.ImageUrl">
+                                            <img src="@item.ImageUrl" style="width:50px;" />
+                                         </a>
+                                        }
                                 </td>
                             }
                             else
