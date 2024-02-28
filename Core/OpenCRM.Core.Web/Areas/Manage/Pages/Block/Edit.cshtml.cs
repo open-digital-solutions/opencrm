@@ -38,24 +38,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
 
             Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Manage",
-                Page = "",
-                Url = "/Manage/Index"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
                 Area = "Manage",
                 IsActive = true,
                 Name = "Blocks",
