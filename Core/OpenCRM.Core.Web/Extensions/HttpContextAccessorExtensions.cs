@@ -16,5 +16,15 @@ namespace OpenCRM.Core.Web.Extensions
             var scheme = httpContextAccessor.HttpContext.Request.IsHttps == true ? "https://" : "http://";
             return $"{scheme}{httpContextAccessor.HttpContext.Request.Host}";
         }
+
+        public static string GetLanguage(this IHttpContextAccessor httpContextAccessor)
+        {
+            if (httpContextAccessor == null) return string.Empty;
+            if (httpContextAccessor.HttpContext == null) return string.Empty;
+
+            var userLangs = httpContextAccessor.HttpContext.Request.Headers["Accept-Language"].ToString();
+            var firstLang = userLangs.Split(',').FirstOrDefault();
+            return firstLang ?? string.Empty;
+        }
     }
 }
