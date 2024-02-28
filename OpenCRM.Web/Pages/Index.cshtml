@@ -10,11 +10,8 @@
 
 <div class="text-center">
     <h1 class="display-4">@Localizer["Welcome"]</h1>
-    <p> <a href="https://docs.microsoft.com/aspnet/core">@Localizer["Learnabout"]</a>.</p>
-   @* <p>Selected Language: @Model.Lang</p>
-    <p>Traduccion a KeyAccept: @TranslationService.GetTranslationValue("KeyAccept")</p>
-*@
-    
+    <h6 class="display-4">KEY_MANAGE_WELCOME: @Model.Translations?["KEY_MANAGE_WELCOME"]</h6>
+  
     @if (Model.Block != null && Model.Block.Title != "")
     {
         <article class="block container">

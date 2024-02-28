@@ -1,5 +1,4 @@
-﻿//using OpenDHS.Shared;
-using OpenCRM.Core.Data;
+﻿using OpenCRM.Core.Data;
 
 namespace OpenCRM.Core.Web.Services.LanguageService
 {

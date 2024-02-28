@@ -1,6 +1,4 @@
-﻿using OpenCRM.Core.Web.Models;
-
-namespace OpenCRM.Core.Web.Services.LanguageService
+﻿namespace OpenCRM.Core.Web.Services.LanguageService
 {
     public class LanguageModel
     {      

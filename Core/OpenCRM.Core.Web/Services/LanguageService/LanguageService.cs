@@ -20,7 +20,22 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                 var entity = Activator.CreateInstance<LanguageEntity>();
                 entity.Code = model.Code;
                 entity.Name = model.Name;
+
                 _dbContext.Languagess.Add(entity);
+              
+                var translations = _dbContext.Translationss.GroupBy((t) => t.Key).ToList();
+
+                 if (translations != null && translations.Count > 0) {
+                    foreach ( var translation in translations)
+                    {
+                        _dbContext.Translationss.Add(new TranslationEntity
+                        {
+                            Key = translation.Key,
+                            Translation = translation.Key.ToString(),
+                            LanguageId = entity.ID
+                        });
+                    }
+                }
                 await _dbContext.SaveChangesAsync();
 
                 return new LanguageModel()
@@ -113,7 +128,7 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             // 2 - If Coockies Session check on cookies session
             // 3 - Search on request headers
             // 4 - Use english as default language
-            var currentLanguage = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code.Contains("EN"));
+            var currentLanguage = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code.Contains("DE"));
             if (currentLanguage == null) return null;
             return currentLanguage;
         }

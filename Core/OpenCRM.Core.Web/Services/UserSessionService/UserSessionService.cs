@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using OpenCRM.Core.Data;
-using OpenCRM.Core.Web.Models;
+﻿using OpenCRM.Core.Data;
 
 namespace OpenCRM.Core.Web.Services
 {

@@ -33,6 +33,7 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ILanguageService, LanguageService<TDBContext>>();
             services.AddScoped<ITranslationService, TranslationService<TDBContext>>();
+            services.AddScoped<ICookiesSessionService, CookiesSessionService>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ICardBlockService, CardBlockService>();
@@ -86,7 +87,10 @@ namespace OpenCRM.Core.Web
 
                 dbContext.Database.EnsureCreated();
                 var languageService = scope.ServiceProvider.GetRequiredService<ILanguageService>();
-                languageService.SeedAsync().Wait();
+                languageService.Seed().Wait();
+
+                var translationsService = scope.ServiceProvider.GetRequiredService<ITranslationService>();
+                translationsService.Seed().Wait();
 
                 var emailService = scope.ServiceProvider
                   .GetRequiredService<IEmailService>();

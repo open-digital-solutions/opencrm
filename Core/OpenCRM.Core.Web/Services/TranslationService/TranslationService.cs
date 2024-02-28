@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph;
+using Microsoft.Graph.ExternalConnectors;
+using Newtonsoft.Json;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
@@ -16,7 +19,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             _dbContext = dBContext;
             _languageService = languageService;
         }
-      
+
         public async Task<TranslationModel<TDataModel>?> AddTranslation<TDataModel>(TranslationModel<TDataModel> model)
         {
             try
@@ -63,7 +66,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
         {
             try
             {
-                foreach(var translation in keyTranslations)
+                foreach (var translation in keyTranslations)
                 {
                     await EditTranslation(new TranslationModel<TDataModel>()
                     {
@@ -202,7 +205,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                 return null;
             }
         }
- 
+
         public List<TranslationLanguageCodeModel>? GetKeyTranslations<TDataModel>(string key)
         {
             var keytranslations = GetTranslationsByKey<TDataModel>(key);
@@ -240,7 +243,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             if (translations != null && languages != null)
             {
                 var keyTranslations = new Dictionary<string, List<TranslationLanguageCodeModel>>();
-                
+
                 foreach (var translation in translations)
                 {
                     var language = languages.Find(l => l.ID == translation.LanguageId);
@@ -255,7 +258,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                             ID = translation.ID,
                             Translation = translation.Translation,
                             LanguageCode = language.Code,
-                            LanguageId= translation.LanguageId
+                            LanguageId = translation.LanguageId
                         });
                     }
                 }
@@ -284,20 +287,37 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             return keyTranslationsValue;
         }
 
-        public string? GetTranslationValue(string key)
+        public async Task<string?> GetTranslationValueAsync(string key)
         {
-            var currentLangCode = "En"; //TODO debe de venir del language service que lo saca del usersession, datasssion, html document tag o uno por defecto del sistema
-            //var translation =  _dbContext.Translationss.Where(x => x.Key == key && x.Language.Code == currentLangCode).FirstOrDefault();
-            var currentLanguage = _dbContext.Languagess.Where(x => x.Code.ToUpper() == currentLangCode.ToUpper()).FirstOrDefault();
+            var currentLanguage = await _languageService.GetCurrentLanguage();
             if (currentLanguage == null) { return key; }
-            var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(currentLanguage.Translations);
-            return values != null && values.ContainsKey(key) ? values.GetValueOrDefault(key) : key;
+            var translationValue = await this._dbContext.Translationss.FirstOrDefaultAsync((t) => t.Key == key && t.LanguageId == currentLanguage.ID);
+            if (translationValue == null) { return key; }
+            return translationValue.Translation;
         }
 
-        public Task Seed()
+        public async Task Seed()
         {
-            throw new NotImplementedException();
+            var languages = _dbContext.Languagess.ToList();        
+
+
+            if (languages != null && languages.Count > 0)
+            {
+                foreach (var language in languages)
+                {
+                    var ksExist = _dbContext.Translationss.FirstOrDefault(t => t.Key == "KEY_MANAGE_WELCOME");
+                    if (ksExist == null) {
+                        _dbContext.Translationss.Add(new TranslationEntity
+                        {
+                            Key = "KEY_MANAGE_WELCOME",
+                            Translation = "KEY_MANAGE_WELCOME",
+                            LanguageId = language.ID
+                        });
+                    }
+                }
+            }
+            await _dbContext.SaveChangesAsync();
         }
-     
+
     }
 }
