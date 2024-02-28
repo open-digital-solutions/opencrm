@@ -64,34 +64,7 @@ namespace OpenCRM.Core.Web.Components
         static string Name = "";
         static byte[]? Avatar;
 
-        //protected override async void OnInitialized()
-        //{
-        //    string currentModuleUrl = "/" + Navigation.ToBaseRelativePath(Navigation.Uri);
-        //    var usermodel = await IdentityService.GetLoggedUser();
-
-        //    if (usermodel != null)
-        //    {
-        //        UserName = usermodel.UserName;
-        //        Name = $"{usermodel.Name} {usermodel.Lastname}";
-        //        Avatar = usermodel.Avatar;
-        //    }
-
-        //    if (currentModuleUrl == "/")
-        //    {
-        //        saveCurrentModelLinks = new DropdownMenuModel();
-        //        CurrentModuleLinks = saveCurrentModelLinks;
-        //    }
-        //    else if (currentModuleUrl != "")
-        //    {
-        //        var result = DropdownMenuModules.FindItemByUrl(currentModuleUrl);
-
-        //        if (result != null)
-        //        {
-        //            saveCurrentModelLinks = new DropdownMenuModel(result.Name, result.Url, result.Items);
-        //            CurrentModuleLinks = saveCurrentModelLinks;
-        //        }
-        //    }
-        //}
+   
         protected override async Task OnInitializedAsync()
         {
             await UpdateUserData();
