@@ -36,30 +36,34 @@ namespace OpenCRM.Core.Web.Table
                     extension == ".gif" || extension == ".svg" || extension == ".webp";
         }
         
-        private TRowData CreateRowData(TDataModel data, string prop)
+        private TRowData CreateRowData(TDataModel data, string prop, bool paintImage = true)
         {
             var propValue = data?.GetType().GetProperty(prop)?.GetValue(data)?.ToString();
 
-            if (!string.IsNullOrEmpty(propValue) && IsImage(propValue))
+            if (!string.IsNullOrEmpty(propValue))
             {
-                TRowData rowData = new TRowData()
+                if (IsImage(propValue))
                 {
-                    Label = propValue,
-                    IsImage = true,
-                    ImageUrl = propValue
-                };
-
-                return rowData;
-            }
-            else
-            {
-                TRowData rowData = new TRowData()
+                    TRowData rowData = new TRowData()
+                    {
+                        Label = propValue,
+                        IsImage = true,
+                        Url = propValue,
+                        PaintImage = paintImage
+                    };
+                    return rowData;
+                }
+                else
                 {
-                    Label = propValue
-                };
+                    TRowData rowData = new TRowData()
+                    {
+                        Label = propValue
+                    };
 
-                return rowData;
+                    return rowData;
+                }
             }
+            return new TRowData();
         }
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace OpenCRM.Core.Web.Table
         /// </summary>
         /// <param name="datas">Data used to create the table</param>
 		/// <returns>A tuple where the first element is the table headers and the second element is the table rows</returns>
-        public Tuple<List<string>, List<TableRow<TRowData>>> BuildTable(List<DataBlockModel<TDataModel>> datas, string NameEntity = "")
+        public Tuple<List<string>, List<TableRow<TRowData>>> BuildTable(List<DataBlockModel<TDataModel>> datas, string nameEntity = "")
 		{
 			var properties = typeof(TDataModel).GetProperties();
 			List<string> tableHeaders = new List<string>();
@@ -75,7 +79,7 @@ namespace OpenCRM.Core.Web.Table
 
             foreach (var prop in properties)
             {
-                if ((prop.Name.Equals("ID") || prop.Name.Equals("Translations")) && NameEntity.Equals("Language"))
+                if ((prop.Name.Equals("ID") || prop.Name.Equals("Translations")) && nameEntity.Equals("Language"))
 					continue;
                 tableHeaders.Add(prop.Name);
             }
@@ -87,9 +91,10 @@ namespace OpenCRM.Core.Web.Table
 
 				foreach (var prop in tableHeaders)
 				{
-                    if ((prop.Equals("ID") || prop.Equals("Translations")) && NameEntity.Equals("Language"))
+                    if ((prop.Equals("ID") || prop.Equals("Translations")) && nameEntity.Equals("Language"))
                         continue;
-                    var rowData = CreateRowData(item.Data, prop);
+                    
+                    var rowData = nameEntity.Equals("Media")? CreateRowData(item.Data, prop, false) : CreateRowData(item.Data, prop);
                     row.Datas.Add(rowData);
                 }
 

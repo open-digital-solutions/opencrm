@@ -50,7 +50,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
             var result = _mediaService.GetMedias();
             var response = result.Select(f => new DataBlockModel<MediaTableModel> { Data = new MediaTableModel{Name=f.FileName.ToString(), Type=f.FileType.ToString(),IsPublic=f.IsPublic,UpdatedAt=f.UpdatedAt}, Description =f.FileType.ToString(), Code = f.FileName.ToString(), Type = "", ID = f.ID }).ToList();
             
-            var tableResult = _tableService.BuildTable(response);
+            var tableResult = _tableService.BuildTable(response, "Media");
             Table.Headers = tableResult.Item1;
             Table.Rows = tableResult.Item2;
         }

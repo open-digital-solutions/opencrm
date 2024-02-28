@@ -14,14 +14,13 @@ namespace OpenCRM.Core.Web.Components.Table
 
         public bool IsButton { get; set; } = false;
 
+        public bool IsImage { get; set; } = false;
+
         public string? Url { get; set; }
 
         public string? IconName { get; set; }
 
-        public bool IsImage { get; set; } = false;
-
-        public string? ImageUrl { get; set; }
-
+        public bool PaintImage { get; set; } = false;
     }
 
     public class TableRow<TRowData>
