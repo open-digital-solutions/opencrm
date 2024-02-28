@@ -20,6 +20,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         public LanguageModel Language { get; set; } = default!;
 
         [BindProperty]
+        public Dictionary<string, List<TranslationLanguageCodeModel>> KeyTranslations { get; set; } = new Dictionary<string, List<TranslationLanguageCodeModel>>();
+
+        [BindProperty]
         public Dictionary<string, string> KeyTranslationsValueString { get; set; } = new Dictionary<string, string>();
 
         [BindProperty]
@@ -46,6 +49,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
             if(keyTranslations != null)
             {
+                KeyTranslations = keyTranslations;
                 KeyTranslationsValueString = _translationService.KeyTranslationsValueToString(keyTranslations);
             }
 

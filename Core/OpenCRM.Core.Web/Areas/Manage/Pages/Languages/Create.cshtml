@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<div class="container-fluid">
+<div class="container-fluid mt-3">
     <div class="row justify-content-center">
         <div class="card border-1 rounded-lg p-0">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Language</h3></div>
@@ -12,12 +12,12 @@
                 <form method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Language.Code" class="form-control" />
+                        <input asp-for="Language.Code" class="form-control" placeholder="Code"/>
                         <label asp-for="Language.Code" class="control-label"></label>
                         <span asp-validation-for="Language.Code" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-4">
-                        <input asp-for="Language.Name" class="form-control" />
+                        <input asp-for="Language.Name" class="form-control" placeholder="Name"/>
                         <label asp-for="Language.Name" class="control-label"></label>
                         <span asp-validation-for="Language.Name" class="text-danger"></span>
                     </div>
@@ -27,7 +27,8 @@
                         <div class="list-group">
                             @foreach (var key in Model.KeyTranslationsValueString.Keys)
                             {
-                                <a href="/Manage/Translations/Edit?keyCode=@key" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@Model.KeyTranslationsValueString[key]">
+                                
+                                <a href="/Manage/Translations/Edit?id=@Model.KeyTranslations[key][0].ID" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@Model.KeyTranslationsValueString[key]">
                                     @key
                                 </a>
                             }

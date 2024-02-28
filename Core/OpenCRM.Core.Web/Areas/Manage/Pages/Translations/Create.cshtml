@@ -12,12 +12,12 @@
                 <form method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Translation.Key" class="form-control" />
+                        <input asp-for="Translation.Key" class="form-control" placeholder="Key" />
                         <label asp-for="Translation.Key" class="control-label"></label>
                         <span asp-validation-for="Translation.Key" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Translation.Translation" class="form-control" />
+                        <input asp-for="Translation.Translation" class="form-control" placeholder="Translation"/>
                         <label asp-for="Translation.Translation" class="control-label"></label>
                         <span asp-validation-for="Translation.Translation" class="text-danger"></span>
                     </div>
