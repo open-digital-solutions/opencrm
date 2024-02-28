@@ -59,7 +59,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             }
         }
 
-        public async Task EditKeyTranslations<TDataModel>(string key, List<TranslationLanguageCodeModel> keyTranslations)
+        public async Task EditKeysTranslations<TDataModel>(string key, List<TranslationLanguageCodeModel> keyTranslations)
         {
             try
             {
@@ -89,6 +89,21 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                 {
                     _dbContext.Remove(entity);
                     await _dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public async Task DeleteKeysTranslation<TDataModel>(string key, List<TranslationLanguageCodeModel> keyTranslations)
+        {
+            try
+            {
+                foreach (var translation in keyTranslations)
+                {
+                    await DeleteTranslation<TDataModel>(translation.ID);
                 }
             }
             catch (Exception e)

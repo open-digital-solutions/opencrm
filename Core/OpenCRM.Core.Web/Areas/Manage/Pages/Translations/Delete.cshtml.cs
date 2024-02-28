@@ -60,14 +60,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public async Task<IActionResult> OnPostAsync(Guid id)
         {
-            var translation = await _translationService.GetTranslationByIdAsync<TranslationEntity>(id);
-            
-            if (translation == null)
-            {
-                return NotFound();
-            }
-            
-            await _translationService.DeleteTranslation<TranslationEntity>(id);
+            await _translationService.DeleteKeysTranslation<TranslationEntity>(Key, Translations);
             return RedirectToPage("./Index");
         }
     }
