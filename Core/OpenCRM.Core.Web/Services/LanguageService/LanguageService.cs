@@ -1,12 +1,5 @@
-//using OpenDHS.Shared;
 using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Data;
-using OpenCRM.Core.DataBlock;
-using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.TranslationService;
-using System.Text.Json;
-using System.Xml.Linq;
-//using OpenDHS.Shared.Data;
 
 namespace OpenCRM.Core.Web.Services.LanguageService
 {
@@ -56,8 +49,8 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                 entity.Name = model.Name;
                 _dbContext.Languagess.Update(entity);
                 await _dbContext.SaveChangesAsync();
-                return new LanguageModel() 
-                { 
+                return new LanguageModel()
+                {
                     ID = entity.ID,
                     Code = entity.Code,
                     Name = entity.Name
@@ -113,6 +106,18 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             }
         }
 
+        public async Task<LanguageEntity?> GetCurrentLanguage()
+        {
+            //TODO:
+            // 1 - If logged user search on logged user 
+            // 2 - If Coockies Session check on cookies session
+            // 3 - Search on request headers
+            // 4 - Use english as default language
+            var currentLanguage = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code.Contains("EN"));
+            if (currentLanguage == null) return null;
+            return currentLanguage;
+        }
+
         public List<LanguageModel>? GetLanguageListAsync()
         {
             try
@@ -160,20 +165,20 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                     Code = "EN-gb",
                     Name = "English"
                 };
-                
+
                 await AddLanguage(english);
             }
 
             var existingSpanish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "ES-es");
             if (existingSpanish == null)
             {
-                var espanol = new LanguageModel() 
-                { 
+                var espanol = new LanguageModel()
+                {
                     ID = Guid.Empty,
                     Code = "ES-es",
                     Name = "Español"
                 };
-   
+
                 await AddLanguage(espanol);
             }
         }

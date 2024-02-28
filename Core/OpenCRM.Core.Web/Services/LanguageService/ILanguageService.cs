@@ -1,15 +1,16 @@
 ﻿//using OpenDHS.Shared;
-using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Data;
 
 namespace OpenCRM.Core.Web.Services.LanguageService
 {
     public interface ILanguageService
     {
-        Task<LanguageModel?> AddLanguage(LanguageModel model);
-        Task<LanguageModel?> EditLanguage(LanguageModel model);
+        Task<LanguageService.LanguageModel?> AddLanguage(LanguageService.LanguageModel model);
         Task DeleteLanguage(Guid Id);
-        Task<LanguageModel?> GetLanguage(Guid id);
-        List<LanguageModel>? GetLanguageListAsync();
+        Task<LanguageService.LanguageModel?> EditLanguage(LanguageService.LanguageModel model);
+        Task<LanguageEntity?> GetCurrentLanguage();
+        Task<LanguageService.LanguageModel?> GetLanguage(Guid id);
+        List<LanguageService.LanguageModel>? GetLanguageListAsync();
         Task SeedAsync();
     }
 }
