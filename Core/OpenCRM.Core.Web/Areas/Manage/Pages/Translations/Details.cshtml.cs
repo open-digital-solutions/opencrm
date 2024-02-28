@@ -17,7 +17,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         public string Key { get; set; } = string.Empty;
 
         [BindProperty]
-        public TranslationLanguageCodeModel Translation { get; set; } = default!;
+        public List<TranslationLanguageCodeModel> Translations { get; set; } = new List<TranslationLanguageCodeModel>();
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -39,25 +39,23 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public async Task<IActionResult> OnGet(Guid id)
         {
-            var translationModel = await _translationService.GetTranslationByIdAsync<TranslationEntity>(id);
+            var transModel = await _translationService.GetTranslationByIdAsync<TranslationEntity>(id);
 
-            if (translationModel == null)
+            if (transModel == null)
             {
                 return NotFound();
             }
 
-            var language = await _languageService.GetLanguage(translationModel.LanguageId);
-            Translation = new TranslationLanguageCodeModel();
-            
-            if (language != null)
+            var translations = _translationService.GetKeyTranslations<TranslationEntity>(transModel.Key);
+
+            if (translations == null)
             {
-                Translation.LanguageCode = language.Code;
+                return NotFound();
             }
 
-            Key = translationModel.Key;
-            Translation.Translation = translationModel.Translation;
+            Key = transModel.Key;
+            Translations = translations;
 
-            await _translationService.GetTranslationByIdAsync<TranslationEntity>(id);
             return Page();
         }         
     }

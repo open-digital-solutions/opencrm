@@ -19,16 +19,17 @@
                         <label asp-for="Key" class="control-label"></label>
                         <span asp-validation-for="Key" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Translation.LanguageCode" class="form-control" readonly />
-                        <label asp-for="Translation.LanguageCode" class="control-label">Language</label>
-                        <span asp-validation-for="Translation.LanguageCode" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Translation.Translation" class="form-control" readonly />
-                        <label asp-for="Translation.Translation" class="control-label"></label>
-                        <span asp-validation-for="Translation.Translation" class="text-danger"></span>
-                    </div>
+
+                    @for (int i = 0; i < Model.Translations.Count(); i++)
+                    {
+                        <div class="form-floating mb-3">
+                            <input asp-for="@Model.Translations[i].ID" class="form-control" hidden />
+                            <input asp-for="@Model.Translations[i].LanguageId" class="form-control" hidden />
+                            <input asp-for="@Model.Translations[i].Translation" class="form-control" readonly/>
+                            <label asp-for="@Model.Translations[i].Translation" class="control-label">@Model.Translations[i].LanguageCode</label>
+                            <span asp-validation-for="@Model.Translations[i].Translation" class="text-danger"></span>
+                        </div>
+                    }
                 </form>
 
                 <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -50,7 +51,7 @@
                 </div>
 
                 <form id="deleteForm" method="post">
-                    <input type="hidden" asp-for="Translation.LanguageId"/>
+                    @*<input type="hidden" asp-for="Translation.LanguageId"/>*@
                     <div class="mt-4 mb-0">
                         <div class="d-grid">
                             <input type="button" value="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal" />
