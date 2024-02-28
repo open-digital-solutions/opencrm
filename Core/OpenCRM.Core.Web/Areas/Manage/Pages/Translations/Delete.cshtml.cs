@@ -5,6 +5,7 @@ using OpenCRM.Core.Web.Services.TranslationService;
 using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Pages;
+using OpenCRM.Core.Web.Services.LanguageService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 {
@@ -12,15 +13,22 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
     {
         private readonly ITranslationService _translationService;
 
+        private readonly ILanguageService _languageService;
+
+
         [BindProperty]
-        public TranslationModel<TranslationEntity> Translation { get; set; } = default!;
+        public string Key { get; set; } = string.Empty;
+
+        [BindProperty]
+        public TranslationLanguageCodeModel Translation { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public DeleteModel(ITranslationService translationService)
+        public DeleteModel(ITranslationService translationService, ILanguageService languageService)
         {
             _translationService = translationService;
+            _languageService = languageService;
 
             Links.Add(new BreadCrumbLinkModel()
             {
@@ -35,13 +43,23 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         public async Task<IActionResult> OnGet(Guid id)
         {
             var translationModel = await _translationService.GetTranslationByIdAsync<TranslationEntity>(id);
-            
+
             if (translationModel == null)
             {
                 return NotFound();
             }
-            
-            Translation = translationModel;
+
+            var language = await _languageService.GetLanguage(translationModel.LanguageId);
+            Translation = new TranslationLanguageCodeModel();
+
+            if (language != null)
+            {
+                Translation.LanguageCode = language.Code;
+            }
+
+            Key = translationModel.Key;
+            Translation.Translation = translationModel.Translation;
+
             return Page();
         }
 
