@@ -1,15 +1,19 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Data;
+using OpenCRM.Core.Web.Extensions;
 
 namespace OpenCRM.Core.Web.Services.LanguageService
 {
     public class LanguageService<TDBContext> : ILanguageService where TDBContext : DataContext
     {
         private readonly TDBContext _dbContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LanguageService(TDBContext dBContext)
+        public LanguageService(TDBContext dBContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dBContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<LanguageModel?> AddLanguage(LanguageModel model)
@@ -128,8 +132,12 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             // 2 - If Coockies Session check on cookies session
             // 3 - Search on request headers
             // 4 - Use english as default language
-            var currentLanguage = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code.Contains("DE"));
-            if (currentLanguage == null) return null;
+            var userRequestLangs = _httpContextAccessor.GetLanguage();
+            var languageCode = string.IsNullOrEmpty(userRequestLangs) ? "EN" : userRequestLangs.ToUpper();
+            var currentLanguage = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code.Contains(languageCode));
+            if (currentLanguage == null) {
+                return await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code.Contains("EN"));
+            }
             return currentLanguage;
         }
 
