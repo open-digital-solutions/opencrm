@@ -32,7 +32,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public async Task<IActionResult> OnGet(Guid id)
         {
-            var translationModel = await _translationService.GetTranslationAsync<TranslationEntity>(id);
+            var translationModel = await _translationService.GetTranslationByIdAsync<TranslationEntity>(id);
             
             if (translationModel == null)
             {
@@ -41,7 +41,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
             
             Translation = translationModel;
             
-            await _translationService.GetTranslationAsync<TranslationEntity>(id);
+            await _translationService.GetTranslationByIdAsync<TranslationEntity>(id);
             return Page();
         }         
     }

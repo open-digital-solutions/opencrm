@@ -117,10 +117,10 @@ namespace OpenCRM.Core.Web.Services.LanguageService
         {
             try
             {
-                var result = new List<LanguageModel>();
                 var languages = _dbContext.Languagess.OrderBy(lang => lang.AddedAt).ToList();
+                if (languages == null || languages.Count == 0) return null;
 
-                if (languages == null || languages.Count == 0) return result;
+                var result = new List<LanguageModel>();
 
                 foreach (var language in languages)
                 {

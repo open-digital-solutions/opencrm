@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace OpenCRM.Core.Web.Models
 {
-    public class TranslationByLanguage
+    public class TranslationLanguageCodeModel
     {
-        public string LanguageCode { get; set; } = string.Empty;
+        public Guid ID { get; set; }
 
         public string Translation { get;set; } = string.Empty;
+
+        public string LanguageCode { get; set; } = string.Empty;
+
+        public Guid LanguageId { get; set; }
     }
 }

@@ -20,6 +20,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
         public LanguageModel Language { get; set; } = default!;
 
         [BindProperty]
+        public Dictionary<string, string> KeyTranslationsValueString { get; set; } = new Dictionary<string, string>();
+
+        [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
         public CreateModel(ILanguageService languageService, ITranslationService translationService)
@@ -39,7 +42,13 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Languages
 
         public IActionResult OnGet()
         {
-            var keyTranslations = _translationService.GetKeyTranslationsByLanguage<TranslationModel<TranslationEntity>>();
+            var keyTranslations = _translationService.GetKeysTranslations<TranslationModel<TranslationEntity>>();
+
+            if(keyTranslations != null)
+            {
+                KeyTranslationsValueString = _translationService.KeyTranslationsValueToString(keyTranslations);
+            }
+
             return Page();
         }
        

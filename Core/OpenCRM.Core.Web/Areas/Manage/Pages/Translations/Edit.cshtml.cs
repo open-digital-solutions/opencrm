@@ -11,7 +11,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         private readonly ITranslationService _translationService;
 
         [BindProperty]
-        public TranslationModel<TranslationEntity> Translation { get; set; } = default!;
+        public string Key { get; set; } = string.Empty;
+
+        [BindProperty]
+        public List<TranslationLanguageCodeModel> Translations { get; set; } = new List<TranslationLanguageCodeModel>();
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -32,14 +35,23 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public async Task<IActionResult> OnGet(Guid id)
         {
-            var transModel = await _translationService.GetTranslationAsync<TranslationEntity>(id);
+            var transModel = await _translationService.GetTranslationByIdAsync<TranslationEntity>(id);
 
             if (transModel == null)
             {
                 return NotFound();
             }
 
-            Translation = transModel;
+            var translations = _translationService.GetKeyTranslations<TranslationEntity>(transModel.Key);
+
+            if(translations == null)
+            {
+                return NotFound();
+            }
+
+            Key = transModel.Key;
+            Translations = translations;
+
             return Page();
         }
 
@@ -47,17 +59,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         {
             if (ModelState.IsValid)
             {
-                var transModelEdit = new TranslationModel<TranslationEntity>()
-                {
-                    ID = id,
-                    Key = Translation.Key,
-                    LanguageId = Translation.LanguageId,
-                    Translation = Translation.Translation                    
-                };
-
-                await _translationService.EditTranslation(transModelEdit);
+                await _translationService.EditKeyTranslations<TranslationEntity>(Key, Translations);
                 return RedirectToPage("./Index");
             }
+
             return Page();
         }
     }

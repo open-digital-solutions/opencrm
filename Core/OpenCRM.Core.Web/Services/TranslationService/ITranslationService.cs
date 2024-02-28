@@ -6,10 +6,14 @@ namespace OpenCRM.Core.Web.Services.TranslationService
     {
         Task<TranslationModel<TDataModel>?> AddTranslation<TDataModel>(TranslationModel<TDataModel> model);
         Task<TranslationModel<TDataModel>?> EditTranslation<TDataModel>(TranslationModel<TDataModel> model);
+        Task EditKeyTranslations<TDataModel>(string key, List<TranslationLanguageCodeModel> keyTranslations);
         Task DeleteTranslation<TDataModel>(Guid Id);
-        Task<TranslationModel<TranslationEntity>?> GetTranslationAsync<TranslationEntity>(Guid id);
+        Task<TranslationModel<TranslationEntity>?> GetTranslationByIdAsync<TranslationEntity>(Guid id);
+        List<TranslationModel<TDataModel>>? GetTranslationsByKey<TDataModel>(string key);
         List<TranslationModel<TDataModel>>? GetTranslationListAsync<TDataModel>();
-        Task<Dictionary<string, List<TranslationByLanguage>>?> GetKeyTranslationsByLanguage<TDataModel>();
+        List<TranslationLanguageCodeModel>? GetKeyTranslations<TDataModel>(string key);
+        Dictionary<string, List<TranslationLanguageCodeModel>>? GetKeysTranslations<TDataModel>();
+        Dictionary<string, string> KeyTranslationsValueToString(Dictionary<string, List<TranslationLanguageCodeModel>> keyTranslations);
         string? GetTranslationValue(string key);
         Task Seed();
     }
