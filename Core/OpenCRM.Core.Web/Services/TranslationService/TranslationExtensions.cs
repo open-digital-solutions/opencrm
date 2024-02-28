@@ -1,4 +1,7 @@
-﻿using OpenCRM.Core.Data;
+﻿using Azure;
+using OpenCRM.Core.Data;
+using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Services.TranslationService
 {

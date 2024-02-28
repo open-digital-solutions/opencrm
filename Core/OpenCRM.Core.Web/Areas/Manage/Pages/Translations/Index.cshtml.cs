@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Data;
-using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Services.TranslationService;
 using OpenCRM.Core.Web.Table;
 
@@ -13,7 +13,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
     {
         private readonly ITranslationService _translationService;
 
-        private TableService<TranslationModel<TranslationEntity>> _tableService;
+        private TableService<TranslationLanguageCodeModel> _tableService;
 
         [BindProperty]
         public List<TranslationModel<TranslationEntity>> TranslationList { get; set; } = new List<TranslationModel<TranslationEntity>>();
@@ -27,7 +27,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         public IndexModel(ITranslationService translationService)
         {
             _translationService = translationService;
-            _tableService = new TableService<TranslationModel<TranslationEntity>>();
+            _tableService = new TableService<TranslationLanguageCodeModel>();
 
             Links.Add(new BreadCrumbLinkModel()
             {
@@ -45,9 +45,8 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
             if (result != null)
             {
-                var response = result.Select(f => new DataBlockModel<TranslationModel<TranslationEntity>> { Data = f, Description = f.Translation, Code = f.Key, Type = "", ID = f.ID }).ToList();
-
-                var tableResult = _tableService.BuildTable(response);
+                var response = _translationService.ToListDataBlockModel(result);
+                var tableResult = _tableService.BuildTable(response, "Translation");
                 Table.Headers = tableResult.Item1;
                 Table.Rows = tableResult.Item2;
             }

@@ -79,7 +79,7 @@ namespace OpenCRM.Core.Web.Table
 
             foreach (var prop in properties)
             {
-                if ((prop.Name.Equals("ID") || prop.Name.Equals("Translations")) && nameEntity.Equals("Language"))
+                if ((prop.Name.Equals("ID") || prop.Name.Equals("Translations") || prop.Name.Equals("LanguageId")) && (nameEntity.Equals("Language") || nameEntity.Equals("Translation")))
 					continue;
                 tableHeaders.Add(prop.Name);
             }
@@ -91,7 +91,7 @@ namespace OpenCRM.Core.Web.Table
 
 				foreach (var prop in tableHeaders)
 				{
-                    if ((prop.Equals("ID") || prop.Equals("Translations")) && nameEntity.Equals("Language"))
+                    if ((prop.Equals("ID") || prop.Equals("Translations")) && (nameEntity.Equals("Language") || nameEntity.Equals("Translation")))
                         continue;
                     
                     var rowData = nameEntity.Equals("Media")? CreateRowData(item.Data, prop, false) : CreateRowData(item.Data, prop);

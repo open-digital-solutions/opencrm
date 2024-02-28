@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Data;
+using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
 
@@ -242,6 +243,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                         keyTranslationByLanguage.Add(new TranslationLanguageCodeModel()
                         {
                             ID = translation.ID,
+                            Key = key,
                             Translation = translation.Translation,
                             LanguageCode = language.Code,
                             LanguageId = translation.LanguageId
@@ -274,6 +276,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                         keyTranslations[translation.Key].Add(new TranslationLanguageCodeModel()
                         {
                             ID = translation.ID,
+                            Key = translation.Key,
                             Translation = translation.Translation,
                             LanguageCode = language.Code,
                             LanguageId = translation.LanguageId
@@ -285,24 +288,38 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             return null;
         }
 
-        public Dictionary<string, string> KeyTranslationsValueToString(Dictionary<string, List<TranslationLanguageCodeModel>> keyTranslations)
+        public List<DataBlockModel<TranslationLanguageCodeModel>> ToListDataBlockModel(List<TranslationModel<TranslationEntity>> translations)
         {
-            var keyTranslationsValue = new Dictionary<string, string>();
+            var response = new List<DataBlockModel<TranslationLanguageCodeModel>>();
+            var languages = _languageService.GetLanguageListAsync();
 
-            foreach (var key in keyTranslations.Keys)
+            if (languages != null)
             {
-                var value = keyTranslations[key];
-                string valueToString = key + ": { ";
-
-                for (int i = 0; i < value.Count(); i++)
+                foreach (var item in translations)
                 {
-                    var item = value[i];
-                    valueToString += $"{item.LanguageCode} : '{item.Translation}'";
-                    valueToString += (i != value.Count() - 1) ? ", " : " }";
+                    var language = languages.Find(l => l.ID == item.LanguageId);
+
+                    if (language != null)
+                    {
+                        response.Add(new DataBlockModel<TranslationLanguageCodeModel>()
+                        {
+                            ID = item.ID,
+                            Code = item.Key,
+                            Description = item.Translation,
+                            Type = typeof(TranslationLanguageCodeModel).ToString(),
+                            Data = new TranslationLanguageCodeModel()
+                            {
+                                ID = item.ID,
+                                Key = item.Key,
+                                Translation = item.Translation,
+                                LanguageCode = language.Code
+                            }
+                        });
+                    }
                 }
-                keyTranslationsValue.Add(key, valueToString);
             }
-            return keyTranslationsValue;
+
+            return response;
         }
 
         public async Task<string?> GetTranslationValueAsync(string key)

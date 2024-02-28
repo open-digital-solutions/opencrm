@@ -1,4 +1,6 @@
-﻿using OpenCRM.Core.Web.Models;
+﻿using OpenCRM.Core.Data;
+using OpenCRM.Core.DataBlock;
+using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Services.TranslationService
 {
@@ -15,8 +17,8 @@ namespace OpenCRM.Core.Web.Services.TranslationService
         Task<TranslationModel<TranslationEntity>?> GetTranslationByIdAsync<TranslationEntity>(Guid id);
         List<TranslationModel<TDataModel>>? GetTranslationListAsync<TDataModel>();
         List<TranslationModel<TDataModel>>? GetTranslationsByKey<TDataModel>(string key);
+        List<DataBlockModel<TranslationLanguageCodeModel>> ToListDataBlockModel(List<TranslationModel<TranslationEntity>> translations);
         Task<string?> GetTranslationValueAsync(string key);
-        Dictionary<string, string> KeyTranslationsValueToString(Dictionary<string, List<TranslationLanguageCodeModel>> keyTranslations);
         Task Seed();
     }
 }
