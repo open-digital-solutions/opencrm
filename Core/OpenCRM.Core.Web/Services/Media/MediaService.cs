@@ -184,8 +184,8 @@ namespace OpenCRM.Core.Web.Services
                 if (!Directory.Exists(mediaPublicDirPath))
                     Directory.CreateDirectory(mediaPublicDirPath);
 
-                var extension = Path.GetExtension(fileDetails.FileName);
-                var filePath = Path.Combine(mediaPublicDirPath, fileDetails.ID.ToString() + extension);
+                //var extension = Path.GetExtension(fileDetails.FileName);
+                var filePath = Path.Combine(mediaPublicDirPath, fileDetails.ID.ToString() + fileDetails.Extension);
                 if (fileDetails == null || fileDetails.FileData == null) return;
                 File.WriteAllBytes(filePath, fileDetails.FileData);
             }
