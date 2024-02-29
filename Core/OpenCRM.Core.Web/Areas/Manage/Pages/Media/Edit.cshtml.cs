@@ -73,8 +73,11 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
                             UploadedFile.CopyTo(memoryStream);
                             Model.FileData = memoryStream.ToArray();
                         }
-                    var filename = UploadedFile.FileName ?? "UnknowFileName.generic";
-                    var extension = Path.GetExtension(filename);
+                    //var filename = UploadedFile.FileName ?? "UnknowFileName.generic";
+                    //var extension = Path.GetExtension(filename);
+                    var filename = UploadedFile.FileName;
+                    string extension = Path.GetExtension(UploadedFile.FileName).ToLower();
+
                     Model.FileType = _mediaService.GetMediaType(extension);
                     Model.Extension= extension; 
 

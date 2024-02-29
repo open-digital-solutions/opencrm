@@ -22,8 +22,10 @@ namespace OpenCRM.Core.Web.Services
         {
             try
             {
-                var filename = fileData.FileName ?? "UnknowFileName.generic";
-                var extension = Path.GetExtension(filename);
+                //var filename = fileData.FileName ?? "UnknowFileName.generic";
+                //var extension = Path.GetExtension(filename);
+                var filename = fileData.FileName;
+                string extension = Path.GetExtension(fileData.FileName).ToLower();
 
                 var fileDetails = new MediaEntity()
                 {
@@ -56,9 +58,11 @@ namespace OpenCRM.Core.Web.Services
         {
             try
             {
-                var filename = model.FileName ?? "UnknowFileName.generic";
-                var extension = Path.GetExtension(filename);
-
+                //var filename = model.FileName ?? "UnknowFileName.generic";
+                //var extension = Path.GetExtension(filename);
+                var filename = model.FileName;
+                string extension = Path.GetExtension(model.FileData.FileName).ToLower();
+                
                 var fileDetails = new MediaEntity()
                 {
                     ID = Guid.NewGuid(),
@@ -276,14 +280,15 @@ namespace OpenCRM.Core.Web.Services
             var media = GetMedia(mediaGuid);
             if (media == null) return string.Empty;
 
-            var extension = Path.GetExtension(media.FileName);
-
-            return $"{baseUrl}/media/{media.ID.ToString() + extension}";
+            //var extension = Path.GetExtension(media.FileName);
+            // return $"{baseUrl}/media/{media.ID.ToString() + media.Extension}";
+            var relativePath = $"/media/{media.ID.ToString() + media.Extension}";
+            return relativePath;
         }
 
-        public bool IsImage(string fileName)
+        public bool IsImage(string extension)
         {
-            var extension = Path.GetExtension(fileName);
+            //var extension = Path.GetExtension(fileName);
             return (extension == ".png" || extension == ".jpg" || extension == ".jpeg" ||
                     extension == ".gif" || extension == ".svg" || extension == ".webp");
         }
@@ -295,7 +300,7 @@ namespace OpenCRM.Core.Web.Services
 
             foreach (var media in medias)
             {
-                if (IsImage(media.FileName))
+                if (IsImage(media.Extension)  && media.IsPublic)
                 {
                     mediasUrl.Add(new MediaBlockModel()
                     {
