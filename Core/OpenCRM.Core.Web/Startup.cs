@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
@@ -63,17 +66,30 @@ namespace OpenCRM.Core.Web
                        .AddMicrosoftGraph(configuration.GetSection("DownstreamApi"))
                        .AddInMemoryTokenCaches();
 
-
             return services;
         }
-        public static  IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
+        public static  IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app, IWebHostEnvironment env) where TDBContext : DataContext
         {
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
-            app.UseAuthentication();
 
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            
+            //TODO: Evaluate this condition
+            if (env != null && env.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
+
+            app.UseStaticFiles();
+            app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             using (var scope = app.ApplicationServices.CreateScope())
@@ -82,10 +98,11 @@ namespace OpenCRM.Core.Web
 
                 var dbContext = scope.ServiceProvider
                   .GetRequiredService<TDBContext>();
+                
+                dbContext.Database.EnsureDeleted();
 
                 dbContext.Database.EnsureCreated();
 
-                dbContext.Database.EnsureCreated();
                 var languageService = scope.ServiceProvider.GetRequiredService<ILanguageService>();
                 languageService.Seed().Wait();
 

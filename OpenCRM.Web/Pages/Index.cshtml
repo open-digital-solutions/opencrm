@@ -1,15 +1,12 @@
 ﻿@page
 @model OpenCRM.Web.Pages.IndexModel
-@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @inject OpenCRM.Core.Web.Services.LanguageService.ILanguageService LanguageService
 @inject OpenCRM.Core.Web.Services.TranslationService.ITranslationService TranslationService
 @{
-    ViewData["Title"] = @Localizer["Homepage"];
+    ViewData["Title"] = "Homepage";
 }
 
-
 <div class="text-center">
-    <h1 class="display-4">@Localizer["Welcome"]</h1>
     <h6 class="display-4">KEY_MANAGE_WELCOME: @Model.Translations?["KEY_MANAGE_WELCOME"]</h6>
   
     @if (Model.Block != null && Model.Block.Title != "")
