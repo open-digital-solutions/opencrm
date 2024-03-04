@@ -24,3 +24,22 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
+
+var divBlock = document.getElementById("card-block");
+var cardBlock = {
+    Title: "Galaxy",
+    Subtitle: "Puple Galaxy in Universe",
+    Description: "A galaxy is a collection of gases, dust and billions of stars and their solar systems. The galaxy is held together by the force of gravity.",
+    ImageUrl: "http://localhost:5005/media/e2a02caa-ff23-429f-86e7-d772c02a8840.jpg"
+}
+divBlock.innerHTML = `<div class="block-info">
+                     <div class="block-text-info">
+                        <h1 class="block-title">${cardBlock.Title}</h1>
+                        <h2 class="block-subtitle">${cardBlock.Subtitle}</h2>
+                        <p class="block-description">${cardBlock.Description}</p>
+                     </div>
+                    <img class="block-image" src="${cardBlock.ImageUrl}"/>
+                  </div>`
+
+
+console.log(divBlock.innerHTML)
