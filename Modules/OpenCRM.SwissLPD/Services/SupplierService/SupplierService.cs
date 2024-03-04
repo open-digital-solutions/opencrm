@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace OpenCRM.SwissLPD.Services.SupplierService
 {
-    public class RoleService
+    public class SupplierService : ISupplierService
     {
         public async Task<Tuple<bool, string>> ValidateUserByCHECode(InputRegisterModel input, UserManager<UserEntity> _userManager)
         {
@@ -21,11 +21,11 @@ namespace OpenCRM.SwissLPD.Services.SupplierService
             if (user == null)
             {
                 var users = _userManager.Users.ToList();
-                var inputExtras = JsonSerializer.Deserialize<RoleData>(input.UserExtras);
+                var inputExtras = JsonSerializer.Deserialize<SupplierModel>(input.UserExtras);
 
                 foreach (var item in users)
                 {
-                    var userExtras = JsonSerializer.Deserialize<RoleData>(item.Data);
+                    var userExtras = JsonSerializer.Deserialize<SupplierModel>(item.Data);
                     if(userExtras?.CHECode == inputExtras?.CHECode)
                     {
                         return new Tuple<bool, string>(false, "Supplier with CHE code " + userExtras?.CHECode + " already exists");

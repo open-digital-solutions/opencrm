@@ -25,29 +25,11 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Event
 
             Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
                 Area = "SwissLDP",
                 IsActive = true,
                 Name = "Events",
                 Page = "Event",
-                Url = "/SwissLDP"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "SwissLDP",
-                IsActive = true,
-                Name = "Create Event",
-                Page = "Event",
-                Url = "/SwissLDP/Event/Create"
+                Url = "/SwissLDP/Event"
             });
         }
 

@@ -26,23 +26,14 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
             _mediaService = mediaService;
             _tableService = new TableService<MediaTableModel>();
 
-            Links.Add(new BreadCrumbLinkModel
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Home...",
-                Page = "",
-                Url = "/"
-            });
-            Links.Add(new BreadCrumbLinkModel
+            Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Media List",
+                Name = "Medias",
                 Page = "Media",
-                Url = "/Manage"
+                Url = "/Manage/Media"
             });
-
         }
 
         public void OnGet()

@@ -16,15 +16,6 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
         {
             Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
                 Area = "SwissLDP",
                 IsActive = true,
                 Name = "Suppliers",

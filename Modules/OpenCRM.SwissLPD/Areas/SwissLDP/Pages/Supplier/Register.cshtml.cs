@@ -18,30 +18,22 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
 {
     public class RegisterModel : PageModel
     {
+        private ISupplierService _supplierService;
+
         private readonly UserManager<UserEntity> _userManager;
 
         private readonly IUserStore<UserEntity> _userStore;
 
         private readonly IUserEmailStore<UserEntity> _emailStore;
 
-        private RoleService _roleService = new RoleService();
-
         private RegisterService _registerService = new RegisterService();
 
-        public RegisterModel(UserManager<UserEntity> userManager, IUserStore<UserEntity> userStore)
+        public RegisterModel(UserManager<UserEntity> userManager, IUserStore<UserEntity> userStore, ISupplierService supplierService)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = (IUserEmailStore<UserEntity>)_userStore;
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            });
+            _supplierService = supplierService;
 
             Links.Add(new BreadCrumbLinkModel()
             {
@@ -51,30 +43,22 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
                 Page = "Supplier",
                 Url = "/SwissLDP/Supplier"
             });
-
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "SwissLDP",
-                IsActive = true,
-                Name = "Register",
-                Page = "Event",
-                Url = "/SwissLDP/Supplier/Register"
-            });
         }
 
         public string ValidateError { get; set; } = string.Empty;
 
         [BindProperty]
-        public InputRegisterModel InputUser { get; set; }
+        public InputRegisterModel InputUser { get; set; } = default!;
 
         [BindProperty]
-        public RoleData InputRoleData { get; set; } = new RoleData();
+        public SupplierModel InputRoleData { get; set; } = new SupplierModel();
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -92,7 +76,7 @@ namespace OpenCRM.SwissLPD.Areas.SwissLDP.Pages.Supplier
                     UserExtras = JsonSerializer.Serialize(InputRoleData)
                 };
 
-                Tuple<bool, string> validateResult = await _roleService.ValidateUserByCHECode(user, _userManager);
+                Tuple<bool, string> validateResult = await _supplierService.ValidateUserByCHECode(user, _userManager);
                 ValidateError = validateResult.Item2;
 
                 if (validateResult.Item1)

@@ -19,29 +19,15 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
         {
             _mediaService = mediaService;
 
-            var link = new BreadCrumbLinkModel()
+            Links.Add(new BreadCrumbLinkModel()
             {
-                Area = "",
+                Area = "Manage",
                 IsActive = true,
-                Name = "Home",
-                Page = "",
-                Url = "/"
-            };
-
-            Links.Add(link);
-
-            var link2 = new BreadCrumbLinkModel()
-            {
-                Area = "",
-                IsActive = true,
-                Name = "Media",
-                Page = "",
+                Name = "Medias",
+                Page = "Media",
                 Url = "/Manage/Media"
-            };
-
-            Links.Add(link2);
+            });
         }
-
  
         public IActionResult OnGet(Guid id)
         {
@@ -58,6 +44,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Media
         public IActionResult OnGetDownload(Guid id)
         {
             var media = _mediaService.GetMedia(id);
+
             if (media == null)
             {
                 return NotFound();

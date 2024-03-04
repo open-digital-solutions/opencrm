@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OpenCRM.SwissLPD.Services.SupplierService
 {
-    public class RoleData
+    public class SupplierModel
     {
         [Required]
         [Display(Name = "CHE IVA Code")]
