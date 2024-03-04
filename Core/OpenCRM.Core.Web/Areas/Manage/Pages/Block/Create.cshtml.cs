@@ -57,12 +57,12 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         {
             if (ModelState.IsValid)
             {
-                var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
+                var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Description);
              
                 var dataBlockModel = new DataBlockModel<CardBlockModel>()
                 {
-                    Code = blockModel.Title,
-                    Description = blockModel.Title,
+                    Code = blockModel.Code,
+                    Description = blockModel.Code,
                     Type = typeof(CardBlockModel).Name,
                     Data = blockModel
                 };

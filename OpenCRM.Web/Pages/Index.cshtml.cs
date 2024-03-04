@@ -31,12 +31,12 @@ namespace OpenCRM.Web.Pages
         }
         public async Task<IActionResult> OnGetAsync()
         {
-            var block = await _blockService.ShowCardBlock();
+            //var block = await _blockService.Seed();
 
-            if (block != null)
-            {
-                Block = block.Data;
-            }
+            //if (block != null)
+            //{
+            //    Block = block.Data;
+            //}
 
             Translations = new Dictionary<string, string>();
            

@@ -63,39 +63,16 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
             await _dataBlockService.DeleteBlock<CardBlockModel>(Id);
         }
         //TODO: Trabajar directamente con el CardBlockModel
-        public CardBlockModel CreateBlockModel(string code, string title, string? subTitle, string? description, string? imageId)
+        public CardBlockModel CreateBlockModel(string code, string description)
         {
-            if (!string.IsNullOrEmpty(imageId))
+            var blockModel = new CardBlockModel()
             {
-                var imageGuiId = Guid.Parse(imageId);
-                var images = _mediaService.GetImageMedias();
-                var image = images.Find(img => img.Id == imageGuiId);
+                Code = code,
+                Description = description,
+                Type = BlockType.Text
+            };
 
-                var blockModel = new CardBlockModel()
-                {
-                    Code = code,
-                    Title = title,
-                    SubTitle = subTitle,
-                    Description = description,
-                    Type = BlockType.Card,
-                    ImageUrl = image?.ImageUrl,
-                };
-
-                return blockModel;
-            }
-            else
-            {
-                var blockModel = new CardBlockModel()
-                {
-                    Code = code,
-                    Title = title,
-                    Description = description,
-                    SubTitle = subTitle,
-                    Type = BlockType.Text
-                };
-
-                return blockModel;
-            }
+            return blockModel;
         }
 
         public async Task<DataBlockModel<CardBlockModel>?> GetBlockByCode(string code)
@@ -104,28 +81,24 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
             return result;
         }
 
-        public async Task<DataBlockModel<CardBlockModel>?> ShowCardBlock()
+        public async Task Seed()
         {
             var blockModel = new CardBlockModel
             {
                 Code = "KEY_BLOCKCARD_DEMO",
-                Title = "Galaxy",
-                SubTitle = "Puple Galaxy in Universe",
-                Type = BlockType.Card,
+                Type = BlockType.Text,
                 Description = "A galaxy is a collection of gases, dust and billions of stars and their solar systems. The galaxy is held together by the force of gravity.",
-                ImageUrl = "http://localhost:5005/media/e2a02caa-ff23-429f-86e7-d772c02a8840.jpg"
             };
 
             var dataBlockModel = new DataBlockModel<CardBlockModel>
             {
                 Code = blockModel.Code,
-                Description = blockModel.Title,
+                Description = blockModel.Code,
                 Data = blockModel,
-                Type = BlockType.Card.ToString()
+                Type = BlockType.Text.ToString()
             };
 
             var block = await GetBlockByCode(blockModel.Code) ?? await AddBlock(dataBlockModel);
-            return block;
         }
     }
 }
