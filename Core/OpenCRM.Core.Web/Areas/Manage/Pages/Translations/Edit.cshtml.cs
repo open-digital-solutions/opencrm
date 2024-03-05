@@ -35,14 +35,14 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public async Task<IActionResult> OnGet(Guid id)
         {
-            var transModel = await _translationService.GetTranslationByIdAsync<TranslationEntity>(id);
+            var transModel = await _translationService.GetTranslationByIdAsync(id);
 
             if (transModel == null)
             {
                 return NotFound();
             }
 
-            var translations = _translationService.GetKeyTranslations<TranslationEntity>(transModel.Key);
+            var translations = _translationService.GetKeyTranslations(transModel.Key);
 
             if(translations == null)
             {
@@ -59,7 +59,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         {
             if (ModelState.IsValid)
             {
-                await _translationService.EditKeysTranslations<TranslationEntity>(Key, Translations);
+                await _translationService.EditKeysTranslations(Key, Translations);
                 return RedirectToPage("./Index");
             }
 

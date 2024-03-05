@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OpenCRM.Core.Web.Services.TranslationService
 {
-    public class TranslationModel<TranslationEntity>
+    public class TranslationModel
     {
         public required Guid ID { get; set; }
 

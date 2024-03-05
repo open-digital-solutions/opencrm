@@ -67,7 +67,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         {
             if (ModelState.IsValid)
             {
-                await _translationService.AddKeysTranslations<TranslationEntity>(Key, Translations);
+                await _translationService.AddKeysTranslations(Key, Translations);
                 return RedirectToPage("./Index");
             }
             return Page();

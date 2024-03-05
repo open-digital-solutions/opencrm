@@ -3,20 +3,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Services.TranslationService;
 using OpenCRM.Core.Web.Table;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 {
-    public class IndexModel : PageModel
+	public class IndexModel : PageModel
     {
         private readonly ITranslationService _translationService;
 
         private TableService<TranslationLanguageCodeModel> _tableService;
 
         [BindProperty]
-        public List<TranslationModel<TranslationEntity>> TranslationList { get; set; } = new List<TranslationModel<TranslationEntity>>();
+        public List<TranslationModel> TranslationList { get; set; } = new List<TranslationModel>();
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -41,7 +40,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public void OnGet()
         {
-            var result = _translationService.GetTranslationListAsync<TranslationEntity>();
+            var result = _translationService.GetTranslationListAsync();
 
             if (result != null)
             {
