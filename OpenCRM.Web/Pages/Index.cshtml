@@ -10,7 +10,11 @@
 <div class="text-center">
     <h6 class="display-4">KEY_MANAGE_WELCOME: @Model.Translations?["KEY_MANAGE_WELCOME"]</h6>
 
-    @if(Model.Block != null)
+    <p>@CardBlockService.GetBlockByCode("KEY_BLOCKCARD_DEMO").Result?.Data?.Title</p>
+  
+    <article id="card-block" class="block container"></article>
+
+  @*  @if (Model.Block != null && Model.Block.Title != "")
     {
         <article>
             <p>@Model.Block.Code</p>

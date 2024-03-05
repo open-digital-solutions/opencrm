@@ -109,9 +109,6 @@ namespace OpenCRM.Core.Web
                 var translationsService = scope.ServiceProvider.GetRequiredService<ITranslationService>();
                 translationsService.Seed().Wait();
 
-                var carBlockService = scope.ServiceProvider.GetRequiredService<ICardBlockService>();
-                carBlockService.Seed().Wait();
-
                 var emailService = scope.ServiceProvider
                   .GetRequiredService<IEmailService>();
                 emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");

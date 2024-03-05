@@ -17,13 +17,14 @@ namespace OpenCRM.Core.Web.Models
         [Required] 
         public string Code { get; set; } = string.Empty;
 
-        public string? Title { get; set; }
+        [Required]
+        public string Title { get; set; } = string.Empty;
 
         public string? SubTitle { get; set; }
 
         public BlockType Type { get; set; } = BlockType.Card;
 
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
         public string? ImageUrl { get; set; }
     }

@@ -31,7 +31,7 @@ namespace OpenCRM.Web.Pages
         }
         public async Task<IActionResult> OnGetAsync()
         {
-            var block = await _blockService.GetBlockByCode("KEY_BLOCKCARD_DEMO");
+            var block = await _blockService.ShowCardBlock();
 
             if (block != null)
             {
