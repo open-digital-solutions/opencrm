@@ -1,0 +1,31 @@
+﻿@page
+@model OpenCRM.Web.QrCode.QrModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<render-mode="ServerPrerendered" param-links="Model.Links" />
+
+<div class="text-center">
+    <div class="table-responsive" style="height: 790px; overflow-y: scroll;">
+    <h1>QR Generator</h1>
+
+    <form method="post" asp-page-handler="OnPost" class="form-inline">
+        <div class="form-group mb-2">
+            <label for="name" class="sr-only">Text</label>
+            <input type="text" class="form-control-plaintext" id="texto" name="texto" placeholder="Enter the text" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-2">Generate QR</button>
+    </form>
+
+    @if (!string.IsNullOrEmpty(Model.QrCode))
+    {
+        <div class="text-center">
+            <br />
+            <h1>QR Code</h1>
+            <img alt="QR Code" class="img-responsive" src="data:image/png;base64,@Model.QrCode" />
+        </div>
+    }
+    </div>
+</div>
