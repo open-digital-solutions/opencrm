@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.Models;
 using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services;
 

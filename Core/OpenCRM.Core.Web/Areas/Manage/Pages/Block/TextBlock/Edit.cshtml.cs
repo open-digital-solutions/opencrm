@@ -2,13 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services;
-using OpenCRM.Core.Web.Services.CardBlockService;
 using OpenCRM.Core.Web.Services.TextBlockService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.TextBlock
 {
-    public class EditModel : PageModel
+	public class EditModel : PageModel
     {
 		private ITextBlockService _textBlockService;
 

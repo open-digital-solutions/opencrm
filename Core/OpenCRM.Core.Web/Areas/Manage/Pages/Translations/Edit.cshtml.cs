@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.Web.Services.TranslationService;
-using OpenCRM.Core.Data;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services.TranslationService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 {
-    public class EditModel : PageModel
+	public class EditModel : PageModel
     {
         private readonly ITranslationService _translationService;
 
@@ -35,14 +34,14 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public async Task<IActionResult> OnGet(Guid id)
         {
-            var transModel = await _translationService.GetTranslationByIdAsync(id);
+            var transModel = await _translationService.GetTranslationById(id);
 
             if (transModel == null)
             {
                 return NotFound();
             }
 
-            var translations = _translationService.GetKeyTranslations(transModel.Key);
+            var translations = _translationService.GetTranslationsWithLanguagesCode(transModel.Key);
 
             if(translations == null)
             {
@@ -59,7 +58,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         {
             if (ModelState.IsValid)
             {
-                await _translationService.EditKeysTranslations(Key, Translations);
+                await _translationService.EditTranslations(Key, Translations);
                 return RedirectToPage("./Index");
             }
 

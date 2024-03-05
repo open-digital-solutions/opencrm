@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenCRM.Core.Data;
-using OpenCRM.Core.Web.Services.TranslationService;
-using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Pages;
-using OpenCRM.Core.Web.Services.LanguageService;
+using OpenCRM.Core.Web.Services.TranslationService;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 {
-    public class DeleteModel : PageModel
+	public class DeleteModel : PageModel
     {
         private readonly ITranslationService _translationService;
 
@@ -38,14 +34,14 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public async Task<IActionResult> OnGet(Guid id)
         {
-            var transModel = await _translationService.GetTranslationByIdAsync(id);
+            var transModel = await _translationService.GetTranslationById(id);
 
             if (transModel == null)
             {
                 return NotFound();
             }
 
-            var translations = _translationService.GetKeyTranslations(transModel.Key);
+            var translations = _translationService.GetTranslationsWithLanguagesCode(transModel.Key);
 
             if (translations == null)
             {
@@ -60,7 +56,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
         public async Task<IActionResult> OnPostAsync(Guid id)
         {
-            await _translationService.DeleteKeysTranslation(Key, Translations);
+            await _translationService.DeleteTranslation(Key, Translations);
             return RedirectToPage("./Index");
         }
     }

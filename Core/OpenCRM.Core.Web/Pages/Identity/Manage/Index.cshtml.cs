@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.Data;
-using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.IdentityService;
 
 namespace OpenCRM.Core.Web.Pages.Identity.Manage
 {
-    public class IndexModel : PageModel
+	public class IndexModel : PageModel
     {
         private readonly IIdentityService _identityService;
         private readonly UserManager<UserEntity> _userManager;

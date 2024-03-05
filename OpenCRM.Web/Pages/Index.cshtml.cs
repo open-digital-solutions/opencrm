@@ -40,7 +40,7 @@ namespace OpenCRM.Web.Pages
 
             Translations = new Dictionary<string, string>();
            
-            var keyMainLabel = await _translationService.GetTranslationValueAsync("KEY_MANAGE_WELCOME");
+            var keyMainLabel = await _translationService.GetTranslationValue("KEY_MANAGE_WELCOME");
             Translations.Add("KEY_MANAGE_WELCOME", keyMainLabel ?? "KEY_MANAGE_WELCOME");
 
             return Page();

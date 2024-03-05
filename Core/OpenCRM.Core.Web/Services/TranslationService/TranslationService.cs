@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
@@ -18,7 +19,53 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             _languageService = languageService;
         }
 
-        public async Task<List<TranslationModel>?> AddKeysTranslations(string key, List<TranslationLanguageCodeModel> keyTranslations)
+        public async Task<List<TranslationModel>?> AddTranslations(string key)
+        {
+			try
+			{
+                var languages = _languageService.GetLanguageListAsync();
+
+                if (languages != null)
+                {
+                    var addedTranslations = new List<TranslationModel>();
+
+                    foreach (var language in languages)
+                    {
+                        try
+                        {
+                            var entity = Activator.CreateInstance<TranslationEntity>();
+                            entity.Key = key;
+                            entity.Translation = key;
+                            entity.LanguageId = language.ID;
+                            _dbContext.Translationss.Add(entity);
+                            await _dbContext.SaveChangesAsync();
+
+                            addedTranslations.Add(new TranslationModel()
+                            {
+                                ID = entity.ID,
+                                Key = key,
+                                Translation = entity.Translation,
+                                LanguageId = entity.LanguageId,
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            return null;
+                        }
+                    }
+                    return addedTranslations;
+                }
+                return null;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+				return null;
+			}
+		}
+
+        public async Task<List<TranslationModel>?> AddTranslations(string key, List<TranslationLanguageCodeModel> keyTranslations)
         {
             try
             {
@@ -66,7 +113,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             }
         }
 
-        public async Task<List<TranslationModel>?> EditKeysTranslations(string key, List<TranslationLanguageCodeModel> keyTranslations)
+        public async Task<List<TranslationModel>?> EditTranslations(string key, List<TranslationLanguageCodeModel> keyTranslations)
         {
             try
             {
@@ -115,7 +162,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             }
         }
 
-		public async Task DeleteKeysTranslation(string key, List<TranslationLanguageCodeModel> keyTranslations)
+		public async Task DeleteTranslation(string key, List<TranslationLanguageCodeModel> keyTranslations)
 		{
             try
             {
@@ -142,7 +189,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             }
         }
 
-        public async Task<TranslationModel?> GetTranslationByIdAsync(Guid id)
+        public async Task<TranslationModel?> GetTranslationById(Guid id)
         {
             try
             {
@@ -208,37 +255,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             }
         }
 
-        public List<TranslationLanguageCodeModel>? GetKeyTranslations(string key)
-        {
-            var keytranslations = GetTranslationsByKey(key);
-            var languages = _languageService.GetLanguageListAsync();
-
-            if (keytranslations != null && languages != null)
-            {
-                var keyTranslationByLanguage = new List<TranslationLanguageCodeModel>();
-
-                foreach (var translation in keytranslations)
-                {
-                    var language = languages.Find(l => l.ID == translation.LanguageId);
-
-                    if (language != null)
-                    {
-                        keyTranslationByLanguage.Add(new TranslationLanguageCodeModel()
-                        {
-                            ID = translation.ID,
-                            Key = key,
-                            Translation = translation.Translation,
-                            LanguageCode = language.Code,
-                            LanguageId = translation.LanguageId
-                        });
-                    }
-                }
-                return keyTranslationByLanguage;
-            }
-            return null;
-        }
-
-		public List<TranslationModel>? GetTranslationListAsync()
+		public List<TranslationModel>? GetTranslationsList()
 		{
 			try
 			{
@@ -271,10 +288,40 @@ namespace OpenCRM.Core.Web.Services.TranslationService
 				return null;
 			}
 		}
-
-		public Dictionary<string, List<TranslationLanguageCodeModel>>? GetKeysTranslations()
+		
+        public List<TranslationLanguageCodeModel>? GetTranslationsWithLanguagesCode(string key)
         {
-            var translations = GetTranslationListAsync();
+            var keytranslations = GetTranslationsByKey(key);
+            var languages = _languageService.GetLanguageListAsync();
+
+            if (keytranslations != null && languages != null)
+            {
+                var keyTranslationByLanguage = new List<TranslationLanguageCodeModel>();
+
+                foreach (var translation in keytranslations)
+                {
+                    var language = languages.Find(l => l.ID == translation.LanguageId);
+
+                    if (language != null)
+                    {
+                        keyTranslationByLanguage.Add(new TranslationLanguageCodeModel()
+                        {
+                            ID = translation.ID,
+                            Key = key,
+                            Translation = translation.Translation,
+                            LanguageCode = language.Code,
+                            LanguageId = translation.LanguageId
+                        });
+                    }
+                }
+                return keyTranslationByLanguage;
+            }
+            return null;
+        }
+
+		public Dictionary<string, List<TranslationLanguageCodeModel>>? GetTranslationsToDictionary()
+        {
+            var translations = GetTranslationsList();
             var languages = _languageService.GetLanguageListAsync();
 
             if (translations != null && languages != null)
@@ -339,7 +386,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             return response;
         }
 
-        public async Task<string?> GetTranslationValueAsync(string key)
+        public async Task<string?> GetTranslationValue(string key)
         {
             var currentLanguage = await _languageService.GetCurrentLanguage();
             if (currentLanguage == null) { return key; }
@@ -351,7 +398,6 @@ namespace OpenCRM.Core.Web.Services.TranslationService
         public async Task Seed()
         {
             var languages = _dbContext.Languagess.ToList();        
-
 
             if (languages != null && languages.Count > 0)
             {
