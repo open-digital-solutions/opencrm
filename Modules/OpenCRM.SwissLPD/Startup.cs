@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using OpenCRM.SwissLPD.Services.EventService;
 using OpenCRM.Core;
+using OpenCRM.SwissLPD.Services.SupplierService;
 
 namespace OpenCRM.SwissLPD
 {
@@ -12,6 +13,8 @@ namespace OpenCRM.SwissLPD
         {
             //TODO: Register all module services here
             services.AddScoped<IEventService, EventService<TDBContext>>();
+            services.AddScoped<ISupplierService, SupplierService>();
+
             return services;
         }
         public static IApplicationBuilder UseOpenCRMSwissLPDAsync<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext

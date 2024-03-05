@@ -14,8 +14,6 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
             _mediaService = mediaService;
         }
 
-
-        //TODO: Trabajar directamente con el CardBlockModel
         public async Task<DataBlockModel<CardBlockModel>?> AddBlock(DataBlockModel<CardBlockModel> model)
         {
             var blocks = await GetBlocks();
@@ -39,8 +37,6 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
             return updatedCardBlock?.Data;
         }
 
-        //TODO: Trabajar directamente con el CardBlockModel
-
         public async Task<DataBlockModel<CardBlockModel>?> EditBlock(DataBlockModel<CardBlockModel> model)
         {
             return await _dataBlockService.EditBlock(model);
@@ -50,19 +46,18 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
         {
             return await _dataBlockService.GetDataBlockAsync<CardBlockModel>(Id);
         }
-        //TODO: Trabajar directamente con el CardBlockModel
+
         public async Task<List<DataBlockModel<CardBlockModel>>> GetBlocks()
         {
             var result = await _dataBlockService.GetDataBlockListAsync<CardBlockModel>();
             return result;
         }
-        //TODO: Trabajar directamente con el CardBlockModel
 
         public async Task RemoveBlock(Guid Id)
         {
             await _dataBlockService.DeleteBlock<CardBlockModel>(Id);
         }
-        //TODO: Trabajar directamente con el CardBlockModel
+
         public CardBlockModel CreateBlockModel(string code, string title, string? subTitle, string? description, string? imageId)
         {
             if (!string.IsNullOrEmpty(imageId))
