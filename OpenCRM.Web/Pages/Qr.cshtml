@@ -16,7 +16,7 @@
             <input type="text" class="form-control-plaintext" id="texto" name="texto" placeholder="Enter the text" required>
         </div>
 
-        <button type="submit" class="btn btn-primary mb-2">Generate QR</button>
+        <button type="submit" class="btn btn-primary mb-2">Generate QR code</button>
     </form>
 
     @if (!string.IsNullOrEmpty(Model.QrCode))
@@ -25,7 +25,19 @@
             <br />
             <h1>QR Code</h1>
             <img alt="QR Code" class="img-responsive" src="data:image/png;base64,@Model.QrCode" />
+                <br />
+                <a href="#" onclick="downloadQRCode()" class="btn btn-primary mb-2">Download QR code</a>
         </div>
     }
     </div>
+    <script>
+        function downloadQRCode() {
+            const qrCodeData = '@Html.Raw(Model.QrCode)';
+            const link = document.createElement('a');
+            link.href = `data:image/png;base64,${qrCodeData}`;
+            link.download = 'codigoQR.png';
+            link.click();
+        }
+    </script>
 </div>
+
