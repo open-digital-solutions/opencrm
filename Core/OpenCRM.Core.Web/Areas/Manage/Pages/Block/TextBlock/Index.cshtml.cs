@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Components.Table;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Services.BlockServices.TextBlockService;
 using OpenCRM.Core.Web.Services.CardBlockService;
-using OpenCRM.Core.Web.Services.TextBlockService;
 using OpenCRM.Core.Web.Table;
 
 namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.TextBlock
@@ -43,7 +43,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.TextBlock
 
 		public async Task OnGet()
 		{
-			var blocks = await _textBlockService.GetBlocks();
+			var blocks = await _textBlockService.GetTextBlocks();
 
 			if (blocks != null)
 			{

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCRM.Core.Web.Services.TextBlockService
+namespace OpenCRM.Core.Web.Services.BlockServices.TextBlockService
 {
     public interface ITextBlockService
     {
@@ -15,7 +15,7 @@ namespace OpenCRM.Core.Web.Services.TextBlockService
         Task RemoveBlock(Guid Id);
         Task<DataBlockModel<TextBlockModel>?> GetBlock(Guid Id);
         Task<DataBlockModel<TextBlockModel>?> GetBlockByCode(string code);
-        Task<List<DataBlockModel<TextBlockModel>>> GetBlocks();
+        Task<List<DataBlockModel<TextBlockModel>>> GetTextBlocks();
         Task Seed();
     }
 }

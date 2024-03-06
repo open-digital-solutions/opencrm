@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using OpenCRM.Core.Web.Models.BlockModels;
 
 namespace OpenCRM.Core.Web.Models
 {
-    public enum BlockType{
-        Text,
-        Card
-    }
-
-    public class CardBlockModel
+    public class CardBlockModel : IBlockModel
     {
         [Required] 
         public string Code { get; set; } = string.Empty;

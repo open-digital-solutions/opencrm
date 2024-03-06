@@ -1,5 +1,6 @@
 ﻿using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Models.BlockModels;
 
 namespace OpenCRM.Core.Web.Services.CardBlockService
 {
@@ -16,7 +17,7 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
 
         public async Task<DataBlockModel<CardBlockModel>?> AddBlock(DataBlockModel<CardBlockModel> model)
         {
-            var blocks = await GetBlocks();
+            var blocks = await GetCardBlocks();
 
             foreach (var block in blocks)
             {
@@ -47,7 +48,7 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
             return await _dataBlockService.GetDataBlockAsync<CardBlockModel>(Id);
         }
 
-        public async Task<List<DataBlockModel<CardBlockModel>>> GetBlocks()
+        public async Task<List<DataBlockModel<CardBlockModel>>> GetCardBlocks()
         {
             var result = await _dataBlockService.GetDataBlockListAsync<CardBlockModel>();
             return result;

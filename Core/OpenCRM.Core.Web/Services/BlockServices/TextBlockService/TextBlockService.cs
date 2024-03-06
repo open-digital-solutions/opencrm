@@ -1,7 +1,8 @@
 ﻿using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
+using OpenCRM.Core.Web.Models.BlockModels;
 
-namespace OpenCRM.Core.Web.Services.TextBlockService
+namespace OpenCRM.Core.Web.Services.BlockServices.TextBlockService
 {
     public class TextBlockService : ITextBlockService
     {
@@ -14,7 +15,7 @@ namespace OpenCRM.Core.Web.Services.TextBlockService
 
         public async Task<DataBlockModel<TextBlockModel>?> AddBlock(DataBlockModel<TextBlockModel> model)
         {
-            var blocks = await GetBlocks();
+            var blocks = await GetTextBlocks();
 
             foreach (var block in blocks)
             {
@@ -41,7 +42,7 @@ namespace OpenCRM.Core.Web.Services.TextBlockService
             return await _dataBlockService.GetDataBlockByCode<TextBlockModel>(code);
         }
 
-        public async Task<List<DataBlockModel<TextBlockModel>>> GetBlocks()
+        public async Task<List<DataBlockModel<TextBlockModel>>> GetTextBlocks()
         {
             return await _dataBlockService.GetDataBlockListAsync<TextBlockModel>();
         }
@@ -55,7 +56,7 @@ namespace OpenCRM.Core.Web.Services.TextBlockService
         {
             var block = await GetBlockByCode("KEY_BLOCKTEXT_DEMO");
 
-            if (block == null) 
+            if (block == null)
             {
                 var textBlock = new TextBlockModel
                 {
