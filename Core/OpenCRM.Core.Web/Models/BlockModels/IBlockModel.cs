@@ -7,7 +7,8 @@ namespace OpenCRM.Core.Web.Models
 	{
 		None,
 		Text,
-		Card
+		Card,
+		Image
 	}
 
 	public interface IBlockModel

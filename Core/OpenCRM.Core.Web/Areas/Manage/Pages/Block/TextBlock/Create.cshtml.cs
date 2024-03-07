@@ -26,9 +26,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.TextBlock
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Blocks",
+                Name = "Text Blocks",
                 Page = "",
-                Url = "/Manage/Block"
+                Url = "/Manage/Block/TextBlock"
             });
         }
 
@@ -41,11 +41,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.TextBlock
         {
             if (ModelState.IsValid)
             {
-                var textBlockModel = new TextBlockModel()
-                {
-                    Code = TextModel.Code,
-                    Description = TextModel.Description
-                };
+                var textBlockModel = _textBlockService.CreateBlockModel(TextModel.Code, TextModel.Description);
 
                 var dataBlockModel = new DataBlockModel<TextBlockModel>()
                 {
@@ -57,7 +53,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.TextBlock
 
                 if (await _textBlockService.AddBlock(dataBlockModel) == null)
                 {
-                    ValidateError = $"Error to create new block: {TextModel.Code}, {TextModel.Description}";
+                    ValidateError = $"Error to create new block: {TextModel.Code}";
                     return Page();
                 }
 

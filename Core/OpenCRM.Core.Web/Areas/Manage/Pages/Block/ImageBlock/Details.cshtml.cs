@@ -2,45 +2,45 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
-using OpenCRM.Core.Web.Services.BlockServices.TextBlockService;
-using OpenCRM.Core.Web.Services.CardBlockService;
+using OpenCRM.Core.Web.Models.BlockModels;
+using OpenCRM.Core.Web.Services.ImageBlockService;
 
-namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.TextBlock
+namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.ImageBlock
 {
     public class DetailsModel : PageModel
     {
-		private ITextBlockService _textBlockService;
+        private IImageBlockService _imageBlockService;
 
         [BindProperty]
-        public DataBlockModel<TextBlockModel> TextModel { get; set; } = default!;
+        public DataBlockModel<ImageBlockModel> ImageModel { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public DetailsModel(ITextBlockService textBlockService)
+        public DetailsModel(IImageBlockService imageBlockService)
         {
-            _textBlockService = textBlockService;
+            _imageBlockService = imageBlockService;
 
             Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Text Blocks",
+                Name = "Image Blocks",
                 Page = "",
-                Url = "/Manage/Block/TextBlock"
+                Url = "/Manage/Block/ImageBlock"
             });
         }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            var dataBlockModel = await _textBlockService.GetBlock(id);
+            var dataBlockModel = await _imageBlockService.GetBlock(id);
 
             if (dataBlockModel == null)
             {
                 return NotFound();
             }
 
-            TextModel = dataBlockModel;
+            ImageModel = dataBlockModel;
             return Page();
         }
     }

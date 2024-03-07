@@ -1,16 +1,13 @@
 ﻿using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenCRM.Core.Web.Models.BlockModels;
 
 namespace OpenCRM.Core.Web.Services.BlockServices.TextBlockService
 {
-    public interface ITextBlockService
+	public interface ITextBlockService
     {
-        Task<DataBlockModel<TextBlockModel>?> AddBlock(DataBlockModel<TextBlockModel> model);
+		TextBlockModel CreateBlockModel(string code, string description);
+		Task<DataBlockModel<TextBlockModel>?> AddBlock(DataBlockModel<TextBlockModel> model);
         Task<DataBlockModel<TextBlockModel>?> EditBlock(DataBlockModel<TextBlockModel> model);
         Task RemoveBlock(Guid Id);
         Task<DataBlockModel<TextBlockModel>?> GetBlock(Guid Id);

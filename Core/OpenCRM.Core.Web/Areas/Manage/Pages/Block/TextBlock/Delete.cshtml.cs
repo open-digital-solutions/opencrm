@@ -24,9 +24,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.TextBlock
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Blocks",
+                Name = "Text Blocks",
                 Page = "",
-                Url = "/Manage/Block"
+                Url = "/Manage/Block/TextBlock"
             });
         }
 

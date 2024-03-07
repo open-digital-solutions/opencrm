@@ -58,27 +58,25 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             if (ModelState.IsValid)
             {
                 var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
-             
-                var dataBlockModel = new DataBlockModel<CardBlockModel>()
-                {
-                    Code = blockModel.Title,
-                    Description = blockModel.Title,
-                    Type = typeof(CardBlockModel).Name,
-                    Data = blockModel
-                };
 
-                if (!string.IsNullOrEmpty(blockModel.ImageUrl))
+                if (blockModel != null)
                 {
-                    ImageUrlSelected = blockModel.ImageUrl;
-                }
+                    var dataBlockModel = new DataBlockModel<CardBlockModel>()
+                    {
+                        Code = blockModel.Title,
+                        Description = blockModel.Title,
+                        Type = typeof(CardBlockModel).Name,
+                        Data = blockModel
+                    };
 
-                if (await _blockService.AddBlock(dataBlockModel) == null)
-                {
-                    ValidateError = "Block with code " + Model.Code + " already exists";
-                    return Page();
+                    if (await _blockService.AddBlock(dataBlockModel) == null)
+                    {
+                        ValidateError = "Block with code " + Model.Code + " already exists";
+                        return Page();
+                    }
+
+                    return RedirectToPage("./Index");
                 }
-                
-                return RedirectToPage("./Index");
             }
             return Page();
         }

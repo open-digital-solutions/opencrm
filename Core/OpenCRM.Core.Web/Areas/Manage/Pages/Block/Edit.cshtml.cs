@@ -73,12 +73,6 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                 ImageUrlSelected = showModel.ImageUrl;
             }
 
-
-            if (showModel.ImageUrl != null)
-            {
-                ImageUrlSelected = showModel.ImageUrl;
-            }
-
             return Page();
         }
 
@@ -88,22 +82,25 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
             {
                 var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
 
-                var dataBlockModelEdit = new DataBlockModel<CardBlockModel>()
+                if (blockModel != null)
                 {
-                    ID = id,
-                    Code = blockModel.Code,
-                    Description = blockModel.Title,
-                    Type = typeof(CardBlockModel).Name,
-                    Data = blockModel
-                };
+                    var dataBlockModelEdit = new DataBlockModel<CardBlockModel>()
+                    {
+                        ID = id,
+                        Code = blockModel.Code,
+                        Description = blockModel.Title,
+                        Type = typeof(CardBlockModel).Name,
+                        Data = blockModel
+                    };
 
-                if (!string.IsNullOrEmpty(blockModel.ImageUrl))
-                {
-                    ImageUrlSelected = blockModel.ImageUrl;
+                    if (!string.IsNullOrEmpty(blockModel.ImageUrl))
+                    {
+                        ImageUrlSelected = blockModel.ImageUrl;
+                    }
+
+                    await _blockService.EditBlock(dataBlockModelEdit);
+                    return RedirectToPage("./Index");
                 }
-
-                await _blockService.EditBlock(dataBlockModelEdit);
-                return RedirectToPage("./Index");
             }
             return Page();
         }

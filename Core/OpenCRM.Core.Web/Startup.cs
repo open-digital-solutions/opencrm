@@ -17,6 +17,7 @@ using OpenCRM.Core.Web.Services.BlockServices.TextBlockService;
 using OpenCRM.Core.Web.Services.CardBlockService;
 using OpenCRM.Core.Web.Services.EmailService;
 using OpenCRM.Core.Web.Services.IdentityService;
+using OpenCRM.Core.Web.Services.ImageBlockService;
 using OpenCRM.Core.Web.Services.LanguageService;
 using OpenCRM.Core.Web.Services.RoleService;
 using OpenCRM.Core.Web.Services.TranslationService;
@@ -44,6 +45,7 @@ namespace OpenCRM.Core.Web
 			services.AddScoped<IBlockService, BlockService<TDBContext>>();
 			services.AddScoped<ICardBlockService, CardBlockService>();
             services.AddScoped<ITextBlockService, TextBlockService>();
+            services.AddScoped<IImageBlockService, ImageBlockService>();
             services.AddScoped<IUserSessionService, UserSessionService<TDBContext>>();
             services.AddAntiforgery(options =>
             {
@@ -115,6 +117,9 @@ namespace OpenCRM.Core.Web
 
                 var textBlockService = scope.ServiceProvider.GetRequiredService<ITextBlockService>();
                 textBlockService.Seed().Wait();
+
+                var imageBlockService = scope.ServiceProvider.GetRequiredService<IImageBlockService>();
+                imageBlockService.Seed().Wait();
 
                 var emailService = scope.ServiceProvider
                   .GetRequiredService<IEmailService>();

@@ -1,0 +1,60 @@
+﻿@page
+@model OpenCRM.Core.Web.Areas.Manage.Pages.Block.ImageBlock.EditModel
+@{
+}
+
+<div class="container-fluid mt-3">
+    <div class="row justify-content-center">
+        <div class="card border-1 rounded-lg p-0">
+            <div class="card-header"><h3 class="text-center font-weight-light my-4">Edit</h3></div>
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ImageModel.Code" class="form-control" readonly />
+                        <label asp-for="ImageModel.Code" class="control-label"></label>
+                        <span asp-validation-for="ImageModel.Code" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ImageModel.With" type="number" min="0" class="form-control" />
+                        <label asp-for="ImageModel.With" class="control-label"></label>
+                        <span asp-validation-for="ImageModel.With" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ImageModel.Height" type="number" min="0" class="form-control" />
+                        <label asp-for="ImageModel.Height" class="control-label"></label>
+                        <span asp-validation-for="ImageModel.Height" class="text-danger"></span>
+                    </div>
+                    <select class="form-select mb-3" aria-label="Default select example" asp-for="ImageIdSelected">
+                        <option selected value="">Select an images</option>
+                        @foreach (var image in Model.Images)
+                        {
+                            if (image.ImageUrl == Model.ImageUrlSelected)
+                            {
+                                <option selected value="@image.Id">@image.ImageName</option>
+                            }
+                            else
+                            {
+                                <option value="@image.Id">@image.ImageName</option>
+                            }
+                        }
+                    </select>
+
+                    @if (!string.IsNullOrEmpty(Model.ImageUrlSelected))
+                    {
+                        <div class="mb-3">
+                            <a href="@Model.ImageUrlSelected">
+                                <img src="@Model.ImageUrlSelected" style="width:100px;" />
+                            </a>
+                        </div>
+                    }
+                    <div class="mt-4 mb-0">
+                        <div class="d-grid">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

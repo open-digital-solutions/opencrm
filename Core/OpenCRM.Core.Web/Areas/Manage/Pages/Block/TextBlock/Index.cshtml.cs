@@ -31,15 +31,15 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Block.TextBlock
 		{
 			_textBlockService = textBlockService;
 
-			Links.Add(new BreadCrumbLinkModel()
-			{
-				Area = "Manage",
-				IsActive = true,
-				Name = "Blocks",
-				Page = "",
-				Url = "/Manage/Block"
-			});
-		}
+            Links.Add(new BreadCrumbLinkModel()
+            {
+                Area = "Manage",
+                IsActive = true,
+                Name = "Text Blocks",
+                Page = "",
+                Url = "/Manage/Block/TextBlock"
+            });
+        }
 
 		public async Task OnGet()
 		{

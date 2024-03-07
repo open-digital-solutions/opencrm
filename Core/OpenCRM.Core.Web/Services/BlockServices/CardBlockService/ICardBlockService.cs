@@ -6,7 +6,7 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
     public interface ICardBlockService
     {
         Task<DataBlockModel<CardBlockModel>?> AddBlock(DataBlockModel<CardBlockModel> model);
-        CardBlockModel CreateBlockModel(string code, string title, string? subTitle, string? description, string? imageId);
+        CardBlockModel? CreateBlockModel(string code, string title, string? subTitle, string? description, string? imageId);
         Task<CardBlockModel?> EditBlock(CardBlockModel model);
         Task<DataBlockModel<CardBlockModel>?> EditBlock(DataBlockModel<CardBlockModel> model);
         Task<DataBlockModel<CardBlockModel>?> GetBlock(Guid Id);

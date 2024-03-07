@@ -22,11 +22,27 @@ namespace OpenCRM.Core.Web.Services.BlockServices.BlockService
             return dbType == typeof(TextBlockModel).Name || dbType == typeof(CardBlockModel).Name;
         }
 
-        private DataBlockModel<BlockModel>? GetDataBlockInstance(string dbType, DataBlockEntity dataBlock)
+        public IBlockModel? GetBlockByType (string type, DataBlockEntity dataBlock)
         {
-            IBlockModel? block = dbType == "TextBlockModel" ? JsonSerializer.Deserialize<TextBlockModel>(dataBlock.Data) : JsonSerializer.Deserialize<CardBlockModel>(dataBlock.Data);
+            switch(type)
+            {
+                case "TextBlockModel":
+                    return JsonSerializer.Deserialize<TextBlockModel>(dataBlock.Data);
 
-            if (block != null)
+                case "CardBlockModel":
+                    return JsonSerializer.Deserialize<CardBlockModel>(dataBlock.Data);
+
+                case "ImageBlockModel":
+                    return JsonSerializer.Deserialize<ImageBlockModel>(dataBlock.Data);
+			}
+            return null;
+		}
+
+		private DataBlockModel<BlockModel>? GetDataBlockInstance(string type, DataBlockEntity dataBlock)
+        {
+			IBlockModel? block = GetBlockByType(type, dataBlock);
+
+			if (block != null)
             {
                 var data = new BlockModel()
                 {

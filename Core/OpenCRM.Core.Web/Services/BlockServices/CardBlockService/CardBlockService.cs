@@ -59,7 +59,7 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
             await _dataBlockService.DeleteBlock<CardBlockModel>(Id);
         }
 
-        public CardBlockModel CreateBlockModel(string code, string title, string? subTitle, string? description, string? imageId)
+        public CardBlockModel? CreateBlockModel(string code, string title, string? subTitle, string? description, string? imageId)
         {
             if (!string.IsNullOrEmpty(imageId))
             {
@@ -67,31 +67,22 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
                 var images = _mediaService.GetImageMedias();
                 var image = images.Find(img => img.Id == imageGuiId);
 
-                var blockModel = new CardBlockModel()
+                if (image != null)
                 {
-                    Code = code,
-                    Title = title,
-                    SubTitle = subTitle,
-                    Description = description,
-                    Type = BlockType.Card,
-                    ImageUrl = image?.ImageUrl,
-                };
+                    var cardBlock = new CardBlockModel()
+                    {
+                        Code = code,
+                        Title = title,
+                        SubTitle = subTitle,
+                        Description = description,
+                        Type = BlockType.Card,
+                        ImageUrl = image?.ImageUrl,
+                    };
 
-                return blockModel;
+                    return cardBlock;
+                }
             }
-            else
-            {
-                var blockModel = new CardBlockModel()
-                {
-                    Code = code,
-                    Title = title,
-                    Description = description,
-                    SubTitle = subTitle,
-                    Type = BlockType.Text
-                };
-
-                return blockModel;
-            }
+            return null;   
         }
 
         public async Task<DataBlockModel<CardBlockModel>?> GetBlockByCode(string code)
@@ -109,7 +100,7 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
                 SubTitle = "Puple Galaxy in Universe",
                 Type = BlockType.Card,
                 Description = "A galaxy is a collection of gases, dust and billions of stars and their solar systems. The galaxy is held together by the force of gravity.",
-                ImageUrl = "http://localhost:5005/media/e2a02caa-ff23-429f-86e7-d772c02a8840.jpg"
+                ImageUrl = "http://localhost:5005/media/1c2b4ba4-d49b-4c56-9fc1-c258041f75a8.jpg"
             };
 
             var dataBlockModel = new DataBlockModel<CardBlockModel>

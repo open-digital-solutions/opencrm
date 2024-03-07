@@ -13,7 +13,18 @@ namespace OpenCRM.Core.Web.Services.BlockServices.TextBlockService
             _dataBlockService = dataBlockService;
         }
 
-        public async Task<DataBlockModel<TextBlockModel>?> AddBlock(DataBlockModel<TextBlockModel> model)
+		public TextBlockModel CreateBlockModel(string code, string description)
+		{
+            var textBlock = new TextBlockModel()
+            {
+                Code = code,
+                Description = description
+            };
+
+            return textBlock;
+		}
+
+		public async Task<DataBlockModel<TextBlockModel>?> AddBlock(DataBlockModel<TextBlockModel> model)
         {
             var blocks = await GetTextBlocks();
 
@@ -27,7 +38,7 @@ namespace OpenCRM.Core.Web.Services.BlockServices.TextBlockService
             return await _dataBlockService.AddBlock(model);
         }
 
-        public async Task<DataBlockModel<TextBlockModel>?> EditBlock(DataBlockModel<TextBlockModel> model)
+		public async Task<DataBlockModel<TextBlockModel>?> EditBlock(DataBlockModel<TextBlockModel> model)
         {
             return await _dataBlockService.EditBlock(model);
         }
