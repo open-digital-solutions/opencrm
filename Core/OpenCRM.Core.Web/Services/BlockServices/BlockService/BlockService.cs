@@ -71,7 +71,7 @@ namespace OpenCRM.Core.Web.Services.BlockServices.BlockService
             {
                 var result = new List<DataBlockModel<BlockModel>>();
 
-                var dataBlocks = await _dbContext.DataBlocks.Where(block => (block.Type == typeof(TextBlockModel).Name || block.Type == typeof(CardBlockModel).Name)).ToListAsync();
+                var dataBlocks = await _dbContext.DataBlocks.Where(block => (block.Type == typeof(TextBlockModel).Name || block.Type == typeof(CardBlockModel).Name) || block.Type == typeof(ImageBlockModel).Name).ToListAsync();
 
                 if (dataBlocks == null || dataBlocks.Count == 0) return result;
 
