@@ -11,7 +11,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly ICardBlockService _blockService;
+        private readonly ICardBlockService _cardBlockService;
 
         private readonly IMediaService _mediaService;
 
@@ -20,7 +20,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         public string ImageUrlSelected { get; set; } = string.Empty;
 
         [BindProperty]
-        public CardBlockModel Model { get; set; } = default!;
+        public CardBlockModel CardModel { get; set; } = default!;
 
         [BindProperty]
         public string? ImageIdSelected { get; set; }
@@ -31,18 +31,18 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public CreateModel(ICardBlockService blockService, IMediaService mediaService)
+        public CreateModel(ICardBlockService cardBlockService, IMediaService mediaService)
         {
-            _blockService = blockService;
+            _cardBlockService = cardBlockService;
             _mediaService = mediaService;
 
             Links.Add(new BreadCrumbLinkModel()
             {
                 Area = "Manage",
                 IsActive = true,
-                Name = "Blocks",
+                Name = "Card Blocks",
                 Page = "",
-                Url = "/Manage/Block"
+                Url = "/Manage/Block/CardBlock"
             });
 
             Images = _mediaService.GetImageMedias();
@@ -57,7 +57,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         {
             if (ModelState.IsValid)
             {
-                var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
+                var blockModel = _cardBlockService.CreateBlockModel(CardModel.Code, CardModel.Title, CardModel.SubTitle, CardModel.Description, ImageIdSelected);
 
                 if (blockModel != null)
                 {
@@ -69,9 +69,9 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                         Data = blockModel
                     };
 
-                    if (await _blockService.AddBlock(dataBlockModel) == null)
+                    if (await _cardBlockService.AddBlock(dataBlockModel) == null)
                     {
-                        ValidateError = "Block with code " + Model.Code + " already exists";
+                        ValidateError = "Block with code " + CardModel.Code + " already exists";
                         return Page();
                     }
 

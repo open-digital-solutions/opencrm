@@ -11,24 +11,24 @@
                 <form method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Model.Code" class="form-control" placeholder="Code" />
-                        <label asp-for="Model.Code" class="control-label"></label>
-                        <span asp-validation-for="Model.Code" class="text-danger"></span>
+                        <input asp-for="CardModel.Code" class="form-control" placeholder="Code" />
+                        <label asp-for="CardModel.Code" class="control-label"></label>
+                        <span asp-validation-for="CardModel.Code" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Model.Title" class="form-control" placeholder="Title" />
-                        <label asp-for="Model.Title" class="control-label"></label>
-                        <span asp-validation-for="Model.Title" class="text-danger"></span>
+                        <input asp-for="CardModel.Title" class="form-control" placeholder="Title" />
+                        <label asp-for="CardModel.Title" class="control-label"></label>
+                        <span asp-validation-for="CardModel.Title" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea asp-for="Model.SubTitle" class="form-control" placeholder="SubTitle" style="resize:none;"></textarea>
-                        <label asp-for="Model.SubTitle" class="control-label"></label>
-                        <span asp-validation-for="Model.SubTitle" class="text-danger"></span>
+                        <textarea asp-for="CardModel.SubTitle" class="form-control" placeholder="SubTitle" style="resize:none;"></textarea>
+                        <label asp-for="CardModel.SubTitle" class="control-label"></label>
+                        <span asp-validation-for="CardModel.SubTitle" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea asp-for="Model.Description" class="form-control" placeholder="Description" style="height:100px; resize:none;"></textarea>
-                        <label asp-for="Model.Description" class="control-label"></label>
-                        <span asp-validation-for="Model.Description" class="text-danger"></span>
+                        <textarea asp-for="CardModel.Description" class="form-control" placeholder="Description" style="height:100px; resize:none;"></textarea>
+                        <label asp-for="CardModel.Description" class="control-label"></label>
+                        <span asp-validation-for="CardModel.Description" class="text-danger"></span>
                     </div>
 
                     <select class="form-select mb-3" aria-label="Default select example" asp-for="ImageIdSelected">

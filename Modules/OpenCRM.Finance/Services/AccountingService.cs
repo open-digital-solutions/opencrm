@@ -18,17 +18,17 @@ namespace OpenCRM.Finance.Services
             _dataBlockService = dataBlockService;
         }
 
-        public async Task<DataBlockModel<AccountingModel>> AddAccounting(DataBlockModel<AccountingModel> model)
+        public async Task<DataBlockModel<AccountingModel>?> AddAccounting(DataBlockModel<AccountingModel> model)
         {
             return await _dataBlockService.AddBlock(model);
         }
 
-        public async Task<DataBlockModel<AccountingModel>> EditAccounting(DataBlockModel<AccountingModel> model)
+        public async Task<DataBlockModel<AccountingModel>?> EditAccounting(DataBlockModel<AccountingModel> model)
         {
             return await _dataBlockService.EditBlock(model);
         }
 
-        public async Task<DataBlockModel<AccountingModel>> GetAccounting(Guid id)
+        public async Task<DataBlockModel<AccountingModel>?> GetAccounting(Guid id)
         {
             return await _dataBlockService.GetDataBlockAsync<AccountingModel>(id);
         }

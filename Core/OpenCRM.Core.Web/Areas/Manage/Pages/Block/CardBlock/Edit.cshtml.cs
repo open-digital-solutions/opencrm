@@ -11,7 +11,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
     [Authorize]
     public class EditModel : PageModel
     {
-        private readonly ICardBlockService _blockService;
+        private readonly ICardBlockService _cardBlockService;
 
         private readonly IMediaService _mediaService;
 
@@ -31,26 +31,26 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public EditModel(ICardBlockService blockService, IMediaService mediaService)
+        public EditModel(ICardBlockService cardBlockService, IMediaService mediaService)
         {
-            _blockService = blockService;
+            _cardBlockService = cardBlockService;
             _mediaService = mediaService;
 
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "Manage",
-                IsActive = true,
-                Name = "Blocks",
-                Page = "",
-                Url = "/Manage/Block"
-            });
+			Links.Add(new BreadCrumbLinkModel()
+			{
+				Area = "Manage",
+				IsActive = true,
+				Name = "Card Blocks",
+				Page = "",
+				Url = "/Manage/Block/CardBlock"
+			});
 
-            Images = _mediaService.GetImageMedias();
+			Images = _mediaService.GetImageMedias();
         }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            var dataBlockModel = await _blockService.GetBlock(id);
+            var dataBlockModel = await _cardBlockService.GetBlock(id);
 
             if (dataBlockModel == null)
             {
@@ -80,7 +80,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         {
             if (ModelState.IsValid)
             {
-                var blockModel = _blockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
+                var blockModel = _cardBlockService.CreateBlockModel(Model.Code, Model.Title, Model.SubTitle, Model.Description, ImageIdSelected);
 
                 if (blockModel != null)
                 {
@@ -98,7 +98,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
                         ImageUrlSelected = blockModel.ImageUrl;
                     }
 
-                    await _blockService.EditBlock(dataBlockModelEdit);
+                    await _cardBlockService.EditBlock(dataBlockModelEdit);
                     return RedirectToPage("./Index");
                 }
             }

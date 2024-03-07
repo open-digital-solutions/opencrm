@@ -121,7 +121,10 @@ namespace OpenCRM.Core.Web
                 var imageBlockService = scope.ServiceProvider.GetRequiredService<IImageBlockService>();
                 imageBlockService.Seed().Wait();
 
-                var emailService = scope.ServiceProvider
+				var cardBlockService = scope.ServiceProvider.GetRequiredService<ICardBlockService>();
+				cardBlockService.Seed().Wait();
+
+				var emailService = scope.ServiceProvider
                   .GetRequiredService<IEmailService>();
                 emailService.SendEmail("yariel.re@gmail.com", "Hola", "https://google.com");
 

@@ -10,7 +10,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
     [Authorize]
     public class DetailsModel : PageModel
     {
-        private readonly ICardBlockService _blockService;
+        private readonly ICardBlockService _cardBlockService;
 
         [BindProperty]
         public string ImageName { get; set; } = string.Empty;
@@ -21,23 +21,23 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.DataBlock
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
 
-        public DetailsModel(ICardBlockService blockService)
+        public DetailsModel(ICardBlockService cardBlockService)
         {
-            _blockService = blockService;
+            _cardBlockService = cardBlockService;
 
-            Links.Add(new BreadCrumbLinkModel()
-            {
-                Area = "Manage",
-                IsActive = true,
-                Name = "Blocks",
-                Page = "",
-                Url = "/Manage/Block"
-            });
-        }
+			Links.Add(new BreadCrumbLinkModel()
+			{
+				Area = "Manage",
+				IsActive = true,
+				Name = "Card Blocks",
+				Page = "",
+				Url = "/Manage/Block/CardBlock"
+			});
+		}
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            var dataBlockModel = await _blockService.GetBlock(id);
+            var dataBlockModel = await _cardBlockService.GetBlock(id);
 
             if (dataBlockModel == null)
             {

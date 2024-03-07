@@ -12,30 +12,30 @@
             <div class="card-body">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Model.Data.Code" class="form-control" readonly />
-                    <label asp-for="Model.Data.Code" class="control-label"></label>
-                    <span asp-validation-for="Model.Data.Code" class="text-danger"></span>
+                    <input asp-for="CardModel.Data.Code" class="form-control" readonly />
+                    <label asp-for="CardModel.Data.Code" class="control-label"></label>
+                    <span asp-validation-for="CardModel.Data.Code" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Model.Data.Title" class="form-control" readonly />
-                    <label asp-for="Model.Data.Title" class="control-label"></label>
-                    <span asp-validation-for="Model.Data.Title" class="text-danger"></span>
+                    <input asp-for="CardModel.Data.Title" class="form-control" readonly />
+                    <label asp-for="CardModel.Data.Title" class="control-label"></label>
+                    <span asp-validation-for="CardModel.Data.Title" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Model.Data.SubTitle" class="form-control" readonly />
-                    <label asp-for="Model.Data.SubTitle" class="control-label"></label>
-                    <span asp-validation-for="Model.Data.SubTitle" class="text-danger"></span>
+                    <input asp-for="CardModel.Data.SubTitle" class="form-control" readonly />
+                    <label asp-for="CardModel.Data.SubTitle" class="control-label"></label>
+                    <span asp-validation-for="CardModel.Data.SubTitle" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Model.Data.Description" class="form-control" readonly />
-                    <label asp-for="Model.Data.Description" class="control-label"></label>
-                    <span asp-validation-for="Model.Data.Description" class="text-danger"></span>
+                    <input asp-for="CardModel.Data.Description" class="form-control" readonly />
+                    <label asp-for="CardModel.Data.Description" class="control-label"></label>
+                    <span asp-validation-for="CardModel.Data.Description" class="text-danger"></span>
                 </div>
 
-                @if (!string.IsNullOrEmpty(Model.Model.Data.ImageUrl))
+                @if (!string.IsNullOrEmpty(Model.CardModel.Data.ImageUrl))
                 {
                     <div class="mb-3">
-                        <img src="@Model.Model.Data.ImageUrl" style="width:100px;"/>
+                        <img src="@Model.CardModel.Data.ImageUrl" style="width:100px;"/>
                     </div>
                 }
 
@@ -58,7 +58,7 @@
                 </div>
 
                 <form id="deleteForm" method="post">
-                    <input type="hidden" asp-for="Model.ID" />
+                    <input type="hidden" asp-for="CardModel.ID" />
                     <div class="mt-4 mb-0">
                         <div class="d-grid">
                             <input type="button" value="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal" />

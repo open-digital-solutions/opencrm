@@ -13,6 +13,6 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
         Task<DataBlockModel<CardBlockModel>?> GetBlockByCode(string code);
         Task<List<DataBlockModel<CardBlockModel>>> GetCardBlocks();
         Task RemoveBlock(Guid Id);
-        Task<DataBlockModel<CardBlockModel>?> ShowCardBlock();
+        Task Seed();
     }
 }

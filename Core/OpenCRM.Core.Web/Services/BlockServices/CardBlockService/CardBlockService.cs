@@ -91,28 +91,32 @@ namespace OpenCRM.Core.Web.Services.CardBlockService
             return result;
         }
 
-        public async Task<DataBlockModel<CardBlockModel>?> ShowCardBlock()
+        public async Task Seed()
         {
-            var blockModel = new CardBlockModel
-            {
-                Code = "KEY_BLOCKCARD_DEMO",
-                Title = "Galaxy",
-                SubTitle = "Puple Galaxy in Universe",
-                Type = BlockType.Card,
-                Description = "A galaxy is a collection of gases, dust and billions of stars and their solar systems. The galaxy is held together by the force of gravity.",
-                ImageUrl = "http://localhost:5005/media/1c2b4ba4-d49b-4c56-9fc1-c258041f75a8.jpg"
-            };
+            var block = await GetBlockByCode("KEY_BLOCKCARD_DEMO");
 
-            var dataBlockModel = new DataBlockModel<CardBlockModel>
+            if (block == null)
             {
-                Code = blockModel.Code,
-                Description = blockModel.Title,
-                Data = blockModel,
-                Type = BlockType.Card.ToString()
-            };
+                var blockModel = new CardBlockModel
+                {
+                    Code = "KEY_BLOCKCARD_DEMO",
+                    Title = "Galaxy",
+                    SubTitle = "Puple Galaxy in Universe",
+                    Type = BlockType.Card,
+                    Description = "A galaxy is a collection of gases, dust and billions of stars and their solar systems. The galaxy is held together by the force of gravity.",
+                    ImageUrl = "http://localhost:5005/media/1c2b4ba4-d49b-4c56-9fc1-c258041f75a8.jpg"
+                };
 
-            var block = await GetBlockByCode(blockModel.Code) ?? await AddBlock(dataBlockModel);
-            return block;
-        }
+                var dataBlockModel = new DataBlockModel<CardBlockModel>
+                {
+                    Code = blockModel.Code,
+                    Description = blockModel.Title,
+                    Data = blockModel,
+                    Type = BlockType.Card.ToString()
+                };
+
+                await AddBlock(dataBlockModel);
+            }
+		}
     }
 }
