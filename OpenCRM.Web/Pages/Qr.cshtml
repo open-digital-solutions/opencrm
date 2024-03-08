@@ -4,39 +4,43 @@
     ViewData["Title"] = "Home Page";
 }
 
-<render-mode="ServerPrerendered" param-links="Model.Links" />
+<render-mode ="ServerPrerendered" param-links="Model.Links" />
 
-<div class="text-center">
-    <div class="table-responsive" style="height: 790px; overflow-y: scroll;">
-    <h1>QR Generator</h1>
+<div class="text-center" style="height: 830px; overflow-y: scroll;>
+    <div class="row justify-content-center">
+        <div class="card border-1 rounded-lg p-0">
+        <h1>QR Generator</h1>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mb-2">
+                    <label for="name" class="control-label">Text</label>
+                    <input type="text" class="form-control" id="texto" name="texto" placeholder="Enter the text" required>
+                    <span validation-for="name" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Generate QR code</button>
+            </form>
+        </div>        
 
-    <form method="post" asp-page-handler="OnPost" class="form-inline">
-        <div class="form-group mb-2">
-            <label for="name" class="sr-only">Text</label>
-            <input type="text" class="form-control-plaintext" id="texto" name="texto" placeholder="Enter the text" required>
+        @if (!string.IsNullOrEmpty(Model.QrCode))
+        {
+            <div class="text-center">
+                <br />
+                <h1>QR Code</h1>
+                <img alt="QR Code" class="img-responsive" src="data:image/png;base64,@Model.QrCode" />
+                <br />
+                <br />
+                <a href="#" onclick="downloadQRCode()" class="btn btn-primary mb-2">Download QR code</a>
+            </div>
+        }
         </div>
-
-        <button type="submit" class="btn btn-primary mb-2">Generate QR code</button>
-    </form>
-
-    @if (!string.IsNullOrEmpty(Model.QrCode))
-    {
-        <div class="text-center">
-            <br />
-            <h1>QR Code</h1>
-            <img alt="QR Code" class="img-responsive" src="data:image/png;base64,@Model.QrCode" />
-            <br />
-            <br />
-            <a href="#" onclick="downloadQRCode()" class="btn btn-primary mb-2">Download QR code</a>
-        </div>
-    }
     </div>
     <script>
         function downloadQRCode() {
             const qrCodeData = '@Html.Raw(Model.QrCode)';
             const link = document.createElement('a');
             link.href = `data:image/png;base64,${qrCodeData}`;
-            link.download = 'codigoQR.png';
+            link.download = 'QRCode.png';
             link.click();
         }
     </script>
