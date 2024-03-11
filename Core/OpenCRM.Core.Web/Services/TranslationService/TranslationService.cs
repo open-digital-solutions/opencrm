@@ -395,27 +395,27 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             return translationValue.Translation;
         }
 
-        public async Task Seed()
+        public virtual async Task Seed()
         {
-            var languages = _dbContext.Languagess.ToList();        
+			var languages = _languageService.GetLanguageListAsync();
+			var italialLanguage = languages?.FirstOrDefault(l => l.Code == "IT");
 
-            if (languages != null && languages.Count > 0)
-            {
-                foreach (var language in languages)
-                {
-                    var ksExist = _dbContext.Translationss.FirstOrDefault(t => t.Key == "KEY_MANAGE_WELCOME");
-                    if (ksExist == null) {
-                        _dbContext.Translationss.Add(new TranslationEntity
-                        {
-                            Key = "KEY_MANAGE_WELCOME",
-                            Translation = "KEY_MANAGE_WELCOME",
-                            LanguageId = language.ID
-                        });
-                    }
-                }
-            }
-            await _dbContext.SaveChangesAsync();
-        }
+			if (italialLanguage != null)
+			{
+				ItalianTranslations italianTranslations = new ItalianTranslations();
+				var translations = italianTranslations.Translations;
 
+				foreach (var translation in translations)
+				{
+					_dbContext.Translationss.Add(new TranslationEntity
+					{
+						Key = translation.Key,
+						Translation = translation.Translation,
+						LanguageId = italialLanguage.ID
+					});
+				}
+			}
+			await _dbContext.SaveChangesAsync();
+		}
     }
 }

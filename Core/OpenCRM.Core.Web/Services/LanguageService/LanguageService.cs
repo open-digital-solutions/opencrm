@@ -177,20 +177,8 @@ namespace OpenCRM.Core.Web.Services.LanguageService
             }
         }
 
-        public async Task Seed()
+        public virtual async Task Seed()
         {
-            var existingEnglish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "EN");
-            if (existingEnglish == null)
-            {
-                var languageModel = new LanguageModel()
-                {
-                    ID = Guid.Empty,
-                    Code = "EN",
-                    Name = "English"
-                };
-
-                await AddLanguage(languageModel);
-            }
             var existingItaliano = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "IT");
             if (existingItaliano == null)
             {
@@ -199,17 +187,6 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                     ID = Guid.Empty,
                     Code = "IT",
                     Name = "Italiano"
-                };
-                await AddLanguage(languageModel);
-            }
-            var existingGerman = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "DE");
-            if (existingGerman == null)
-            {
-                var languageModel = new LanguageModel()
-                {
-                    ID = Guid.Empty,
-                    Code = "DE",
-                    Name = "Deutsch"
                 };
                 await AddLanguage(languageModel);
             }
