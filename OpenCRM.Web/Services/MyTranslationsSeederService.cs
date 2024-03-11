@@ -23,6 +23,8 @@ namespace OpenCRM.Web.Services
 
                 foreach (var translation in translations)
                 {
+                    //TODO: Modificar este metodo en el core. Tiene que permitir como lista de traducciones para la llave: 1 = null, Algunas o Todas las tradcciones por idiomas.
+                    //El metodo debe de utilizar las traducciones por idioma que se le pasen si una traduccion para un idioma no se lasa tiene que utilizar la misma key como valor y NO romperse
                     await _translationService.AddTranslations(translation.Key);
                 }
             }
