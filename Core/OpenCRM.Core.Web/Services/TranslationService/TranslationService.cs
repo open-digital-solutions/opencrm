@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
-using OpenCRM.Core.Web.Models;
 using OpenCRM.Core.Web.Services.LanguageService;
 
 namespace OpenCRM.Core.Web.Services.TranslationService
@@ -19,177 +17,136 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             _languageService = languageService;
         }
 
-        public async Task<List<TranslationModel>?> AddTranslations(string key)
+        private async Task<TranslationByLanguage?> AddTranslation (string key, string translation, Guid languageId)
         {
-			try
-			{
-                var languages = _languageService.GetLanguageListAsync();
+            try
+            {
+                var entity = Activator.CreateInstance<TranslationEntity>();
+                entity.Key = key;
+                entity.Translation = translation;
+                entity.LanguageId = languageId;
+                _dbContext.Translationss.Add(entity);
+                await _dbContext.SaveChangesAsync();
 
-                if (languages != null)
+                return new TranslationByLanguage()
                 {
-                    var addedTranslations = new List<TranslationModel>();
+                    ID = entity.ID,
+                    Key = key,
+                    Translation = entity.Translation,
+                    LanguageId = entity.LanguageId,
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Cannot add this translation: {key}, {translation})");
+                return null;
+            }
+		}
+
+		public async Task<TranslationModel?> AddTranslations(TranslationModel model)
+        {
+            try
+            {
+				var languages = _languageService.GetLanguageListAsync();
+
+				if (languages != null)
+                {
+                    var allTranslations = new List<TranslationByLanguage>();
 
                     foreach (var language in languages)
                     {
-                        try
+                        var getTranslation = model.Translations?.Where(t => t.LanguageCode == language.Code).FirstOrDefault();
+                        var translation = getTranslation != null ? await AddTranslation(model.Key, getTranslation.Translation, getTranslation.LanguageId) : await AddTranslation(model.Key, model.Key, language.ID);
+
+                        if (translation != null)
                         {
-                            var entity = Activator.CreateInstance<TranslationEntity>();
-                            entity.Key = key;
-                            entity.Translation = key;
-                            entity.LanguageId = language.ID;
-                            _dbContext.Translationss.Add(entity);
+							allTranslations.Add(translation);
+                        }
+                    }
+
+                    return new TranslationModel()
+                    {
+                        Key = model.Key,
+                        Translations = allTranslations
+					};
+                }
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Cannot add these translations with code {model.Key}"); 
+			}
+			return null;
+		}
+
+		public async Task<TranslationModel?> EditTranslations(TranslationModel model)
+        {
+            if (model.Translations != null)
+            {
+                var editedTranslations = new List<TranslationByLanguage>();
+
+                foreach (var translation in model.Translations)
+                {
+                    try
+                    {
+                        if (translation.Translation != null)
+                        {
+                            var entity = await _dbContext.Translationss.FindAsync(translation.ID);
+                            if (entity == null) return null;
+                            entity.Key = model.Key;
+                            entity.Translation = translation.Translation;
+                            _dbContext.Translationss.Update(entity);
                             await _dbContext.SaveChangesAsync();
 
-                            addedTranslations.Add(new TranslationModel()
+                            editedTranslations.Add(new TranslationByLanguage()
                             {
                                 ID = entity.ID,
-                                Key = key,
+                                Key = model.Key,
                                 Translation = entity.Translation,
                                 LanguageId = entity.LanguageId,
                             });
                         }
-                        catch (Exception ex)
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Cannot edit these translations with code {model.Key}");
+                    }
+                }
+
+                return new TranslationModel()
+                {
+                    Key = model.Key,
+                    Translations = editedTranslations
+                };
+            }
+            return null;
+        }
+
+        public async Task DeleteTranslation(string key)
+        {
+            var translations = GetTranslationsByKey(key);
+
+            if (translations != null)
+            {
+                foreach (var translation in translations)
+                {
+                    try
+                    {
+                        var entity = await _dbContext.Translationss.FindAsync(translation.ID);
+                        if (entity != null)
                         {
-                            Console.WriteLine(ex.Message);
-                            return null;
+                            _dbContext.Remove(entity);
+                            await _dbContext.SaveChangesAsync();
                         }
                     }
-                    return addedTranslations;
-                }
-                return null;
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-				return null;
-			}
-		}
-
-        public async Task<List<TranslationModel>?> AddTranslations(string key, List<TranslationLanguageCodeModel> keyTranslations)
-        {
-            try
-            {
-                var addedTranslations = new List<TranslationModel>();
-
-                foreach (var translation in keyTranslations)
-                {
-					try
-					{
-						var model = new TranslationModel()
-						{
-							ID = translation.ID,
-							Key = key,
-							LanguageId = translation.LanguageId,
-							Translation = translation.Translation,
-						};
-
-						var entity = Activator.CreateInstance<TranslationEntity>();
-						entity.Key = model.Key;
-						entity.Translation = model.Translation;
-						entity.LanguageId = model.LanguageId;
-						_dbContext.Translationss.Add(entity);
-						await _dbContext.SaveChangesAsync();
-
-                        addedTranslations.Add(new TranslationModel()
-                        {
-                            ID = entity.ID,
-                            Key = key,
-                            Translation = entity.Translation,
-                            LanguageId = entity.LanguageId,
-                        });
-					}
-					catch (Exception ex)
-					{
-						Console.WriteLine(ex.Message);
-						return null;
-					}
-				}
-                return addedTranslations;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return null;
-            }
-        }
-
-        public async Task<List<TranslationModel>?> EditTranslations(string key, List<TranslationLanguageCodeModel> keyTranslations)
-        {
-            try
-            {
-                var editedTranslations = new List<TranslationModel>();
-
-                foreach (var translation in keyTranslations)
-                {
-                    var model = new TranslationModel()
+                    catch (Exception e)
                     {
-                        ID = translation.ID,
-                        Key = key,
-                        LanguageId = translation.LanguageId,
-                        Translation = translation.Translation,
-                    };
-
-					try
-					{
-						//TODO: Handle errors and exceptions
-						var entity = await _dbContext.Translationss.FindAsync(model.ID);
-						if (entity == null) return null;
-						entity.Key = model.Key;
-						entity.Translation = model.Translation;
-						_dbContext.Translationss.Update(entity);
-						await _dbContext.SaveChangesAsync();
-
-                        editedTranslations.Add(new TranslationModel()
-						{
-							ID = entity.ID,
-							Key = key,
-							Translation = entity.Translation,
-							LanguageId = entity.LanguageId,
-						});
-					}
-					catch (Exception e)
-					{
-						Console.WriteLine(e.Message);
-						return null;
-					}
-				}
-				return editedTranslations;
-			}
-			catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return null;
+                        Console.WriteLine($"Cannot delete this translations with code {key}");
+                    }
+                }
             }
         }
 
-		public async Task DeleteTranslation(string key, List<TranslationLanguageCodeModel> keyTranslations)
-		{
-            try
-            {
-                foreach (var translation in keyTranslations)
-                {
-					try
-					{
-						var entity = await _dbContext.Translationss.FindAsync(translation.ID);
-						if (entity != null)
-						{
-							_dbContext.Remove(entity);
-							await _dbContext.SaveChangesAsync();
-						}
-					}
-					catch (Exception e)
-					{
-						Console.WriteLine(e.Message);
-					}
-				}
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        public async Task<TranslationModel?> GetTranslationById(Guid id)
+        public async Task<string?> GetTranslationKey(Guid id)
         {
             try
             {
@@ -201,79 +158,77 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                     return null;
                 }
 
-                return new TranslationModel()
-                {
-                    ID = id,
-                    Key = translation.Key,
-                    Translation = translation.Translation,
-                    LanguageId = translation.LanguageId
-                };
+                return translation.Key;
             }
             catch (Exception ex)
             {
                 //TODO: Handle this error
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine("Cannot get translation key");
                 return null;
             }
         }
 
-        public List<TranslationModel>? GetTranslationsByKey(string key)
+        public List<TranslationByLanguage>? GetTranslationsByKey(string key)
         {
             try
             {
                 var translations = _dbContext.Translationss.Where(t => t.Key == key).ToList();
+                var languages = _languageService.GetLanguageListAsync();
 
-                if (translations != null)
+                if (translations != null && translations.Count != 0 && languages != null)
                 {
-                    if (translations != null && translations.Count != 0)
-                    {
-                        var result = new List<TranslationModel>();
+                    var result = new List<TranslationByLanguage>();
 
-                        foreach (var translation in translations)
+                    foreach (var translation in translations)
+                    {
+                        if (translation != null && !string.IsNullOrWhiteSpace(translation.ID.ToString()))
                         {
-                            if (translation != null && !string.IsNullOrWhiteSpace(translation.ID.ToString()))
+                            var language = languages.Where(l => l.ID == translation.LanguageId).FirstOrDefault();
+
+                            result.Add(new TranslationByLanguage()
                             {
-                                result.Add(new TranslationModel()
-                                {
-                                    ID = translation.ID,
-                                    Key = translation.Key,
-                                    Translation = translation.Translation,
-                                    LanguageId = translation.LanguageId
-                                });
-                            }
+                                ID = translation.ID,
+                                Key = translation.Key,
+                                Translation = translation.Translation,
+                                LanguageId = translation.LanguageId,
+                                LanguageCode = language?.Code
+                            });
                         }
-                        return result;
                     }
+                    return result;
                 }
-                return null;
             }
             catch (Exception ex)
             {
                 //TODO: Handle this error
                 Console.WriteLine(ex.ToString());
-                return null;
             }
-        }
+			return null;
+		}
 
-		public List<TranslationModel>? GetTranslationsList()
+		public List<TranslationByLanguage>? GetTranslationsList()
 		{
 			try
 			{
 				var translations = _dbContext.Translationss.ToList();
+                var languages = _languageService.GetLanguageListAsync();
 
-				if (translations != null && translations.Count != 0)
+				if (translations != null && translations.Count != 0 && languages != null)
 				{
-					var result = new List<TranslationModel>();
+					var result = new List<TranslationByLanguage>();
 					foreach (var translation in translations)
 					{
 						if (translation != null && !string.IsNullOrWhiteSpace(translation.ID.ToString()))
 						{
-							result.Add(new TranslationModel()
+                            var language = languages.Where(l => l.ID == translation.LanguageId).FirstOrDefault();
+
+							result.Add(new TranslationByLanguage()
 							{
 								ID = translation.ID,
 								Key = translation.Key,
 								Translation = translation.Translation,
-								LanguageId = translation.LanguageId
+								LanguageId = translation.LanguageId,
+                                LanguageCode = language?.Code
 							});
 						}
 					}
@@ -289,44 +244,15 @@ namespace OpenCRM.Core.Web.Services.TranslationService
 			}
 		}
 		
-        public List<TranslationLanguageCodeModel>? GetTranslationsWithLanguagesCode(string key)
-        {
-            var keytranslations = GetTranslationsByKey(key);
-            var languages = _languageService.GetLanguageListAsync();
-
-            if (keytranslations != null && languages != null)
-            {
-                var keyTranslationByLanguage = new List<TranslationLanguageCodeModel>();
-
-                foreach (var translation in keytranslations)
-                {
-                    var language = languages.Find(l => l.ID == translation.LanguageId);
-
-                    if (language != null)
-                    {
-                        keyTranslationByLanguage.Add(new TranslationLanguageCodeModel()
-                        {
-                            ID = translation.ID,
-                            Key = key,
-                            Translation = translation.Translation,
-                            LanguageCode = language.Code,
-                            LanguageId = translation.LanguageId
-                        });
-                    }
-                }
-                return keyTranslationByLanguage;
-            }
-            return null;
-        }
-
-		public Dictionary<string, List<TranslationLanguageCodeModel>>? GetTranslationsToDictionary()
+		public Dictionary<string, List<TranslationByLanguage>>? GetTranslationsToDictionary()
         {
             var translations = GetTranslationsList();
+
             var languages = _languageService.GetLanguageListAsync();
 
             if (translations != null && languages != null)
             {
-                var keyTranslations = new Dictionary<string, List<TranslationLanguageCodeModel>>();
+                var keyTranslations = new Dictionary<string, List<TranslationByLanguage>>();
 
                 foreach (var translation in translations)
                 {
@@ -335,9 +261,9 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                     if (language != null)
                     {
                         if (!keyTranslations.ContainsKey(translation.Key))
-                            keyTranslations.Add(translation.Key, new List<TranslationLanguageCodeModel>());
+                            keyTranslations.Add(translation.Key, new List<TranslationByLanguage>());
 
-                        keyTranslations[translation.Key].Add(new TranslationLanguageCodeModel()
+                        keyTranslations[translation.Key].Add(new TranslationByLanguage()
                         {
                             ID = translation.ID,
                             Key = translation.Key,
@@ -352,31 +278,34 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             return null;
         }
 
-        public List<DataBlockModel<TranslationLanguageCodeModel>> ToListDataBlockModel(List<TranslationModel> translations)
+        public List<DataBlockModel<TranslationByLanguage>> ToListDataBlockModel(List<TranslationByLanguage> keyTranslations)
         {
-            var response = new List<DataBlockModel<TranslationLanguageCodeModel>>();
+            var response = new List<DataBlockModel<TranslationByLanguage>>();
+            
             var languages = _languageService.GetLanguageListAsync();
 
             if (languages != null)
             {
-                foreach (var item in translations)
+                foreach (var translation in keyTranslations)
                 {
-                    var language = languages.Find(l => l.ID == item.LanguageId);
+                    var language = languages.Find(l => l.ID == translation.LanguageId);
 
                     if (language != null)
                     {
-                        response.Add(new DataBlockModel<TranslationLanguageCodeModel>()
+                        response.Add(new DataBlockModel<TranslationByLanguage>
                         {
-                            ID = item.ID,
-                            Code = item.Key,
-                            Description = item.Translation,
-                            Type = typeof(TranslationLanguageCodeModel).ToString(),
-                            Data = new TranslationLanguageCodeModel()
+                            ID = translation.ID,
+                            Code = translation.Key,
+                            Description = translation.Translation,
+                            Type = typeof(TranslationByLanguage).ToString(),
+
+                            Data = new TranslationByLanguage()
                             {
-                                ID = item.ID,
-                                Key = item.Key,
-                                Translation = item.Translation,
-                                LanguageCode = language.Code
+                                ID = translation.ID,
+                                Key = translation.Key,
+                                Translation = translation.Translation,
+                                LanguageId = translation.LanguageId,
+                                LanguageCode = translation.LanguageCode,
                             }
                         });
                     }
@@ -386,7 +315,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             return response;
         }
 
-        public async Task<string?> GetTranslationValue(string key)
+        public async Task<string?> GetTranslationValue(string key) //arreglar para que devuelva varias traducciones
         {
             var currentLanguage = await _languageService.GetCurrentLanguage();
             if (currentLanguage == null) { return key; }
@@ -395,27 +324,17 @@ namespace OpenCRM.Core.Web.Services.TranslationService
             return translationValue.Translation;
         }
 
-        public async Task Seed()
+        public virtual async Task Seed()
         {
             var languages = _dbContext.Languagess.ToList();
 
             if (languages != null && languages.Count > 0)
             {
-                foreach (var language in languages)
+                await AddTranslations(new TranslationModel()
                 {
-                    var ksExist = _dbContext.Translationss.FirstOrDefault(t => t.Key == "KEY_MANAGE_WELCOME");
-                    if (ksExist == null)
-                    {
-                        _dbContext.Translationss.Add(new TranslationEntity
-                        {
-                            Key = "KEY_MANAGE_WELCOME",
-                            Translation = "KEY_MANAGE_WELCOME",
-                            LanguageId = language.ID
-                        });
-                    }
-                }
+                    Key = "KEY_MANAGE_WELCOME"
+                });
             }
-            await _dbContext.SaveChangesAsync();
         }
-    }
+	}
 }

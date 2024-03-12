@@ -5,17 +5,15 @@ namespace OpenCRM.Core.Web.Services.TranslationService
 {
     public interface ITranslationService
     {
-        Task<List<TranslationModel>?> AddTranslations(string key);
-		Task<List<TranslationModel>?> AddTranslations(string key, List<TranslationLanguageCodeModel> keyTranslations);
-		Task<List<TranslationModel>?> EditTranslations(string key, List<TranslationLanguageCodeModel> keyTranslations);
-		Task DeleteTranslation(string key, List<TranslationLanguageCodeModel> keyTranslations);
-        Task<TranslationModel?> GetTranslationById(Guid id);
-        List<TranslationModel>? GetTranslationsByKey(string key);
-		List<TranslationModel>? GetTranslationsList();
-		List<TranslationLanguageCodeModel>? GetTranslationsWithLanguagesCode(string key);
-		Dictionary<string, List<TranslationLanguageCodeModel>>? GetTranslationsToDictionary();
-		List<DataBlockModel<TranslationLanguageCodeModel>> ToListDataBlockModel(List<TranslationModel> translations);
-        Task<string?> GetTranslationValue(string key);
+		Task<TranslationModel?> AddTranslations(TranslationModel model);
+		Task<TranslationModel?> EditTranslations(TranslationModel model);
+		Task DeleteTranslation(string key);
+        Task<string?> GetTranslationKey(Guid id);
+        List<TranslationByLanguage>? GetTranslationsByKey(string key);
+		List<TranslationByLanguage>? GetTranslationsList();
+		Dictionary<string, List<TranslationByLanguage>>? GetTranslationsToDictionary();
+		List<DataBlockModel<TranslationByLanguage>> ToListDataBlockModel(List<TranslationByLanguage> keyTranslations);
+		Task<string?> GetTranslationValue(string key); //esto deberia devolver una lista de traducciones
         Task Seed();
     }
 }

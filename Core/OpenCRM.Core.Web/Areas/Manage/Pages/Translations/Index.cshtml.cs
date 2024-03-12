@@ -11,10 +11,10 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
     {
         private readonly ITranslationService _translationService;
 
-        private TableService<TranslationLanguageCodeModel> _tableService;
+        private TableService<TranslationByLanguage> _tableService;
 
         [BindProperty]
-        public List<TranslationModel> TranslationList { get; set; } = new List<TranslationModel>();
+        public List<TranslationByLanguage> TranslationList { get; set; } = new List<TranslationByLanguage>();
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -25,7 +25,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         public IndexModel(ITranslationService translationService)
         {
             _translationService = translationService;
-            _tableService = new TableService<TranslationLanguageCodeModel>();
+            _tableService = new TableService<TranslationByLanguage>();
 
             Links.Add(new BreadCrumbLinkModel()
             {

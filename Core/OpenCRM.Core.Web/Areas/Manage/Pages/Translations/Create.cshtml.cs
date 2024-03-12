@@ -16,8 +16,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
         public string Key { get; set; } = string.Empty;
 
         [BindProperty]
-        public List<TranslationLanguageCodeModel> Translations { get; set; } = new List<TranslationLanguageCodeModel>();
-
+        public List<TranslationByLanguage> Translations { get; set; } = default!;
 
         [BindProperty]
         public List<BreadCrumbLinkModel> Links { get; set; } = new List<BreadCrumbLinkModel>();
@@ -35,6 +34,7 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
                 Page = "Translations",
                 Url = "/Manage/Translations"
             });
+
             _languageService = languageService;
         }
 
@@ -47,12 +47,13 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
                 return NotFound();
             }
 
-            var translations = new List<TranslationLanguageCodeModel>();
+            var translations = new List<TranslationByLanguage>();
 
             foreach(var language in languages)
             {
-                translations.Add(new TranslationLanguageCodeModel()
+                translations.Add(new TranslationByLanguage()
                 {
+                    ID = Guid.Empty,
                     LanguageCode = language.Code,
                     LanguageId = language.ID
                 });
@@ -60,16 +61,21 @@ namespace OpenCRM.Core.Web.Areas.Manage.Pages.Translations
 
             Translations = translations;
             return Page();
-        }
+		}
 
         public async Task<IActionResult> OnPost()
         {
             if (ModelState.IsValid)
-                await _translationService.AddTranslations(Key, Translations);
-            else
-				await _translationService.AddTranslations(Key);
-			
-            return RedirectToPage("./Index");
+            {
+                var model = new TranslationModel()
+                {
+                    Key = Key,
+                    Translations = Translations
+                };
+                await _translationService.AddTranslations(model);
+                return RedirectToPage("./Index");
+            }
+            return Page();
 		}
 	}
 }

@@ -190,6 +190,18 @@ namespace OpenCRM.Core.Web.Services.LanguageService
                 };
                 await AddLanguage(languageModel);
             }
-        }
+
+			var existingEnglish = await _dbContext.Languagess.FirstOrDefaultAsync(l => l.Code == "EN");
+			if (existingEnglish == null)
+			{
+				var languageModel = new LanguageModel()
+				{
+					ID = Guid.Empty,
+					Code = "EN",
+					Name = "English"
+				};
+				await AddLanguage(languageModel);
+			}
+		}
     }
 }
