@@ -57,7 +57,7 @@ namespace OpenCRM.Core.Web.Services.TranslationService
                     foreach (var language in languages)
                     {
                         var getTranslation = model.Translations?.Where(t => t.LanguageCode == language.Code).FirstOrDefault();
-                        var translation = getTranslation != null ? await AddTranslation(model.Key, getTranslation.Translation, language.ID) : await AddTranslation(model.Key, model.Key, language.ID);
+                        var translation = getTranslation != null && getTranslation.Translation != null ? await AddTranslation(model.Key, getTranslation.Translation, language.ID) : await AddTranslation(model.Key, model.Key, language.ID);
 
                         if (translation != null)
                         {
