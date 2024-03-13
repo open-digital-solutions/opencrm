@@ -5,7 +5,7 @@
 }
 
 <div class="text-center">
-    <div class="row justify-content-center  table-responsive" style="height: 80vh">
+    <div class="row justify-content-center  table-responsive" style="height: initial">
         <div class="card border-1 rounded-lg p-0">
         <h1>QR Generator</h1>
         <div class="card-body">
@@ -25,7 +25,7 @@
             <div class="text-center">
                 <br />
                 <h1>QR Code</h1>
-                    <img alt="QR Code" class="img-responsive" style="height: 80vh; overflow-y: scroll" src="data:image/png;base64,@Model.QrCode" />
+                    <img alt="QR Code" class="img-responsive" style="height: 30vh" src="data:image/png;base64,@Model.QrCode" />
                 <br />
                 <br />
                 <a href="#" onclick="downloadQRCode()" class="btn btn-primary mb-2">Download QR Code</a>
