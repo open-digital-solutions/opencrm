@@ -1,12 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using OpenCRM.Core.Web;
-using OpenCRM.Core.Web.Services.BlockServices.TextBlockService;
-using OpenCRM.Core.Web.Services.CardBlockService;
-using OpenCRM.Core.Web.Services.EmailService;
-using OpenCRM.Core.Web.Services.IdentityService;
-using OpenCRM.Core.Web.Services.ImageBlockService;
-using OpenCRM.Core.Web.Services.RoleService;
-using OpenCRM.Core.Web.Services.TranslationService;
 using OpenCRM.SwissLPD;
 using OpenCRM.Web.Data;
 using OpenCRM.Web.Services;
