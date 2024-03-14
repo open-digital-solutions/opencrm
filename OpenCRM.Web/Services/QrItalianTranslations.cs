@@ -5,59 +5,64 @@ namespace OpenCRM.Web.Services;
 
 public class QrItalianTranslations
 {
-	public QrItalianTranslations() { }
+	private Dictionary<string, TranslationByLanguage> qritalianTranslations = new Dictionary<string, TranslationByLanguage>();
 
-	private List<TranslationByLanguage> qritalianTranslations = new()
-	{
-		new TranslationByLanguage()
+    public QrItalianTranslations()
+    {
+		qritalianTranslations.Add("KEY_QR_GENERATORE", new TranslationByLanguage()
 		{
 			ID = Guid.Empty,
 			Key = "KEY_QR_GENERATORE",
 			Translation = "KEY_QR_GENERATORE",
 			LanguageId = Guid.Empty,
 			LanguageCode = "IT"
-		},
+		});
 
-		new TranslationByLanguage()
+		qritalianTranslations.Add("KEY_QR_TESTO", new TranslationByLanguage()
 		{
 			ID = Guid.Empty,
 			Key = "KEY_QR_TESTO",
 			Translation = "KEY_QR_TESTO",
 			LanguageId = Guid.Empty,
-		},
+            LanguageCode = "IT"
+        });
 
-        new TranslationByLanguage()
-        {
-            ID = Guid.Empty,
-            Key = "KEY_QR_INSERISCI_IL_TESTO",
-            Translation = "KEY_QR_INSERISCI_IL_TESTO",
-            LanguageId = Guid.Empty,
-        },
+		qritalianTranslations.Add("KEY_QR_INSERISCI_IL_TESTO", new TranslationByLanguage()
+		{
+			ID = Guid.Empty,
+			Key = "KEY_QR_INSERISCI_IL_TESTO",
+			Translation = "KEY_QR_INSERISCI_IL_TESTO",
+			LanguageId = Guid.Empty,
+            LanguageCode = "IT"
+        });
 
-        new TranslationByLanguage()
+		qritalianTranslations.Add("KEY_QR_GENERARE_CODICE", new TranslationByLanguage()
 		{
 			ID = Guid.Empty,
 			Key = "KEY_QR_GENERARE_CODICE",
 			Translation = "KEY_QR_GENERARE_CODICE",
 			LanguageId = Guid.Empty,
-		},
+            LanguageCode = "IT"
+        });
 
-		new TranslationByLanguage()
+		qritalianTranslations.Add("KEY_QR_QR_CODICE", new TranslationByLanguage()
 		{
 			ID = Guid.Empty,
 			Key = "KEY_QR_QR_CODICE",
 			Translation = "KEY_QR_QR_CODICE",
 			LanguageId = Guid.Empty,
-		},
+			LanguageCode = "IT"
+		});
 
-		new TranslationByLanguage()
+		qritalianTranslations.Add("KEY_QR_SCARICA_IL_CODICE_QR", new TranslationByLanguage()
 		{
 			ID = Guid.Empty,
 			Key = "KEY_QR_SCARICA_IL_CODICE_QR",
 			Translation = "KEY_QR_SCARICA_IL_CODICE_QR",
 			LanguageId = Guid.Empty,
-		},
-	};
+			LanguageCode = "IT"
+		});
+	}
 
-	public List<TranslationByLanguage> Translations { get { return qritalianTranslations; } }
+	public Dictionary<string, TranslationByLanguage> Translations { get { return qritalianTranslations; } }
 }
